@@ -53,3 +53,20 @@ export async function logout() {
   await api.post("/api/v1/auth/logout");
   clearToken();
 }
+
+export async function getUserProfile() {
+  const res = await api.get("/api/v1/auth/me");
+  return res.data.data.user;
+}
+
+export async function updateProfile(data: {
+  email?: string;
+  password?: string;
+}) {
+  const res = await api.put("/api/v1/auth/profile", data);
+  return res.data.data.user;
+}
+
+export async function deleteAccount() {
+  await api.delete("/api/v1/auth/profile");
+}

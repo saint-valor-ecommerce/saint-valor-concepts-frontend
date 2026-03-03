@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ShoppingCart, Heart } from "lucide-react";
 import { CurrencyDropdown } from "../CurrencyDropdown";
-import Profile from "../Profile";
+import UserMenu from "../UserMenu";
 
 const navStyles =
   "flex items-center justify-center text-burgundy cursor-pointer";
@@ -23,7 +23,7 @@ const DesktopTopNav = () => {
 
       <div className="flex items-center gap-2.5">
         {/* User menu button */}
-        <Profile />
+        <UserMenu />
 
         {/* Cart */}
         <button type="button" className={navStyles} aria-label="Open cart">

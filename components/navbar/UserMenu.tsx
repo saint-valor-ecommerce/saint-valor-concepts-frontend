@@ -14,6 +14,7 @@ const Profile = () => {
 
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
+
   const handleLogout = async () => {
     try {
       await logout();
