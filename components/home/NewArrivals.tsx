@@ -1,5 +1,5 @@
 const NewArrivals = () => {
-  return <div>New Arrivals</div>;
+  return <div>NewArrivals</div>;
 };
 
 export default NewArrivals;

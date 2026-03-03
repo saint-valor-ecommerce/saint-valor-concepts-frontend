@@ -56,7 +56,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push("/sign-in");
+      router.push("/");
       return;
     }
     fetchUser();

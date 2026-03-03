@@ -74,14 +74,14 @@ const Profile = () => {
               <Link
                 href="/profile"
                 onClick={() => setIsOpen(false)}
-                className={itemClass}
+                className="block w-full text-left px-3 py-2 text-sm hover:bg-black/5 transition cursor-pointer"
               >
                 My Profile
               </Link>
               <button
                 type="button"
                 onClick={handleLogout}
-                className={itemClass}
+                className="block w-full text-red-600 text-left px-3 py-2 text-sm hover:bg-black/5 transition cursor-pointer"
               >
                 Log Out
               </button>

@@ -8,8 +8,8 @@ import { Product } from "@/types/product";
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (id: number) => void;
-  onFavourite: (id: number) => void;
+  onAddToCart: (id: string) => void;
+  onFavourite: (id: string) => void;
 }
 
 export default function ProductCard({
@@ -28,8 +28,8 @@ export default function ProductCard({
     >
       <div className="relative overflow-hidden aspect-3/4 max-h-56 w-full">
         <Image
-          src={product.image}
-          alt={product.name}
+          src={product.mainImage ?? "/images/shop-1.png"}
+          alt={product.productName ?? ""}
           fill
           className="object-cover"
         />
@@ -38,7 +38,7 @@ export default function ProductCard({
           aria-label="Heart Icon"
           onClick={() => {
             setIsFavourite(!isFavourite);
-            onFavourite(product.id);
+            onFavourite(product._id);
           }}
           className="absolute top-2 right-2 bg-white rounded-full p-1.5 shadow-sm transition-transform duration-200 hover:scale-110 cursor-pointer"
         >
@@ -59,7 +59,7 @@ export default function ProductCard({
             label="Add to cart"
             size="md"
             type="button"
-            onClick={() => onAddToCart(product.id)}
+            onClick={() => onAddToCart(product._id)}
             fullWidth
             variant="outline"
           />
@@ -67,12 +67,14 @@ export default function ProductCard({
       </div>
 
       <div className="flex flex-col gap-0.5">
-        <p className="text-[11px] text-gray-400 tracking-wide">
-          {product.category}
+        <p className="text-[11px] text-secondary tracking-wide">
+          {product.productCategory?.name}
         </p>
-        <p className="text-sm font-medium text-gray-800">{product.name}</p>
-        <p className="text-sm font-semibold text-gray-900">
-          ${product.price.toLocaleString()}
+        <p className="text-sm font-medium text-charcoal">
+          {product.productName}
+        </p>
+        <p className="text-sm font-semibold text-charcoal">
+          ₦{(product.productPrice ?? 0).toLocaleString()}
         </p>
       </div>
     </div>
