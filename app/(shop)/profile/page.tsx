@@ -56,7 +56,7 @@ const UserProfile = () => {
       return;
     }
     fetchUser();
-  }, []);
+  }, [isLoggedIn, router]);
 
   const handleSaveChanges = async () => {
     try {
