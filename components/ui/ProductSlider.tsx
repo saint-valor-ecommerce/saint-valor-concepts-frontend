@@ -74,7 +74,7 @@ export default function ProductSlider({
       >
         {visibleProducts.map((product) => (
           <ProductCard
-            key={product.id}
+            key={product._id}
             product={product}
             onAddToCart={(id) => console.log("Add to cart:", id)}
             onFavourite={(id) => console.log("Favourite:", id)}
