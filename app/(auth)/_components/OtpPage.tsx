@@ -83,7 +83,7 @@ export default function OtpPage() {
 
     try {
       setLoading(true);
-      await api.post("/api/v1/auth/verify-email", { email, otp: otpValue });
+      await api.post("/auth/verify-email", { email, otp: otpValue });
       toast.success("Email verified successfully!");
       router.push("/sign-in");
     } catch (err: unknown) {
@@ -100,7 +100,7 @@ export default function OtpPage() {
     if (countdown > 0) return;
     try {
       setResending(true);
-      await api.post("/api/v1/auth/resend-otp", { email });
+      await api.post("/auth/resend-otp", { email });
       toast.success("OTP resent successfully!");
       setCountdown(60);
       setOtp(Array(6).fill(""));

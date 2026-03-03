@@ -22,7 +22,7 @@ export default function UserDetailsPage({
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const { data } = await api.get(`/api/v1/admin/users/${id}`);
+        const { data } = await api.get(`/admin/users/${id}`);
         setData(data.data);
       } catch (err: unknown) {
         const message = axios.isAxiosError(err)

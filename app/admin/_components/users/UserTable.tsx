@@ -27,7 +27,7 @@ const UserTable = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const { data } = await api.get("/api/v1/admin/users");
+        const { data } = await api.get("/admin/users");
         setData(data.data.users);
       } catch (err: unknown) {
         const message = axios.isAxiosError(err)

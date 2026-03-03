@@ -1,9 +1,9 @@
-import Stats from "../../_components/home/Stats";
+import StatsSection from "../../_components/stats/StatsSection";
 
 const page = () => {
   return (
     <div>
-      <Stats />
+      <StatsSection />
     </div>
   );
 };

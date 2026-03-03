@@ -23,7 +23,7 @@ export interface PaginatedProducts {
 export const getAllProducts = async (
   filters?: ProductFilters,
 ): Promise<PaginatedProducts> => {
-  const { data } = await publicApi.get("/api/v1/products", { params: filters });
+  const { data } = await publicApi.get("/products", { params: filters });
   return {
     products: data.data.products,
     totalItems: data.totalItems,
@@ -33,26 +33,26 @@ export const getAllProducts = async (
 };
 
 export const getProductById = async (id: string): Promise<Product> => {
-  const { data } = await publicApi.get(`/api/v1/products/${id}`);
+  const { data } = await publicApi.get(`/products/${id}`);
   return data.data.product;
 };
 
 export const getNewArrivals = async (): Promise<Product[]> => {
-  const { data } = await publicApi.get("/api/v1/new-arrivals");
+  const { data } = await publicApi.get("/new-arrivals");
   return data.data.products;
 };
 
 export const getBestSellers = async (): Promise<Product[]> => {
-  const { data } = await publicApi.get("/api/v1/best-sellers");
+  const { data } = await publicApi.get("/best-sellers");
   return data.data.products;
 };
 
 export const getCollections = async () => {
-  const { data } = await publicApi.get("/api/v1/collections");
+  const { data } = await publicApi.get("/collections");
   return data.data.collections;
 };
 
 export const getCategories = async () => {
-  const { data } = await publicApi.get("/api/v1/categories");
+  const { data } = await publicApi.get("/categories");
   return data.data.categories;
 };

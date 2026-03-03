@@ -24,10 +24,10 @@ export function clearToken() {
 }
 
 export async function login({ email, password }: LoginProps) {
-  const { data } = await api.post("/api/v1/auth/login", { email, password });
+  const { data } = await api.post("/auth/login", { email, password });
   saveToken(data.token);
 
-  const profileRes = await api.get("/api/v1/auth/me");
+  const profileRes = await api.get("/auth/me");
   const firstName = profileRes.data.data.user.firstName;
   localStorage.setItem("firstName", firstName);
 
@@ -40,7 +40,7 @@ export async function signUp({
   firstName,
   lastName,
 }: SignUpProps) {
-  const { data } = await api.post("/api/v1/auth/signup", {
+  const { data } = await api.post("/auth/signup", {
     email,
     password,
     firstName,
@@ -50,12 +50,12 @@ export async function signUp({
 }
 
 export async function logout() {
-  await api.post("/api/v1/auth/logout");
+  await api.post("/auth/logout");
   clearToken();
 }
 
 export async function getUserProfile() {
-  const res = await api.get("/api/v1/auth/me");
+  const res = await api.get("/auth/me");
   return res.data.data.user;
 }
 
@@ -63,10 +63,10 @@ export async function updateProfile(data: {
   email?: string;
   password?: string;
 }) {
-  const res = await api.put("/api/v1/auth/profile", data);
+  const res = await api.put("/auth/profile", data);
   return res.data.data.user;
 }
 
 export async function deleteAccount() {
-  await api.delete("/api/v1/auth/profile");
+  await api.delete("/auth/profile");
 }
