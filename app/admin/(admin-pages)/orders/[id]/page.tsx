@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
 import axios from "axios";
 import { OrderDetail } from "@/types/order";
-import OrderDetailHeader from "@/app/admin/_components/orders/OrderDetailHeader";
-import OrderDetailMeta from "@/app/admin/_components/orders/OrderDetailMeta";
-import OrderDetailAddress from "@/app/admin/_components/orders/OrderDetailAddress";
-import OrderDetailItems from "@/app/admin/_components/orders/OrderDetailItems";
-import OrderDetailTotal from "@/app/admin/_components/orders/OrderDetailTotal";
+import OrderDetailHeader from "@/app/admin/_components/orders/orderId/OrderDetailHeader";
+import OrderDetailMeta from "@/app/admin/_components/orders/orderId/OrderDetailMeta";
+import OrderDetailAddress from "@/app/admin/_components/orders/orderId/OrderDetailAddress";
+import OrderDetailItems from "@/app/admin/_components/orders/orderId/OrderDetailItems";
+import OrderDetailTotal from "@/app/admin/_components/orders/orderId/OrderDetailTotal";
 
 const OrderDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const router = useRouter();
