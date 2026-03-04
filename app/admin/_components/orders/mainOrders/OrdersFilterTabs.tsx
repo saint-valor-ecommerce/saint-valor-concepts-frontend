@@ -10,7 +10,7 @@ export default function OrdersFilterTabs({
   onTabChange,
 }: OrdersFilterTabsProps) {
   return (
-    <div className="bg-white border border-border rounded-full p-3 flex gap-1 mb-6 w-fit">
+    <div className="bg-white border border-border rounded-full p-2 flex gap-2 w-fit">
       <button
         onClick={() => onTabChange("ongoing")}
         className={`px-5 cursor-pointer py-3 rounded-full text-sm font-medium transition-colors ${

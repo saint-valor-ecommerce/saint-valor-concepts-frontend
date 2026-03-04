@@ -18,52 +18,37 @@ function formatDate(dateStr: string): string {
   });
 }
 
-function getInitials(firstName: string, lastName: string): string {
-  return `${firstName[0]}${lastName[0]}`.toUpperCase();
-}
+const orderTableRowStyles = " py-4 px-4 text-sm text-charcoal font-medium";
 
 export default function OrdersTableRow({ order }: OrdersTableRowProps) {
   return (
     <tr className="border-b border-border hover:bg-ivory transition-colors">
       {/* User */}
-      <td className="py-4 px-4">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-gold/20 text-gold text-xs font-semibold flex items-center justify-center shrink-0">
-            {getInitials(order.firstName, order.lastName)}
-          </div>
-          <span className="text-sm text-charcoal font-medium">
-            {order.firstName} {order.lastName}
-          </span>
-        </div>
+      <td className={orderTableRowStyles}>
+        {order.firstName} {order.lastName}
       </td>
 
       {/* Order Number */}
-      <td className="py-4 px-4">
-        <span className="text-sm text-secondary">{order.orderId}</span>
+      <td className={orderTableRowStyles}>
+        <span className={orderTableRowStyles}>{order.orderId}</span>
       </td>
 
       {/* Delivery Date */}
-      <td className="py-4 px-4">
-        <span className="text-sm text-secondary">
-          {formatDate(order.createdAt)}
-        </span>
-      </td>
+      <td className={orderTableRowStyles}>{formatDate(order.createdAt)}</td>
 
       {/* Total Price */}
-      <td className="py-4 px-4">
-        <span className="text-sm text-charcoal font-medium">
-          ₦{order.totalPrice.toLocaleString()}
-        </span>
+      <td className={orderTableRowStyles}>
+        ₦{order.totalPrice.toLocaleString()}
       </td>
 
       {/* Status */}
-      <td className="py-4 px-4">
+      <td className={orderTableRowStyles}>
         <OrderStatusBadge status={order.orderStatus} />
       </td>
 
       {/* More Details */}
-      <td className="py-4 px-4">
-        <MoreDetails order={order} />
+      <td className={orderTableRowStyles}>
+        <MoreDetails orderId={order._id} />
       </td>
     </tr>
   );

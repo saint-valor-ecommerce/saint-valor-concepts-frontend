@@ -17,22 +17,23 @@ const OrderRow = ({ order }: OrderRowProps) => {
   });
 
   const formattedPrice = `₦${order.totalPrice.toLocaleString()}`;
+  const recentOrderStyles = "py-4 px-4 text-sm text-charcoal font-medium";
 
   return (
-    <tr className="border-b border-[#C9A050]/10 hover:bg-[#F5F0E8]/40 transition-colors">
+    <tr className="border-b border-border transition-colors">
       {/* User */}
-      <td className="py-4 px-4 text-sm text-[#1a1a1a] font-medium">
+      <td className={recentOrderStyles}>
         {order.firstName} {order.lastName}
       </td>
 
       {/* Order Number */}
-      <td className="py-4 px-4 text-sm text-charcoal">#{order.orderId}</td>
+      <td className={recentOrderStyles}>#{order.orderId}</td>
 
       {/* Date */}
-      <td className="py-4 px-4 text-sm text-charcoal">{formattedDate}</td>
+      <td className={recentOrderStyles}>{formattedDate}</td>
 
       {/* Total Price */}
-      <td className="py-4 px-4 text-sm text-charcoal">{formattedPrice}</td>
+      <td className={recentOrderStyles}>{formattedPrice}</td>
 
       {/* Status */}
       <td className="py-4 px-4">
@@ -41,7 +42,7 @@ const OrderRow = ({ order }: OrderRowProps) => {
 
       {/* More Details */}
       <td className="py-4 px-4">
-        <MoreDetails order={order} />
+        <MoreDetails orderId={order._id} />
       </td>
     </tr>
   );

@@ -1,6 +1,8 @@
-import { ChevronDown, ChevronRight } from "lucide-react";
-import { Order } from "../../../../types";
-import { formatDate } from "../../../../lib/utils";
+import { ChevronDown } from "lucide-react";
+import { Order } from "@/types";
+import { formatDate } from "@/lib/utils";
+import OrdersFilterTabs from "../orders/mainOrders/OrdersFilterTabs";
+import MoreDetails from "../ui/MoreDetails";
 
 interface OrdersTableProps {
   orders: Order[];
@@ -11,25 +13,7 @@ interface OrdersTableProps {
 const OrdersTable = ({ orders, activeTab, onTabChange }: OrdersTableProps) => {
   return (
     <div className="space-y-4">
-      {/* Tabs */}
-      <div className="flex gap-2 bg-white p-2 rounded-full w-fit">
-        <button
-          onClick={() => onTabChange("ongoing")}
-          className={`px-5 py-3 rounded-full text-sm font-medium transition-colors cursor-pointer ${
-            activeTab === "ongoing" ? "bg-gold text-white" : "text-secondary"
-          }`}
-        >
-          Ongoing Orders
-        </button>
-        <button
-          onClick={() => onTabChange("past")}
-          className={`px-5 py-3 rounded-full text-sm font-medium transition-colors cursor-pointer ${
-            activeTab === "past" ? "bg-gold text-white" : "text-secondary"
-          }`}
-        >
-          Past Orders
-        </button>
-      </div>
+      <OrdersFilterTabs activeTab={activeTab} onTabChange={onTabChange} />
 
       {/* Table */}
       {orders.length === 0 ? (
@@ -69,9 +53,7 @@ const OrdersTable = ({ orders, activeTab, onTabChange }: OrdersTableProps) => {
                     </button>
                   </td>
                   <td className="px-6 py-4">
-                    <button className="flex items-center gap-1 text-xs text-secondary hover:text-charcoal">
-                      More details <ChevronRight size={14} />
-                    </button>
+                    <MoreDetails orderId={order._id} />
                   </td>
                 </tr>
               ))}
