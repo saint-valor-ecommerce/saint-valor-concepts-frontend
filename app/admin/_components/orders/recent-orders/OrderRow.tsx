@@ -1,21 +1,12 @@
-import { ChevronDown, ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { RecentOrder } from "@/types/order";
+import OrderStatusBadge from "../mainOrders/OrderStatusBadge";
+import MoreDetails from "../../ui/MoreDetails";
 
 interface OrderRowProps {
   order: RecentOrder;
 }
 
-const statusStyles: Record<RecentOrder["orderStatus"], string> = {
-  ongoing: "bg-[#f3f4f6] text-[#1a1a1a]",
-  pending: "bg-yellow-50 text-yellow-600",
-  completed: "bg-green-50 text-green-600",
-  cancelled: "bg-red-50 text-red-600",
-};
-
 const OrderRow = ({ order }: OrderRowProps) => {
-  const router = useRouter();
-
   const formattedDate = new Date(order.createdAt).toLocaleString("en-US", {
     month: "short",
     day: "numeric",
@@ -45,24 +36,12 @@ const OrderRow = ({ order }: OrderRowProps) => {
 
       {/* Status */}
       <td className="py-4 px-4">
-        <span
-          className={`inline-flex items-center gap-1 px-3 py-1 rounded-md text-xs font-medium ${statusStyles[order.orderStatus]}`}
-        >
-          {order.orderStatus.charAt(0).toUpperCase() +
-            order.orderStatus.slice(1)}
-          <ChevronDown size={12} />
-        </span>
+        <OrderStatusBadge status={order.orderStatus} />
       </td>
 
       {/* More Details */}
       <td className="py-4 px-4">
-        <button
-          onClick={() => router.push(`/admin/orders/${order._id}`)}
-          className="inline-flex cursor-pointer items-center gap-1 text-sm text-charcoal transition-colors font-medium"
-        >
-          More details
-          <ChevronRight size={14} />
-        </button>
+        <MoreDetails order={order} />
       </td>
     </tr>
   );

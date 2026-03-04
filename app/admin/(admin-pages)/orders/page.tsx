@@ -1,5 +1,7 @@
+import OrdersClient from "../../_components/orders/mainOrders/OrdersClient";
+
 const page = () => {
-  return <div>page</div>;
+  return <OrdersClient />;
 };
 
 export default page;

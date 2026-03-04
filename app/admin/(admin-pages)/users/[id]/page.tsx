@@ -37,7 +37,13 @@ export default function UserDetailsPage({
     fetchUser();
   }, [id]);
 
-  if (loading) return <div className="p-6">Loading...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-ivory flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
   if (error) return <div className="p-6">{error}</div>;
   if (!data) return null;
 

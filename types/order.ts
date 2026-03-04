@@ -1,10 +1,12 @@
+export type OrderStatus = "ongoing" | "completed" | "cancelled";
+
 export interface RecentOrder {
   _id: string;
   orderId: string;
   firstName: string;
   lastName: string;
   totalPrice: number;
-  orderStatus: "ongoing" | "pending" | "completed" | "cancelled";
+  orderStatus: OrderStatus;
   createdAt: string;
 }
 
@@ -34,7 +36,7 @@ export interface OrderDetail {
   user: string | null;
   paymentStatus: string;
   paystackReference: string;
-  orderStatus: "ongoing" | "completed" | "cancelled";
+  orderStatus: OrderStatus;
   createdAt: string;
   updatedAt: string;
 }
