@@ -7,6 +7,7 @@ import UserTableSkeleton from "./UserTableSkeleton";
 import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
 import axios from "axios";
+import { formatDate } from "@/lib/utils";
 
 interface User {
   _id: string;
@@ -69,17 +70,7 @@ const UserTable = () => {
               </td>
               <td className="py-4 text-charcoal">{user.email}</td>
               <td className="py-4 text-charcoal">
-                {`${new Date(user.memberSince).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })} at ${new Date(user.memberSince).toLocaleTimeString(
-                  "en-US",
-                  {
-                    hour: "numeric",
-                    minute: "2-digit",
-                  },
-                )}`}
+                {formatDate(user.memberSince)}
               </td>
               <td className="py-4 text-right">
                 <button
