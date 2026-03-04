@@ -30,10 +30,7 @@ const UserProfile = () => {
   const [editName, setEditName] = useState(false);
   const [firstNameValue, setFirstNameValue] = useState("");
   const [lastNameValue, setLastNameValue] = useState("");
-  const [editEmail, setEditEmail] = useState(false);
-  const [editPassword, setEditPassword] = useState(false);
   const [emailValue, setEmailValue] = useState("");
-  const [passwordValue, setPasswordValue] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
   const { isLoggedIn, clearAuth } = useAuthStore();
@@ -75,18 +72,12 @@ const UserProfile = () => {
         payload.firstName = firstNameValue;
         payload.lastName = lastNameValue;
       }
-      if (editEmail) payload.email = emailValue;
-      if (editPassword && passwordValue) payload.password = passwordValue;
 
       const updated = await updateProfile(payload);
       setUser(updated);
       setFirstNameValue(updated.firstName);
       setLastNameValue(updated.lastName);
-      setEmailValue(updated.email);
       setEditName(false);
-      setEditEmail(false);
-      setEditPassword(false);
-      setPasswordValue("");
       toast.success("Profile updated successfully!");
     } catch {
       toast.error("Failed to update profile. Please try again.");
@@ -149,16 +140,9 @@ const UserProfile = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <AccountDetails
-                editEmail={editEmail}
                 emailValue={emailValue}
-                editPassword={editPassword}
-                passwordValue={passwordValue}
                 isSaving={isSaving}
-                hasChanges={editEmail || editPassword || editName}
-                onToggleEditEmail={() => setEditEmail((prev) => !prev)}
-                onEmailChange={setEmailValue}
-                onToggleEditPassword={() => setEditPassword((prev) => !prev)}
-                onPasswordChange={setPasswordValue}
+                hasChanges={editName}
                 onSave={handleSaveChanges}
               />
               <BillingAddress />
