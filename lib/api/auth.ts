@@ -1,4 +1,5 @@
 import api from "../axios";
+import { Address } from "@/types/address";
 
 type LoginProps = {
   email: string;
@@ -62,6 +63,9 @@ export async function getUserProfile() {
 export async function updateProfile(data: {
   email?: string;
   password?: string;
+  firstName?: string;
+  lastName?: string;
+  address?: Address;
 }) {
   const res = await api.put("/auth/profile", data);
   return res.data.data.user;

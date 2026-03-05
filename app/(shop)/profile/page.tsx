@@ -11,12 +11,15 @@ import AccountDetails from "@/components/profile/UserAccountDetails";
 import BillingAddress from "@/components/profile/BillingAddress";
 import OrdersTab from "@/components/profile/OrdersTab";
 import NotificationsTab from "@/components/profile/NotificationsTab";
+import { formatDate } from "@/lib/utils";
+import { Address } from "@/types/address";
 
 interface User {
   firstName: string;
   lastName: string;
   email: string;
   memberSince: string;
+  address: Address | null;
 }
 
 type Tab = "profile" | "orders" | "notifications";
@@ -86,6 +89,16 @@ const UserProfile = () => {
     }
   };
 
+  const handleSaveAddress = async (address: Address) => {
+    try {
+      const updated = await updateProfile({ address });
+      setUser(updated);
+      toast.success("Address saved successfully!");
+    } catch {
+      toast.error("Failed to save address. Please try again.");
+    }
+  };
+
   const handleDeleteAccount = async () => {
     const confirmed = window.confirm(
       "Are you sure you want to delete your account? This action cannot be undone.",
@@ -128,7 +141,7 @@ const UserProfile = () => {
             <ProfileHeader
               firstName={user.firstName}
               lastName={user.lastName}
-              memberSince={user.memberSince}
+              memberSince={formatDate(user.memberSince)}
               editName={editName}
               firstNameValue={firstNameValue}
               lastNameValue={lastNameValue}
@@ -145,7 +158,10 @@ const UserProfile = () => {
                 hasChanges={editName}
                 onSave={handleSaveChanges}
               />
-              <BillingAddress />
+              <BillingAddress
+                address={user.address ?? null}
+                onSave={handleSaveAddress}
+              />
             </div>
           </div>
         )}
