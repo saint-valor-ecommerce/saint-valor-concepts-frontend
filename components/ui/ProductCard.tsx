@@ -26,7 +26,7 @@ export default function ProductCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative overflow-hidden aspect-3/4 max-h-56 w-full">
+      <div className="relative overflow-hidden aspect-3/4 w-full">
         <Image
           src={product.mainImage ?? "/images/shop-1.png"}
           alt={product.productName ?? ""}
