@@ -37,8 +37,9 @@ export default function AdminNavbar() {
       <Image
         src="/images/Logo.svg"
         alt="Saint Valor Logo"
-        width={40}
-        height={40}
+        width={50}
+        height={50}
+        style={{ height: "auto" }}
       />
 
       <ul className="flex items-center gap-8">

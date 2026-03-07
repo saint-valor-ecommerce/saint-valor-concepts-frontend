@@ -31,6 +31,8 @@ export default function ProductCard({
           src={product.mainImage ?? "/images/shop-1.png"}
           alt={product.productName ?? ""}
           fill
+          loading="eager"
+          priority
           className="object-cover"
         />
 

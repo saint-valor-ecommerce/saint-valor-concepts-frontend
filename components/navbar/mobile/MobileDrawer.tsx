@@ -103,6 +103,7 @@ export default function MobileDrawer({ isOpen, onClose }: DrawerProps) {
                     src="/images/Logo.svg"
                     width={32}
                     height={32}
+                    style={{ height: "auto" }}
                     alt="Logo"
                     className="h-8 w-8 object-contain"
                   />

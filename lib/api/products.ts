@@ -1,7 +1,11 @@
 import publicApi from "../api/publicApi";
 import { Product } from "@/types/product";
-import { ProductFilters } from "@/types/product";
-import { PaginatedProducts } from "@/types/product";
+import {
+  ProductFilters,
+  PaginatedProducts,
+  ProductCollection,
+  ProductCategory,
+} from "@/types/product";
 
 export const getAllProducts = async (
   filters?: ProductFilters,
@@ -30,12 +34,12 @@ export const getBestSellers = async (): Promise<Product[]> => {
   return data.data.products;
 };
 
-export const getCollections = async () => {
+export const getCollections = async (): Promise<ProductCollection[]> => {
   const { data } = await publicApi.get("/collections");
   return data.data.collections;
 };
 
-export const getCategories = async () => {
+export const getCategories = async (): Promise<ProductCategory[]> => {
   const { data } = await publicApi.get("/categories");
   return data.data.categories;
 };

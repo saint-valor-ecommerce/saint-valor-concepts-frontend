@@ -16,8 +16,9 @@ const MobileNav = () => {
           <Link href="/" aria-label="Go to homepage">
             <Image
               src="/images/Logo.svg"
-              width={40}
-              height={40}
+              width={50}
+              height={50}
+              style={{ height: "auto" }}
               alt="Saint Valor Logo"
             />
           </Link>
