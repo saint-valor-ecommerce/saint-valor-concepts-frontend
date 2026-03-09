@@ -1,4 +1,4 @@
-import { RecentOrder } from "@/types/order";
+import { RecentOrder } from "@/types/adminOrder";
 import OrdersTableRow from "./OrdersTableRow";
 
 interface OrdersTableProps {

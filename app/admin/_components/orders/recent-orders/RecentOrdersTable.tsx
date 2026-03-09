@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { RecentOrder } from "@/types/order";
+import { RecentOrder } from "@/types/adminOrder";
 import OrderRow from "./OrderRow";
 
 interface RecentOrdersTableProps {

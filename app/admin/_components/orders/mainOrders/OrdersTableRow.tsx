@@ -1,21 +1,11 @@
-import { RecentOrder } from "@/types/order";
-import OrderStatusBadge from "./OrderStatusBadge";
+import { RecentOrder } from "@/types/adminOrder";
+import StatusBadge from "@/components/ui/StatusBadge";
+import { OrderStatus } from "@/types/adminOrder";
 import MoreDetails from "../../ui/MoreDetails";
+import { formatDate } from "@/lib/utils";
 
 interface OrdersTableRowProps {
   order: RecentOrder;
-}
-
-function formatDate(dateStr: string): string {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
 }
 
 const orderTableRowStyles = " py-4 px-4 text-sm text-charcoal font-medium";
@@ -43,7 +33,7 @@ export default function OrdersTableRow({ order }: OrdersTableRowProps) {
 
       {/* Status */}
       <td className={orderTableRowStyles}>
-        <OrderStatusBadge status={order.orderStatus} />
+        <StatusBadge status={order.orderStatus as OrderStatus} />
       </td>
 
       {/* More Details */}

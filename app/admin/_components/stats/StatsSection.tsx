@@ -5,7 +5,7 @@ import api from "@/lib/axios";
 import axios from "axios";
 import StatCard from "./StatCard";
 import SkeletonCard from "./SkeletonCard";
-import { RecentOrder } from "../../../../types/order";
+import { RecentOrder } from "../../../../types/adminOrder";
 import RecentOrdersTable from "../orders/recent-orders/RecentOrdersTable";
 
 interface DashboardStats {

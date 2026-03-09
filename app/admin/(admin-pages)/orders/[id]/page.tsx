@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
 import axios from "axios";
-import { OrderDetail } from "@/types/order";
+import { OrderDetail } from "@/types/adminOrder";
 import OrderDetailHeader from "@/app/admin/_components/orders/orderId/OrderDetailHeader";
 import OrderDetailMeta from "@/app/admin/_components/orders/orderId/OrderDetailMeta";
 import OrderDetailAddress from "@/app/admin/_components/orders/orderId/OrderDetailAddress";
 import OrderDetailItems from "@/app/admin/_components/orders/orderId/OrderDetailItems";
 import OrderDetailTotal from "@/app/admin/_components/orders/orderId/OrderDetailTotal";
+import StatusConfirmModal from "@/app/admin/_components/orders/mainOrders/StatusConfirmModal";
 
 const OrderDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const router = useRouter();
@@ -18,6 +19,9 @@ const OrderDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [statusToConfirm, setStatusToConfirm] = useState<
+    OrderDetail["orderStatus"] | null
+  >(null);
 
   useEffect(() => {
     params.then(({ id }) => setId(id));
@@ -43,12 +47,19 @@ const OrderDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
     fetchOrder();
   }, [id]);
 
-  const updateStatus = async (status: OrderDetail["orderStatus"]) => {
-    if (!id) return;
+  const handleStatusChange = (status: OrderDetail["orderStatus"]) => {
+    setStatusToConfirm(status);
+  };
+
+  const handleConfirmStatus = async () => {
+    if (!id || !statusToConfirm) return;
     setIsUpdating(true);
     try {
-      await api.put(`/admin/orders/${id}/status`, { status });
-      setOrder((prev) => (prev ? { ...prev, orderStatus: status } : prev));
+      await api.put(`/admin/orders/${id}/status`, { status: statusToConfirm });
+      setOrder((prev) =>
+        prev ? { ...prev, orderStatus: statusToConfirm } : prev,
+      );
+      setStatusToConfirm(null);
     } catch (err) {
       console.error("Failed to update status", err);
     } finally {
@@ -86,7 +97,7 @@ const OrderDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
           createdAt={order.createdAt}
           orderId={order.orderId}
           orderStatus={order.orderStatus}
-          onStatusChange={updateStatus}
+          onStatusChange={handleStatusChange}
           isUpdating={isUpdating}
         />
 
@@ -104,6 +115,16 @@ const OrderDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
         {/* Total */}
         <OrderDetailTotal totalPrice={order.totalPrice} />
+
+        <StatusConfirmModal
+          isOpen={!!statusToConfirm}
+          newStatus={statusToConfirm}
+          isLoading={isUpdating}
+          onConfirm={handleConfirmStatus}
+          onCancel={() => {
+            if (!isUpdating) setStatusToConfirm(null);
+          }}
+        />
       </div>
     </div>
   );

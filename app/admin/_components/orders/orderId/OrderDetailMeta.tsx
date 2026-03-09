@@ -1,4 +1,4 @@
-import { OrderDetail } from "@/types/order";
+import { OrderDetail } from "@/types/adminOrder";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 

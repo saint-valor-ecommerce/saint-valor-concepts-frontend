@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import axiosInstance from "@/lib/axios";
-import { RecentOrder, OrderStatus } from "@/types/order";
+import { RecentOrder, OrderStatus } from "@/types/adminOrder";
 import OrdersHeader from "../mainOrders/OrdersHeader";
 import OrdersFilterTabs, { OrdersTab } from "../mainOrders/OrdersFilterTabs";
 import OrdersTable from "../mainOrders/OrdersTable";

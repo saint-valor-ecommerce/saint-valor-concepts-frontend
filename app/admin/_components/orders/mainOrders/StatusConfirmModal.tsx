@@ -1,4 +1,4 @@
-import { OrderStatus } from "@/types/order";
+import { OrderStatus } from "@/types/adminOrder";
 
 interface StatusConfirmModalProps {
   isOpen: boolean;

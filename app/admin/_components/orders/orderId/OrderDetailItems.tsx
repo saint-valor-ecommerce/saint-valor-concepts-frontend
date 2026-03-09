@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { OrderItem } from "@/types/order";
+import { OrderItem } from "@/types/adminOrder";
 
 interface OrderDetailItemsProps {
   items: OrderItem[];
@@ -14,7 +14,7 @@ const OrderDetailItems = ({ items }: OrderDetailItemsProps) => {
           <div key={item.productId} className="flex gap-4">
             <div className="relative w-24 h-24 rounded-xl overflow-hidden shrink-0 bg-ivory">
               <Image
-                src={item.image}
+                src={item.image || "/images/shop-1.png"}
                 alt={item.productName}
                 fill
                 sizes="96px"

@@ -9,7 +9,7 @@ import ProfileTabs from "@/components/profile/ProfileTabs";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import AccountDetails from "@/components/profile/UserAccountDetails";
 import BillingAddress from "@/components/profile/billingAddress/BillingAddress";
-import OrdersTab from "@/components/profile/OrdersTab";
+import OrdersTab from "@/components/profile/orders/OrdersTab";
 import NotificationsTab from "@/components/profile/NotificationsTab";
 import { formatDate } from "@/lib/utils";
 import { Address } from "@/types/address";
@@ -117,8 +117,9 @@ const UserProfile = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-ivory flex items-center justify-center">
-        <p className="text-secondary text-sm">Loading profile...</p>
+      <div className="flex flex-col items-center justify-center py-24 gap-3">
+        <div className="w-6 h-6 border-2 border-gold border-t-transparent rounded-full animate-spin" />
+        <p className="text-sm text-secondary">Loading your profile...</p>
       </div>
     );
   }

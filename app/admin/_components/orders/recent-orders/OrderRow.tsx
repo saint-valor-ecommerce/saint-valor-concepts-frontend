@@ -1,5 +1,6 @@
-import { RecentOrder } from "@/types/order";
-import OrderStatusBadge from "../mainOrders/OrderStatusBadge";
+import { RecentOrder } from "@/types/adminOrder";
+import { OrderStatus } from "@/types/adminOrder";
+import StatusBadge from "@/components/ui/StatusBadge";
 import MoreDetails from "../../ui/MoreDetails";
 import { formatDate } from "@/lib/utils";
 
@@ -29,7 +30,7 @@ const OrderRow = ({ order }: OrderRowProps) => {
 
       {/* Status */}
       <td className="py-4 px-4">
-        <OrderStatusBadge status={order.orderStatus} />
+        <StatusBadge status={order.orderStatus as OrderStatus} />
       </td>
 
       {/* More Details */}
