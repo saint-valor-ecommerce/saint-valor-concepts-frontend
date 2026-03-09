@@ -1,5 +1,5 @@
-import { User } from "../../../../types";
-import { formatDate } from "../../../../lib/utils";
+import { User } from "@/types";
+import { formatDate } from "@/lib/utils";
 
 interface UserInfoCardProps {
   user: User;

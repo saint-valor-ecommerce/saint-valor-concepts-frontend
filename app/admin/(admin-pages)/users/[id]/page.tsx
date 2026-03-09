@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { UserDetails } from "../../../../../types";
-import UserDetailsBreadcrumb from "../../../_components/users/UserDetailsBreadcrumb";
-import UserInfoCard from "../../../_components/users/UserInfoCard";
-import OrdersTable from "../../../_components/users/OrdersTable";
+import { UserDetails } from "@/types";
+import UserDetailsBreadcrumb from "@/app/admin/_components/adminUsersPage/UserDetailsBreadcrumb";
+import UserInfoCard from "@/app/admin/_components/adminUsersPage/UserInfoCard";
+import OrdersTable from "@/app/admin/_components/adminUsersPage/OrdersTable";
 import axios from "axios";
 import api from "@/lib/axios";
 

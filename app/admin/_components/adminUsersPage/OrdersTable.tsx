@@ -1,8 +1,8 @@
 import { ChevronDown } from "lucide-react";
 import { Order } from "@/types";
 import { formatDate } from "@/lib/utils";
-import OrdersFilterTabs from "../orders/mainOrders/OrdersFilterTabs";
-import MoreDetails from "../ui/MoreDetails";
+import OrdersFilterTabs from "../adminOrders/mainOrders/OrdersFilterTabs";
+import MoreDetails from "../adminUI/MoreDetails";
 
 interface OrdersTableProps {
   orders: Order[];

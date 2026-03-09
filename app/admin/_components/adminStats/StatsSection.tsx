@@ -6,7 +6,7 @@ import axios from "axios";
 import StatCard from "./StatCard";
 import SkeletonCard from "./SkeletonCard";
 import { RecentOrder } from "../../../../types/adminOrder";
-import RecentOrdersTable from "../orders/recent-orders/RecentOrdersTable";
+import RecentOrdersTable from "../adminOrders/recent-orders/RecentOrdersTable";
 
 interface DashboardStats {
   totalUsers: number;
