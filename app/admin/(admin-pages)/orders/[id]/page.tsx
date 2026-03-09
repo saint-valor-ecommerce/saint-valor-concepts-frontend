@@ -5,12 +5,12 @@ import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
 import axios from "axios";
 import { OrderDetail } from "@/types/adminOrder";
-import OrderDetailHeader from "@/app/admin/_components/orders/orderId/OrderDetailHeader";
-import OrderDetailMeta from "@/app/admin/_components/orders/orderId/OrderDetailMeta";
-import OrderDetailAddress from "@/app/admin/_components/orders/orderId/OrderDetailAddress";
-import OrderDetailItems from "@/app/admin/_components/orders/orderId/OrderDetailItems";
-import OrderDetailTotal from "@/app/admin/_components/orders/orderId/OrderDetailTotal";
-import StatusConfirmModal from "@/app/admin/_components/orders/mainOrders/StatusConfirmModal";
+import OrderDetailHeader from "@/app/admin/_components/adminOrders/orderId/OrderDetailHeader";
+import OrderDetailMeta from "@/app/admin/_components/adminOrders/orderId/OrderDetailMeta";
+import OrderDetailAddress from "@/app/admin/_components/adminOrders/orderId/OrderDetailAddress";
+import OrderDetailItems from "@/app/admin/_components/adminOrders/orderId/OrderDetailItems";
+import OrderDetailTotal from "@/app/admin/_components/adminOrders/orderId/OrderDetailTotal";
+import StatusConfirmModal from "@/app/admin/_components/adminOrders/mainOrders/StatusConfirmModal";
 
 const OrderDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const router = useRouter();

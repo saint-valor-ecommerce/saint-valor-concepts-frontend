@@ -1,4 +1,4 @@
-import OrdersClient from "../../_components/orders/mainOrders/OrdersClient";
+import OrdersClient from "../../_components/adminOrders/mainOrders/OrdersClient";
 
 const page = () => {
   return <OrdersClient />;

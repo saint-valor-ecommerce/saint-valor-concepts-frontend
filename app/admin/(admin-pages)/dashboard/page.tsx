@@ -1,4 +1,4 @@
-import StatsSection from "../../_components/stats/StatsSection";
+import StatsSection from "../../_components/adminStats/StatsSection";
 
 const page = () => {
   return (

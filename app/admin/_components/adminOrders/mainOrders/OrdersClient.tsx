@@ -3,10 +3,10 @@
 import { useEffect, useState, useMemo } from "react";
 import axiosInstance from "@/lib/axios";
 import { RecentOrder, OrderStatus } from "@/types/adminOrder";
-import OrdersHeader from "../mainOrders/OrdersHeader";
-import OrdersFilterTabs, { OrdersTab } from "../mainOrders/OrdersFilterTabs";
-import OrdersTable from "../mainOrders/OrdersTable";
-import StatusConfirmModal from "../mainOrders/StatusConfirmModal";
+import OrdersHeader from "./OrdersHeader";
+import OrdersFilterTabs, { OrdersTab } from "./OrdersFilterTabs";
+import OrdersTable from "./OrdersTable";
+import StatusConfirmModal from "./StatusConfirmModal";
 
 interface PendingStatusChange {
   orderId: string;
