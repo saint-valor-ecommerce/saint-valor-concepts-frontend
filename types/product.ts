@@ -61,3 +61,12 @@ export interface Product {
   createdAt: string;
   updatedAt: string;
 }
+
+export type Category = {
+  _id: string;
+  name: string;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};

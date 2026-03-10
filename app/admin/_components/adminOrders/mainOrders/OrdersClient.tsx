@@ -7,6 +7,7 @@ import OrdersHeader from "./OrdersHeader";
 import OrdersFilterTabs, { OrdersTab } from "./OrdersFilterTabs";
 import OrdersTable from "./OrdersTable";
 import StatusConfirmModal from "./StatusConfirmModal";
+import { getAllOrders } from "@/lib/api/admin/adminOrders";
 
 interface PendingStatusChange {
   orderId: string;
@@ -26,8 +27,7 @@ export default function OrdersPage() {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        const res = await axiosInstance.get("/admin/orders");
-        const data: RecentOrder[] = res.data.data.orders;
+        const data: RecentOrder[] = await getAllOrders();
         setOrders(data);
       } catch {
         setError("Failed to load orders. Please try again.");
