@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { UserDetails } from "@/types";
 import UserDetailsBreadcrumb from "@/app/admin/_components/adminUsersPage/UserDetailsBreadcrumb";
 import UserInfoCard from "@/app/admin/_components/adminUsersPage/UserInfoCard";
-import OrdersTable from "@/app/admin/_components/adminUsersPage/OrdersTable";
+import OrdersTable from "@/app/admin/_components/adminUsersPage/UserOrdersTable";
 import axios from "axios";
 import api from "@/lib/axios";
 
