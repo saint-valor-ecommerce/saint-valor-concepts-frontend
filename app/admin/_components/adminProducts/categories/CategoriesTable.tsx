@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import CategoriesSearch from "./CategoriesSearch";
-import AddNewCategory from "./AddNewCategory";
 import CategoriesEmptyState from "./CategoriesEmptyState";
 import DeleteCategoryModal from "./DeleteCategoryModal";
 import EditCategoryModal from "./EditCategoryModal";
@@ -10,10 +9,12 @@ import {
   deleteCategory,
   getAllCategories,
   updateCategory,
+  addNewCategory,
 } from "@/lib/api/admin/adminCategories";
 import { AlertCircle, MoreVertical, Eye, Pencil, Trash2 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { AxiosError } from "axios";
+import AddCategoryModal from "./AddCategoryModal";
 
 const CategoriesTable = () => {
   const [search, setSearch] = useState("");
@@ -25,6 +26,8 @@ const CategoriesTable = () => {
   const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(
     null,
   );
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [deleteError, setDeleteError] = useState("");
@@ -67,6 +70,19 @@ const CategoriesTable = () => {
     }
   };
 
+  const handleAdd = async (name: string) => {
+    try {
+      setIsAdding(true);
+      const newCat = await addNewCategory({ name });
+      setCategories((prev) => [newCat, ...prev]);
+      setIsAddModalOpen(false);
+    } catch {
+      setError("Failed to create category. Please try again");
+    } finally {
+      setIsAdding(false);
+    }
+  };
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -104,7 +120,6 @@ const CategoriesTable = () => {
         <div className="border-b border-border" />
         <div className="flex justify-between items-center py-6">
           <CategoriesSearch value={search} onChange={setSearch} />
-          <AddNewCategory />
         </div>
         <div className="space-y-4 mt-2">
           {Array.from({ length: 5 }).map((_, i) => (
@@ -142,7 +157,12 @@ const CategoriesTable = () => {
 
       <div className="flex justify-between items-center">
         <CategoriesSearch value={search} onChange={setSearch} />
-        <AddNewCategory />
+        <button
+          className="text-sm text-white bg-gold cursor-pointer rounded-full px-8 py-3"
+          onClick={() => setIsAddModalOpen(true)}
+        >
+          Add New Category
+        </button>
       </div>
 
       {filtered.length === 0 ? (
@@ -222,6 +242,14 @@ const CategoriesTable = () => {
       )}
 
       {/* Modals */}
+
+      <AddCategoryModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onConfirm={handleAdd}
+        isSaving={isAdding}
+      />
+
       <DeleteCategoryModal
         isOpen={!!categoryToDelete}
         onClose={() => {

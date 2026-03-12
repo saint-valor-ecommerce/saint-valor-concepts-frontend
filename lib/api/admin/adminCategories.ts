@@ -14,6 +14,13 @@ export async function updateCategory(data: {
   return res.data.data.category;
 }
 
+export async function addNewCategory(data: {
+  name: string;
+}): Promise<Category> {
+  const res = await api.post("/admin/categories", data);
+  return res.data.data.category;
+}
+
 export async function deleteCategory(data: { _id: string }): Promise<void> {
   await api.delete(`/admin/categories/${data._id}`);
 }
