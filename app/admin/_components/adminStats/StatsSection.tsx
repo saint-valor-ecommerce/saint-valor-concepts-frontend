@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import api from "@/lib/axios";
-import axios from "axios";
+import { toast } from "react-toastify";
 import StatCard from "./StatCard";
 import SkeletonCard from "./SkeletonCard";
 import { RecentOrder } from "../../../../types/adminOrder";
@@ -32,11 +32,9 @@ const StatsSection = () => {
       try {
         const { data } = await api.get("/admin/dashboard/stats");
         setStats(data.data);
-      } catch (err: unknown) {
-        const message = axios.isAxiosError(err)
-          ? err.response?.data?.message || "Failed to fetch stats."
-          : "Something went wrong. Please try again.";
-        setError(message);
+      } catch {
+        toast.error("Unable to load dashboard data. Please try again.");
+        setError("Unable to load dashboard data. Please try again.");
       } finally {
         setIsLoading(false);
       }

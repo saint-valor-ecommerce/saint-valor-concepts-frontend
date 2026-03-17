@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import axiosInstance from "@/lib/axios";
+import { toast } from "react-toastify";
 import { RecentOrder, OrderStatus } from "@/types/adminOrder";
 import OrdersHeader from "./OrdersHeader";
 import OrdersFilterTabs, { OrdersTab } from "./OrdersFilterTabs";
@@ -31,7 +32,8 @@ export default function OrdersPage() {
         const data: RecentOrder[] = await getAllOrders();
         setOrders(data);
       } catch {
-        setError("Failed to load orders. Please try again.");
+        toast.error("Could not load orders.");
+        setError("Could not load orders.");
       } finally {
         setLoading(false);
       }
@@ -68,8 +70,8 @@ export default function OrdersPage() {
       );
 
       setPendingChange(null);
-    } catch (err) {
-      console.error("Failed to update order status:", err);
+    } catch {
+      toast.error("Failed to update order status. Please try again.");
     } finally {
       setIsUpdating(false);
     }

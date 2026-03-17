@@ -13,7 +13,7 @@ import {
 } from "@/lib/api/admin/adminCategories";
 import { AlertCircle, MoreVertical, Eye, Pencil, Trash2 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
-import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 import AddCategoryModal from "./AddCategoryModal";
 
 const CategoriesTable = () => {
@@ -43,12 +43,9 @@ const CategoriesTable = () => {
         prev.filter((cat) => cat._id !== categoryToDelete._id),
       );
       setCategoryToDelete(null);
-    } catch (err) {
-      const axiosErr = err as AxiosError<{ message: string }>;
-      const message =
-        axiosErr?.response?.data?.message ||
-        "Failed to delete category. Please try again";
-      setDeleteError(message);
+    } catch {
+      toast.error("Failed to update categories. Please try again.");
+      setDeleteError("Failed to update categories. Please try again.");
     } finally {
       setIsDeleting(false);
     }
@@ -63,7 +60,8 @@ const CategoriesTable = () => {
         prev.map((cat) => (cat._id === categoryToEdit._id ? updated : cat)),
       );
     } catch {
-      setError("Failed to update category. Please try again");
+      toast.error("Failed to update categories. Please try again.");
+      setError("Failed to update categories. Please try again.");
     } finally {
       setIsSaving(false);
       setCategoryToEdit(null);
@@ -77,7 +75,8 @@ const CategoriesTable = () => {
       setCategories((prev) => [newCat, ...prev]);
       setIsAddModalOpen(false);
     } catch {
-      setError("Failed to create category. Please try again");
+      toast.error("Failed to update categories. Please try again.");
+      setError("Failed to update categories. Please try again.");
     } finally {
       setIsAdding(false);
     }
@@ -90,7 +89,8 @@ const CategoriesTable = () => {
         const data: Category[] = await getAllCategories();
         setCategories(data);
       } catch {
-        setError("Failed to load categories. Please try again");
+        toast.error("Failed to update categories. Please try again.");
+        setError("Failed to update categories. Please try again.");
       } finally {
         setIsLoading(false);
       }

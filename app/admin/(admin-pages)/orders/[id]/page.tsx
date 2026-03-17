@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
-import axios from "axios";
+import { toast } from "react-toastify";
 import { OrderDetail } from "@/types/adminOrder";
 import OrderDetailHeader from "@/app/admin/_components/adminOrders/orderId/OrderDetailHeader";
 import OrderDetailMeta from "@/app/admin/_components/adminOrders/orderId/OrderDetailMeta";
@@ -34,11 +34,9 @@ const OrderDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
       try {
         const { data } = await api.get(`/admin/orders/${id}`);
         setOrder(data.data.order);
-      } catch (err: unknown) {
-        const message = axios.isAxiosError(err)
-          ? err.response?.data?.message || "Failed to fetch order."
-          : "Something went wrong. Please try again.";
-        setError(message);
+      } catch {
+        toast.error("Something went wrong. Please try again.");
+        setError("Something went wrong. Please try again.");
       } finally {
         setIsLoading(false);
       }
@@ -60,8 +58,8 @@ const OrderDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
         prev ? { ...prev, orderStatus: statusToConfirm } : prev,
       );
       setStatusToConfirm(null);
-    } catch (err) {
-      console.error("Failed to update status", err);
+    } catch {
+      toast.error("Failed to update order status. Please try again.");
     } finally {
       setIsUpdating(false);
     }

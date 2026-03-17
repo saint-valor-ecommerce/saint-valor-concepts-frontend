@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MoreVertical, Eye, Pencil, Trash2, AlertCircle } from "lucide-react";
-import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 import { Collection } from "@/types/product";
 import {
   getAllCollections,
@@ -40,7 +40,8 @@ const CollectionsTable = () => {
         const data = await getAllCollections();
         setCollections(data);
       } catch {
-        setError("Failed to load collections. Please try again.");
+        toast.error("Something went wrong. Please try again.");
+        setError("Something went wrong. Please try again.");
       } finally {
         setIsLoading(false);
       }
@@ -67,12 +68,9 @@ const CollectionsTable = () => {
         prev.filter((c) => c._id !== collectionToDelete._id),
       );
       setCollectionToDelete(null);
-    } catch (err) {
-      const axiosErr = err as AxiosError<{ message: string }>;
-      setDeleteError(
-        axiosErr?.response?.data?.message ||
-          "Failed to delete collection. Please try again.",
-      );
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+      setDeleteError("Something went wrong. Please try again.");
     } finally {
       setIsDeleting(false);
     }
@@ -92,7 +90,8 @@ const CollectionsTable = () => {
       );
       setCollectionToEdit(null);
     } catch {
-      setError("Failed to update collection. Please try again.");
+      toast.error("Something went wrong. Please try again.");
+      setError("Something went wrong. Please try again.");
     } finally {
       setIsSaving(false);
     }

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, CloudUpload } from "lucide-react";
+import { toast } from "react-toastify";
 import { addNewCollection } from "@/lib/api/admin/adminCollections";
 
 const AddNewCollectionPage = () => {
@@ -30,7 +31,8 @@ const AddNewCollectionPage = () => {
       await addNewCollection({ name, image: image ?? undefined });
       router.push("/admin/products");
     } catch {
-      setError("Failed to create collection. Please try again.");
+      toast.error("Something went wrong. Please try again.");
+      setError("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

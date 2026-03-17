@@ -6,7 +6,7 @@ import { ChevronRight } from "lucide-react";
 import UserTableSkeleton from "./UserTableSkeleton";
 import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
-import axios from "axios";
+import { toast } from "react-toastify";
 import { formatDate } from "@/lib/utils";
 
 interface User {
@@ -30,11 +30,9 @@ const UserTable = () => {
       try {
         const { data } = await api.get("/admin/users");
         setData(data.data.users);
-      } catch (err: unknown) {
-        const message = axios.isAxiosError(err)
-          ? err.response?.data?.message || "Failed to fetch users."
-          : "Something went wrong. Please try again.";
-        setError(message);
+      } catch {
+        toast.error("Could not load users.");
+        setError("Could not load users.");
       } finally {
         setLoading(false);
       }

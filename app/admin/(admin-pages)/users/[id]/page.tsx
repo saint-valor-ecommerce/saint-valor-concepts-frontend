@@ -5,7 +5,7 @@ import { UserDetails } from "@/types";
 import UserDetailsBreadcrumb from "@/app/admin/_components/adminUsersPage/UserDetailsBreadcrumb";
 import UserInfoCard from "@/app/admin/_components/adminUsersPage/UserInfoCard";
 import OrdersTable from "@/app/admin/_components/adminUsersPage/UserOrdersTable";
-import axios from "axios";
+import { toast } from "react-toastify";
 import api from "@/lib/axios";
 
 export default function UserDetailsPage({
@@ -24,11 +24,9 @@ export default function UserDetailsPage({
       try {
         const { data } = await api.get(`/admin/users/${id}`);
         setData(data.data);
-      } catch (err: unknown) {
-        const message = axios.isAxiosError(err)
-          ? err.response?.data?.message || "Failed to fetch users."
-          : "Something went wrong. Please try again.";
-        setError(message);
+      } catch {
+        toast.error("Could not load user details.");
+        setError("Could not load user details.");
       } finally {
         setLoading(false);
       }
