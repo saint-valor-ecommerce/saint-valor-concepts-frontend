@@ -38,7 +38,7 @@ export default function StatusConfirmModal({
         <button
           onClick={onConfirm}
           disabled={isLoading}
-          className="w-full py-3 bg-gold text-white rounded-xl font-medium text-sm hover:bg-[#c09a2f] transition-colors disabled:opacity-60 mb-3"
+          className="w-full py-3 cursor-pointer bg-gold text-white rounded-xl font-medium text-sm hover:bg-[#c09a2f] transition-colors disabled:opacity-60 mb-3"
         >
           {isLoading ? "Updating..." : "Yes"}
         </button>
@@ -46,7 +46,7 @@ export default function StatusConfirmModal({
         <button
           onClick={onCancel}
           disabled={isLoading}
-          className="w-full py-2 text-gold font-medium text-sm hover:underline transition-colors"
+          className="w-full py-2 cursor-pointer text-gold font-medium text-sm hover:underline transition-colors"
         >
           Cancel
         </button>

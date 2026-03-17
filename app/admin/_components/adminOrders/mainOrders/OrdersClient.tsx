@@ -8,6 +8,7 @@ import OrdersFilterTabs, { OrdersTab } from "./OrdersFilterTabs";
 import OrdersTable from "./OrdersTable";
 import StatusConfirmModal from "./StatusConfirmModal";
 import { getAllOrders } from "@/lib/api/admin/adminOrders";
+import OrdersTableSkeleton from "./OrdersTableSkeleton";
 
 interface PendingStatusChange {
   orderId: string;
@@ -83,21 +84,13 @@ export default function OrdersPage() {
       <OrdersHeader count={orders.length} />
       <OrdersFilterTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-      {loading && (
-        <div className="min-h-screen bg-ivory flex items-center justify-center">
-          <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin" />
-        </div>
-      )}
+      {loading && <OrdersTableSkeleton rows={6} />}
 
       {error && !loading && (
         <div className="text-center py-16 text-red-500 text-sm">{error}</div>
       )}
 
-      {!loading && !error && (
-        <div>
-          <OrdersTable orders={filteredOrders} />
-        </div>
-      )}
+      {!loading && !error && <OrdersTable orders={filteredOrders} />}
 
       <StatusConfirmModal
         isOpen={!!pendingChange}

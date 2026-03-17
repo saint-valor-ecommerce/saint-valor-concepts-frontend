@@ -63,8 +63,13 @@ export default function AdminNavbar() {
       </ul>
 
       <div>
-        <button type="button" className="cursor-pointer" onClick={handleLogout}>
-          <Power />
+        <button
+          type="button"
+          className="cursor-pointer flex gap-1.5 items-center"
+          onClick={handleLogout}
+        >
+          <Power className="w-4 h-4" />
+          <p>Log Out</p>
         </button>
       </div>
     </nav>
