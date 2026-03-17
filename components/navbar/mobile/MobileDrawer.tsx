@@ -29,7 +29,7 @@ type DrawerProps = {
 export default function MobileDrawer({ isOpen, onClose }: DrawerProps) {
   const [openSection, setOpenSection] = useState<string | null>(null);
   const [query, setQuery] = useState("");
-  const { isLoggedIn, clearAuth } = useAuthStore();
+  const { isLoggedIn, clearAuth, setIsLoggingOut } = useAuthStore();
 
   const router = useRouter();
 
@@ -43,14 +43,16 @@ export default function MobileDrawer({ isOpen, onClose }: DrawerProps) {
   }, [isOpen, onClose]);
 
   const handleLogout = async () => {
+    setIsLoggingOut(true);
     try {
       await logout();
       clearAuth();
       toast.success("Logged out successfully!");
-      onClose();
       router.push("/");
     } catch {
       toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsLoggingOut(false);
     }
   };
 
