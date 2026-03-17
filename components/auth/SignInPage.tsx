@@ -13,7 +13,6 @@ import AuthHeader from "@/components/ui/AuthHeader";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/api/auth";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { useAuthStore } from "@/store/authStore";
 
 type SignInFormData = {
@@ -66,11 +65,9 @@ export default function SignInPage() {
       setAuth(firstName);
       toast.success("Signed in successfully!");
       router.push("/");
-    } catch (error: unknown) {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.message || "Invalid credentials."
-        : "Something went wrong. Please try again.";
-      setErrors({ form: message });
+    } catch {
+      toast.error("Invalid email or password. Please try again.");
+      setErrors({ form: "Invalid email or password. Please try again." });
     } finally {
       setLoading(false);
     }

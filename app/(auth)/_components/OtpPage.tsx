@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { toast } from "react-toastify";
-import axios from "axios";
 import api from "@/lib/axios";
 import Button from "@/components/ui/Button";
 
@@ -86,11 +85,9 @@ export default function OtpPage() {
       await api.post("/auth/verify-email", { email, otp: otpValue });
       toast.success("Email verified successfully!");
       router.push("/sign-in");
-    } catch (err: unknown) {
-      const message = axios.isAxiosError(err)
-        ? err.response?.data?.message || "Invalid OTP. Please try again."
-        : "Something went wrong. Please try again.";
-      setError(message);
+    } catch {
+      toast.error("Invalid or expired code. Please try again.");
+      setError("Invalid or expired code. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -106,11 +103,8 @@ export default function OtpPage() {
       setOtp(Array(6).fill(""));
       setError(null);
       inputRefs.current[0]?.focus();
-    } catch (err: unknown) {
-      const message = axios.isAxiosError(err)
-        ? err.response?.data?.message || "Failed to resend OTP."
-        : "Something went wrong. Please try again.";
-      toast.error(message);
+    } catch {
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setResending(false);
     }

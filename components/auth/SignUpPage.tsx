@@ -14,7 +14,6 @@ import AuthHeader from "@/components/ui/AuthHeader";
 import { signUp } from "@/lib/api/auth";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 
 type SignUpFormData = {
   email: string;
@@ -78,11 +77,9 @@ export default function SignUpPage() {
       await signUp(formData);
       toast.success("Account created successfully!");
       router.push(`/otp?email=${encodeURIComponent(formData.email)}`);
-    } catch (error: unknown) {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.message || "Failed to create account."
-        : "Something went wrong. Please try again.";
-      setErrors({ form: message });
+    } catch {
+      toast.error("Could not create your account. Please try again.");
+      setErrors({ form: "Could not create your account. Please try again." });
     } finally {
       setLoading(false);
     }
