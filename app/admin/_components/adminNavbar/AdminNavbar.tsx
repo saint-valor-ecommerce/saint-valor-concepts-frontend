@@ -17,11 +17,12 @@ const navLinks = [
 ];
 
 export default function AdminNavbar() {
-  const { clearAuth } = useAuthStore();
+  const { clearAuth, setIsLoggingOut } = useAuthStore();
   const pathname = usePathname();
   const router = useRouter();
 
   const handleLogout = async () => {
+    setIsLoggingOut(true);
     try {
       await logout();
       clearAuth();
@@ -29,6 +30,8 @@ export default function AdminNavbar() {
       router.push("/admin/sign-in");
     } catch {
       toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsLoggingOut(false);
     }
   };
 

@@ -10,12 +10,13 @@ import { useAuthStore } from "@/store/authStore";
 
 const Profile = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { isLoggedIn, userName, clearAuth } = useAuthStore();
+  const { isLoggedIn, userName, clearAuth, setIsLoggingOut } = useAuthStore();
 
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
   const handleLogout = async () => {
+    setIsLoggingOut(true);
     try {
       await logout();
       clearAuth();
@@ -24,6 +25,8 @@ const Profile = () => {
       router.push("/");
     } catch {
       toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsLoggingOut(false);
     }
   };
 

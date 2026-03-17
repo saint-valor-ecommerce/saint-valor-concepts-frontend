@@ -4,6 +4,7 @@ import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthPromptModal from "@/components/ui/AuthPromptModal";
+import LogoutOverlay from "@/components/ui/LogOutOverlay";
 
 export const inter = Inter({
   variable: "--font-inter",
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body
         className={`${plex.variable} ${inter.variable} antialiased flex flex-col min-h-screen`}
       >
+        <LogoutOverlay />
         {children}
         <ToastContainer />
         <AuthPromptModal />
