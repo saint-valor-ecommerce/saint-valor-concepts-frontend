@@ -2,31 +2,21 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { Heart, ShoppingBag } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Product } from "@/types/product";
 import { useFavouritesStore } from "@/store/favouritesStore";
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (id: string) => void;
 }
 
-export default function ProductCard({
-  product,
-  onAddToCart,
-}: ProductCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
+export default function ProductCard({ product }: ProductCardProps) {
   const { favouriteIds, toggleFavourite } = useFavouritesStore();
   const isFavourite = favouriteIds.has(product._id);
 
   return (
     <div className="flex flex-col gap-2">
-      <div
-        className="relative overflow-hidden aspect-3/4 w-full"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
+      <div className="relative overflow-hidden aspect-3/4 w-full">
         <Link href={`/shop/${product._id}`} className="block w-full h-full">
           <Image
             src={product.mainImage ?? "/images/shop-1.png"}
@@ -52,20 +42,6 @@ export default function ProductCard({
             }
           />
         </button>
-
-        <div
-          className={`absolute bottom-0 left-0 right-0 p-2.5 transition-all duration-300 ${
-            isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-          }`}
-        >
-          <button
-            onClick={() => onAddToCart(product._id)}
-            className="w-full flex items-center justify-center gap-2 bg-gold text-white text-xs font-medium py-2.5 hover:bg-gold/90 transition-colors duration-200"
-          >
-            <ShoppingBag size={13} />
-            Add to cart
-          </button>
-        </div>
       </div>
 
       <Link href={`/shop/${product._id}`} className="flex flex-col gap-0.5">

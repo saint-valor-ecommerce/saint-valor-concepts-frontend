@@ -7,7 +7,6 @@ import {
   ChevronDown,
   ChevronRight,
   Heart,
-  ShoppingCart,
   X,
   Search,
   User,
@@ -20,6 +19,7 @@ import { logout } from "@/lib/api/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import Button from "@/components/ui/Button";
+import CartIcon from "@/components/ui/CartIcon";
 
 type DrawerProps = {
   isOpen: boolean;
@@ -211,7 +211,7 @@ export default function MobileDrawer({ isOpen, onClose }: DrawerProps) {
                 className="flex items-center justify-between py-2 text-xs font-semibold text-charcoal"
               >
                 <span className="flex items-center gap-2">
-                  <ShoppingCart className="h-4 w-4 text-burgundy" />
+                  <CartIcon size={16} className="text-burgundy" />
                   CART
                 </span>
                 <ChevronRight className="h-4 w-4 text-charcoal" />

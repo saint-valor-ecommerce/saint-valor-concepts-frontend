@@ -17,7 +17,6 @@ export function DesktopDropdown({
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -34,13 +33,11 @@ export function DesktopDropdown({
     };
   }, []);
 
-  // Toggle dropdown on button click
   const toggleDropdown = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsOpen(!isOpen);
   };
 
-  // Close dropdown when clicking a dropdown item
   const handleItemClick = () => {
     setIsOpen(false);
   };

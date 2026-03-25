@@ -85,10 +85,6 @@ const ProductDetailPage = () => {
         Back to shop
       </Link>
 
-      {/* 
-        Mobile: stacked (image on top, details below)
-        Desktop: side by side (image left, details right)
-      */}
       <div className="flex flex-col md:flex-row gap-8 md:items-start">
         {/* Image gallery */}
         <div className="w-full md:flex-1 md:max-w-xl">
@@ -114,12 +110,12 @@ const ProductDetailPage = () => {
 
           <ProductActions
             productId={product._id}
+            productName={product.productName ?? ""}
+            productPrice={product.productPrice ?? 0}
+            mainImage={product.mainImage ?? ""}
             selectedSize={selectedSize}
             hasSizes={(product.productSizes ?? []).length > 0}
             isFavourite={isFavourite}
-            onAddToCart={() =>
-              console.log("add to cart", product._id, selectedSize)
-            }
             onToggleFavourite={() => toggleFavourite(product._id)}
           />
 

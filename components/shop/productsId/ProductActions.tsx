@@ -1,35 +1,48 @@
 "use client";
 
-import { Heart, ShoppingBag } from "lucide-react";
+import { Heart } from "lucide-react";
+import AddToCartButton from "@/components/ui/AddToCartButton";
+import { CartItem } from "@/types/cart";
 
 interface ProductActionsProps {
   productId: string;
+  productName: string;
+  productPrice: number;
+  mainImage: string;
   selectedSize: string | null;
   hasSizes: boolean;
   isFavourite: boolean;
-  onAddToCart: () => void;
   onToggleFavourite: () => void;
 }
 
 const ProductActions = ({
+  productId,
+  productName,
+  productPrice,
+  mainImage,
   selectedSize,
   hasSizes,
   isFavourite,
-  onAddToCart,
   onToggleFavourite,
 }: ProductActionsProps) => {
   const sizeRequired = hasSizes && !selectedSize;
 
+  const item: CartItem = {
+    productId,
+    productName,
+    productPrice,
+    mainImage,
+    size: selectedSize,
+    quantity: 1,
+  };
+
   return (
     <div className="flex flex-col gap-3">
-      <button
-        onClick={onAddToCart}
+      <AddToCartButton
+        item={item}
         disabled={sizeRequired}
-        className="flex items-center cursor-pointer justify-center gap-2 w-full bg-gold text-white py-3.5 text-sm font-medium hover:bg-gold/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-      >
-        <ShoppingBag size={16} />
-        {sizeRequired ? "Select a size" : "Add to cart"}
-      </button>
+        label={sizeRequired ? "Select a size" : "Add to cart"}
+      />
 
       <button
         onClick={onToggleFavourite}
