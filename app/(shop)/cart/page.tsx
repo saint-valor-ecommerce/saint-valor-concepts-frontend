@@ -10,6 +10,7 @@ import { useAuthStore } from "@/store/authStore";
 import { getUserProfile } from "@/lib/api/auth";
 import { initializeOrder, buildOrderItems } from "@/lib/api/order";
 import { NIGERIAN_STATES } from "@/lib/utils";
+import AuthPromptModal from "@/components/ui/AuthPromptModal";
 
 type ShippingForm = {
   firstName: string;
@@ -34,6 +35,7 @@ const CartPage = () => {
     city: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   // Pre-fill first and last name from profile
   useEffect(() => {
@@ -57,7 +59,7 @@ const CartPage = () => {
 
   const handleCheckout = async () => {
     if (!isLoggedIn) {
-      toast.info("Please sign in to proceed to checkout.");
+      setShowAuthModal(true);
       return;
     }
 
@@ -352,6 +354,14 @@ const CartPage = () => {
           </div>
         </div>
       </div>
+
+      <AuthPromptModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        icon={<ShoppingBag className="w-6 h-6 stroke-gold" />}
+        title="Sign in to proceed to checkout"
+        description="Create an account or sign in to complete your purchase."
+      />
     </div>
   );
 };

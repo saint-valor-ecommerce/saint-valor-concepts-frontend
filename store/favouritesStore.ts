@@ -6,7 +6,6 @@ import {
   getFavourites,
 } from "@/lib/api/favourites";
 import { Product } from "@/types/product";
-import { useAuthStore } from "./authStore";
 
 interface FavouriteItem {
   _id: string;
@@ -21,16 +20,12 @@ interface FavouritesStore {
   isLoading: boolean;
   fetchFavourites: () => Promise<void>;
   toggleFavourite: (productId: string) => Promise<void>;
-  showAuthModal: boolean;
-  setShowAuthModal: (val: boolean) => void;
 }
 
 export const useFavouritesStore = create<FavouritesStore>((set, get) => ({
   favouriteIds: new Set(),
   favourites: [],
   isLoading: false,
-  showAuthModal: false,
-  setShowAuthModal: (val) => set({ showAuthModal: val }),
 
   fetchFavourites: async () => {
     try {
@@ -41,8 +36,13 @@ export const useFavouritesStore = create<FavouritesStore>((set, get) => ({
       );
       const products: Product[] = data.map((f: FavouriteItem) => f.productId);
       set({ favouriteIds: ids, favourites: products });
-    } catch {
-      // fail silently if not logged in
+    } catch (error) {
+      const status = (error as { response?: { status?: number } }).response
+        ?.status;
+      if (status !== 401) {
+        toast.error("Could not load favourites. Please try again.");
+      }
+      // 401 means not logged in — expected, fail silently
     } finally {
       set({ isLoading: false });
     }
@@ -51,17 +51,12 @@ export const useFavouritesStore = create<FavouritesStore>((set, get) => ({
   toggleFavourite: async (productId: string) => {
     const { favouriteIds, favourites } = get();
     const isFavourited = favouriteIds.has(productId);
-    const { isLoggedIn } = useAuthStore.getState();
-    if (!isLoggedIn) {
-      set({ showAuthModal: true });
-      return;
-    }
 
     // optimistic update
     const updatedIds = new Set(favouriteIds);
     const updatedProducts = isFavourited
       ? favourites.filter((p) => p._id !== productId)
-      : favourites; // new product added - refetch will handle it
+      : favourites;
 
     if (isFavourited) {
       updatedIds.delete(productId);
@@ -76,13 +71,18 @@ export const useFavouritesStore = create<FavouritesStore>((set, get) => ({
         await removeFavourite(productId);
       } else {
         await addFavourite(productId);
-        // refetch to get full product data for the new favourite
         await get().fetchFavourites();
       }
-    } catch {
-      // revert on failure
+    } catch (error) {
+      const status = (error as { response?: { status?: number } }).response
+        ?.status;
+      // revert optimistic update
       set({ favouriteIds, favourites });
-      toast.error("Something went wrong. Please try again.");
+      if (status === 401) {
+        toast.error("Please sign in to manage favourites.");
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
     }
   },
 }));

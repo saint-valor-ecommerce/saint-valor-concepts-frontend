@@ -5,6 +5,9 @@ import Link from "next/link";
 import { Heart } from "lucide-react";
 import { Product } from "@/types/product";
 import { useFavouritesStore } from "@/store/favouritesStore";
+import AuthPromptModal from "./AuthPromptModal";
+import { useState } from "react";
+import { useAuthStore } from "@/store/authStore";
 
 interface ProductCardProps {
   product: Product;
@@ -13,6 +16,16 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const { favouriteIds, toggleFavourite } = useFavouritesStore();
   const isFavourite = favouriteIds.has(product._id);
+  const { isLoggedIn } = useAuthStore();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  const handleFavourites = () => {
+    if (!isLoggedIn) {
+      setShowAuthModal(true);
+      return;
+    }
+    toggleFavourite(product._id);
+  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -32,7 +45,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Favourite button */}
         <button
           aria-label="Toggle favourite"
-          onClick={() => toggleFavourite(product._id)}
+          onClick={handleFavourites}
           className="absolute top-2 right-2 bg-white rounded-full p-1.5 shadow-sm transition-transform duration-200 hover:scale-110 cursor-pointer z-10"
         >
           <Heart
@@ -55,6 +68,14 @@ export default function ProductCard({ product }: ProductCardProps) {
           ₦{(product.productPrice ?? 0).toLocaleString()}
         </p>
       </Link>
+
+      <AuthPromptModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        icon={<Heart className="w-6 h-6 stroke-red-400" />}
+        title="Sign in to add to favourites"
+        description="Create an account or sign in to start saving your favourite pieces."
+      />
     </div>
   );
 }
