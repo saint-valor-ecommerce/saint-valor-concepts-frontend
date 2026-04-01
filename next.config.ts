@@ -17,8 +17,8 @@ const nextConfig: NextConfig = {
           key: "Content-Security-Policy",
           value:
             process.env.NODE_ENV === "production"
-              ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://res.cloudinary.com; font-src 'self'; connect-src 'self' https://saint-valor-backend.onrender.com https://vercel.live wss://ws-us3.pusher.com;"
-              : "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://res.cloudinary.com; font-src 'self'; connect-src 'self' https://saint-valor-backend.onrender.com;",
+              ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://res.cloudinary.com; font-src 'self'; connect-src 'self' https://backend-qh97.onrender.com/ https://vercel.live wss://ws-us3.pusher.com;"
+              : "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://res.cloudinary.com; font-src 'self'; connect-src 'self' https://backend-qh97.onrender.com/;",
         },
         {
           key: "Permissions-Policy",

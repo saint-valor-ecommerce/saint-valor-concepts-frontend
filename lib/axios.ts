@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://saint-valor-backend.onrender.com/api/v1",
+  baseURL: "https://backend-qh97.onrender.com/api/v1",
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
