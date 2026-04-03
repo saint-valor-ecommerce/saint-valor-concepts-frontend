@@ -7,14 +7,14 @@ import { CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import api from "@/lib/axios";
 import { useCartStore } from "@/store/cartStore";
+import axios from "axios";
 
-type VerifyState = "loading" | "success" | "error";
+type VerifyState = "loading" | "success" | "error" | "expired";
 
 const VerifyPaymentPage = () => {
   const router = useRouter();
   const { clearCart } = useCartStore();
   const [state, setState] = useState<VerifyState>("loading");
-  const [orderReference, setOrderReference] = useState<string | null>(null);
 
   useEffect(() => {
     const reference = new URLSearchParams(window.location.search).get(
@@ -27,22 +27,25 @@ const VerifyPaymentPage = () => {
       return;
     }
 
-    setOrderReference(reference);
-
     const verify = async () => {
       try {
-        const res = await api.post(`/orders/verify/${reference}`);
-        if (res.data.status === "success") {
-          clearCart();
-          localStorage.removeItem("pendingOrder");
-          setState("success");
+        await api.post(`/orders/verify/${reference}`);
+        clearCart();
+        localStorage.removeItem("pendingOrder");
+        setState("success");
+      } catch (error: unknown) {
+        const message = axios.isAxiosError(error)
+          ? (error.response?.data?.message ?? "")
+          : "";
+
+        if (message.toLowerCase().includes("expired")) {
+          setState("expired");
+          setTimeout(() => router.push("/cart"), 5000);
         } else {
-          throw new Error("Verification failed");
+          setState("error");
+          toast.error("Payment verification failed. Redirecting to cart...");
+          setTimeout(() => router.push("/cart"), 3000);
         }
-      } catch {
-        setState("error");
-        toast.error("Payment verification failed. Redirecting to cart...");
-        setTimeout(() => router.push("/cart"), 3000);
       }
     };
 
@@ -78,6 +81,20 @@ const VerifyPaymentPage = () => {
     );
   }
 
+  if (state === "expired") {
+    return (
+      <div className="min-h-screen bg-ivory flex flex-col items-center justify-center px-4 gap-5">
+        <XCircle size={40} className="text-burgundy" />
+        <div className="flex flex-col items-center gap-1">
+          <p className="text-sm font-medium text-charcoal">Order Expired</p>
+          <p className="text-xs text-secondary text-center">
+            This order has expired. Please start checkout again.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-ivory flex flex-col items-center justify-center px-4 gap-5">
       <CheckCircle size={40} className="text-green-500" />
@@ -86,11 +103,6 @@ const VerifyPaymentPage = () => {
         <p className="text-xs text-secondary text-center">
           Thank you for your purchase. Your order is being processed.
         </p>
-        {orderReference && (
-          <p className="text-[11px] text-secondary mt-1">
-            Reference: {orderReference}
-          </p>
-        )}
       </div>
       <div className="flex flex-col sm:flex-row items-center gap-3 mt-2">
         <Link

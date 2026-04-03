@@ -21,7 +21,7 @@ type InitializeOrderPayload = {
 type InitializeOrderResponse = {
   authorization_url: string;
   reference: string;
-  orderDetails: unknown;
+  orderId: string;
 };
 
 export function buildOrderItems(items: CartItem[]) {

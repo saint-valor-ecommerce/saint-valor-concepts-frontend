@@ -91,7 +91,7 @@ const CartPage = () => {
         shippingMethod: "standard",
       });
 
-      localStorage.setItem("pendingOrder", JSON.stringify(data.orderDetails));
+      localStorage.setItem("pendingOrder", data.orderId);
       window.location.href = data.authorization_url;
     } catch {
       toast.error("Could not initialize payment. Please try again.");
