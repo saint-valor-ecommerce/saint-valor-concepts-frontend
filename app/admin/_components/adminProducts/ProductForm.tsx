@@ -11,7 +11,6 @@ import ProductSizeManager from "./ProductSizeManager";
 import PhotoUpload from "./PhotoUpload";
 import ProductPreview from "./ProductPreview";
 import { ProductSize } from "@/types/product";
-import axios from "axios";
 
 const KARAT_OPTIONS = ["14k", "18k", "24k"];
 const WEIGHT_OPTIONS = ["3-6g", "7-10g", "11-15g"];
@@ -163,10 +162,7 @@ const ProductForm = () => {
       await createProduct(formData);
       toast.success("Product created successfully!");
       router.push("/admin/products");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log("Error response:", error.response?.data);
-      }
+    } catch {
       toast.error("Failed to create product. Please try again.");
     } finally {
       setIsSubmitting(false);

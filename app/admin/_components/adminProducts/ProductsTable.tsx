@@ -10,9 +10,10 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
-import { getAllProducts } from "@/lib/api/admin/adminProducts";
+import { getAllProducts, deleteProduct } from "@/lib/api/admin/adminProducts";
 import { Product } from "@/types/product";
 import Image from "next/image";
+import DeleteProductModal from "./DeleteProductModal";
 
 const ProductsTable = () => {
   const router = useRouter();
@@ -20,6 +21,10 @@ const ProductsTable = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,14 +54,32 @@ const ProductsTable = () => {
 
   const handleDelete = (e: React.MouseEvent, productId: string) => {
     e.stopPropagation();
-    // TODO: wire up delete API
-    toast.info(`Delete product ${productId}`);
+    setDeletingId(productId);
+    setDeleteError("");
+    setDeleteModalOpen(true);
     setOpenMenuId(null);
   };
 
-  const handleEdit = (e: React.MouseEvent, productId: string) => {
+  const confirmDelete = async () => {
+    if (!deletingId) return;
+    try {
+      setIsDeleting(true);
+      await deleteProduct(deletingId);
+      setProducts((prev) => prev.filter((p) => p._id !== deletingId));
+      toast.success("Product deleted successfully.");
+      setDeleteModalOpen(false);
+    } catch {
+      setDeleteError("Failed to delete product. Please try again.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleEdit = (e: React.MouseEvent, product: Product) => {
     e.stopPropagation();
-    router.push(`/admin/products/${productId}/edit`);
+    router.push(
+      `/admin/products/${product._id}/edit?data=${encodeURIComponent(JSON.stringify(product))}`,
+    );
     setOpenMenuId(null);
   };
 
@@ -154,7 +177,7 @@ const ProductsTable = () => {
                   {openMenuId === product._id && (
                     <div className="absolute right-0 top-8 w-32 bg-white shadow-md border border-border z-10 py-1">
                       <button
-                        onClick={(e) => handleEdit(e, product._id)}
+                        onClick={(e) => handleEdit(e, product)}
                         className="flex cursor-pointer items-center gap-2 w-full px-4 py-2 text-sm text-charcoal hover:bg-ivory transition-colors"
                       >
                         <Pencil size={12} />
@@ -188,6 +211,14 @@ const ProductsTable = () => {
           ))}
         </div>
       )}
+
+      <DeleteProductModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+        isDeleting={isDeleting}
+        error={deleteError}
+      />
     </div>
   );
 };

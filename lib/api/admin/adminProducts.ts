@@ -12,3 +12,22 @@ export async function createProduct(formData: FormData): Promise<Product> {
   });
   return res.data.data.product;
 }
+
+export async function updateProduct(
+  id: string,
+  payload: {
+    productName: string;
+    productDescription: string;
+    productPrice: number;
+    productJewelryType: string;
+    productMaterial: string;
+    productKarat: string;
+  },
+): Promise<Product> {
+  const res = await api.put(`/admin/products/${id}`, payload);
+  return res.data.data.product;
+}
+
+export async function deleteProduct(id: string): Promise<void> {
+  await api.delete(`/admin/products/${id}`);
+}
