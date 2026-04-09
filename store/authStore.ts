@@ -7,15 +7,26 @@ type AuthState = {
   setAuth: (userName: string) => void;
   clearAuth: () => void;
   setIsLoggingOut: (value: boolean) => void;
+  hydrate: () => void;
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
-  isLoggedIn:
-    typeof window !== "undefined" ? !!localStorage.getItem("token") : false,
-  userName:
-    typeof window !== "undefined" ? localStorage.getItem("firstName") : null,
+  isLoggedIn: false,
+  userName: null,
   isLoggingOut: false,
   setAuth: (userName) => set({ isLoggedIn: true, userName }),
-  clearAuth: () => set({ isLoggedIn: false, userName: null }),
+  clearAuth: () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("firstName");
+    set({ isLoggedIn: false, userName: null });
+  },
   setIsLoggingOut: (value) => set({ isLoggingOut: value }),
+  hydrate: () => {
+    const token = localStorage.getItem("token");
+    const firstName = localStorage.getItem("firstName");
+    set({
+      isLoggedIn: !!token,
+      userName: firstName,
+    });
+  },
 }));
