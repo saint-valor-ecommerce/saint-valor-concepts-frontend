@@ -139,7 +139,10 @@ export default function SignInPage() {
           </form>
 
           <OrDivider />
-          <GoogleSSOButton />
+
+          <div className="flex justify-center">
+            <GoogleSSOButton />
+          </div>
         </div>
       </div>
     </main>

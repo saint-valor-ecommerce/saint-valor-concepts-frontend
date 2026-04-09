@@ -167,7 +167,9 @@ export default function SignUpPage() {
 
           <OrDivider />
 
-          <GoogleSSOButton />
+          <div className="flex justify-center">
+            <GoogleSSOButton />
+          </div>
         </div>
       </div>
     </main>
