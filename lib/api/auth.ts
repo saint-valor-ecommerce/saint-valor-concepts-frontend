@@ -79,7 +79,3 @@ export async function updateProfile(data: {
   const res = await api.put("/auth/profile", data);
   return res.data.data.user;
 }
-
-export async function deleteAccount() {
-  await api.delete("/auth/profile");
-}

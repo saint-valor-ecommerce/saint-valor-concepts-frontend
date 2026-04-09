@@ -1,9 +1,7 @@
 "use client";
 
-import { useAuthStore } from "@/store/authStore";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { getUserProfile, updateProfile, deleteAccount } from "@/lib/api/auth";
+import { getUserProfile, updateProfile } from "@/lib/api/auth";
 import { toast } from "react-toastify";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import AccountDetails from "@/components/profile/UserAccountDetails";
@@ -29,9 +27,6 @@ const UserProfile = () => {
   const [lastNameValue, setLastNameValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-
-  const { clearAuth } = useAuthStore();
-  const router = useRouter();
 
   const fetchUser = async () => {
     try {
@@ -89,22 +84,6 @@ const UserProfile = () => {
     }
   };
 
-  const handleDeleteAccount = async () => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete your account? This action cannot be undone.",
-    );
-    if (!confirmed) return;
-
-    try {
-      await deleteAccount();
-      clearAuth();
-      toast.success("Account deleted successfully.");
-      router.push("/");
-    } catch {
-      toast.error("Failed to delete account. Please try again.");
-    }
-  };
-
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-24 gap-3">
@@ -136,7 +115,6 @@ const UserProfile = () => {
             onToggleEditName={() => setEditName((prev) => !prev)}
             onFirstNameChange={setFirstNameValue}
             onLastNameChange={setLastNameValue}
-            onDeleteAccount={handleDeleteAccount}
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

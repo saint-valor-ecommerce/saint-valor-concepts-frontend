@@ -18,6 +18,7 @@ interface FavouritesStore {
   favouriteIds: Set<string>;
   favourites: Product[];
   isLoading: boolean;
+  pendingIds: Set<string>;
   fetchFavourites: () => Promise<void>;
   toggleFavourite: (productId: string) => Promise<void>;
 }
@@ -26,6 +27,7 @@ export const useFavouritesStore = create<FavouritesStore>((set, get) => ({
   favouriteIds: new Set(),
   favourites: [],
   isLoading: false,
+  pendingIds: new Set(),
 
   fetchFavourites: async () => {
     try {
@@ -42,13 +44,19 @@ export const useFavouritesStore = create<FavouritesStore>((set, get) => ({
       if (status !== 401) {
         toast.error("Could not load favourites. Please try again.");
       }
-      // 401 means not logged in — expected, fail silently
     } finally {
       set({ isLoading: false });
     }
   },
 
   toggleFavourite: async (productId: string) => {
+    const { pendingIds } = get();
+    if (pendingIds.has(productId)) return;
+
+    const newPending = new Set(pendingIds);
+    newPending.add(productId);
+    set({ pendingIds: newPending });
+
     const { favouriteIds, favourites } = get();
     const isFavourited = favouriteIds.has(productId);
 
@@ -83,6 +91,10 @@ export const useFavouritesStore = create<FavouritesStore>((set, get) => ({
       } else {
         toast.error("Something went wrong. Please try again.");
       }
+    } finally {
+      const updated = new Set(get().pendingIds);
+      updated.delete(productId);
+      set({ pendingIds: updated });
     }
   },
 }));

@@ -1,4 +1,4 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil } from "lucide-react";
 
 interface ProfileHeaderProps {
   firstName: string;
@@ -10,7 +10,6 @@ interface ProfileHeaderProps {
   onToggleEditName: () => void;
   onFirstNameChange: (value: string) => void;
   onLastNameChange: (value: string) => void;
-  onDeleteAccount: () => void;
 }
 
 const ProfileHeader = ({
@@ -23,7 +22,6 @@ const ProfileHeader = ({
   onToggleEditName,
   onFirstNameChange,
   onLastNameChange,
-  onDeleteAccount,
 }: ProfileHeaderProps) => {
   return (
     <div className="flex items-start flex-col md:flex-row md:justify-between gap-4">
@@ -62,15 +60,6 @@ const ProfileHeader = ({
           </p>
         </div>
       </div>
-
-      {/* Delete Account */}
-      <button
-        onClick={onDeleteAccount}
-        className="flex items-center gap-1.5 text-sm text-red-500 transition cursor-pointer"
-      >
-        <Trash2 className="w-4 h-4" />
-        Delete Account
-      </button>
     </div>
   );
 };
