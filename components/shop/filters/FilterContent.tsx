@@ -1,5 +1,5 @@
 import FilterSection from "./FilterSection";
-import CheckboxFilter from "./CheckboxFilter";
+import RadioFilter from "./RadioFilter";
 import PriceRangeFilter from "./PriceRangeFilter";
 import { ProductCollection, ProductCategory } from "@/types/product";
 import { SidebarFilters } from "@/types/filter";
@@ -26,30 +26,39 @@ const FilterContent = ({
 }: FilterContentProps) => {
   const toggle = (key: keyof SidebarFilters, value: string) => {
     const current = filters[key] as string[];
-    const updated = current.includes(value)
-      ? current.filter((v) => v !== value)
-      : [...current, value];
+    const updated = current.includes(value) ? [] : [value];
     onChange({ ...filters, [key]: updated });
   };
 
   return (
     <div className="flex flex-col">
       <FilterSection title="Collection">
-        <CheckboxFilter
+        <RadioFilter
+          name="collections"
           options={collections.map((c) => ({ label: c.name, value: c.slug }))}
           selected={filters.collections}
           onChange={(val) => toggle("collections", val)}
         />
       </FilterSection>
+      <FilterSection title="Category">
+        <RadioFilter
+          name="category"
+          options={categories.map((c) => ({ label: c.name, value: c.slug }))}
+          selected={filters.categories}
+          onChange={(val) => toggle("categories", val)}
+        />
+      </FilterSection>
       <FilterSection title="Weight (grams)">
-        <CheckboxFilter
+        <RadioFilter
+          name="weight"
           options={WEIGHT_OPTIONS}
           selected={filters.weights}
           onChange={(val) => toggle("weights", val)}
         />
       </FilterSection>
       <FilterSection title="Size">
-        <CheckboxFilter
+        <RadioFilter
+          name="size"
           options={SIZE_OPTIONS}
           selected={filters.sizes}
           onChange={(val) => toggle("sizes", val)}
@@ -64,31 +73,27 @@ const FilterContent = ({
         />
       </FilterSection>
       <FilterSection title="Material">
-        <CheckboxFilter
+        <RadioFilter
+          name="material"
           options={MATERIAL_OPTIONS}
           selected={filters.materials}
           onChange={(val) => toggle("materials", val)}
         />
       </FilterSection>
       <FilterSection title="Karat">
-        <CheckboxFilter
+        <RadioFilter
+          name="karat"
           options={KARAT_OPTIONS}
           selected={filters.karats}
           onChange={(val) => toggle("karats", val)}
         />
       </FilterSection>
       <FilterSection title="Jewelry Type">
-        <CheckboxFilter
+        <RadioFilter
+          name="jewelry"
           options={JEWELRY_TYPE_OPTIONS}
           selected={filters.jewelryTypes}
           onChange={(val) => toggle("jewelryTypes", val)}
-        />
-      </FilterSection>
-      <FilterSection title="Category">
-        <CheckboxFilter
-          options={categories.map((c) => ({ label: c.name, value: c.slug }))}
-          selected={filters.categories}
-          onChange={(val) => toggle("categories", val)}
         />
       </FilterSection>
     </div>

@@ -51,8 +51,12 @@ export async function signUp({
 }
 
 export async function logout() {
-  await api.post("/auth/logout");
   clearToken();
+  try {
+    await api.post("/auth/logout");
+  } catch {
+    // Backend notification failed — user is already logged out locally
+  }
 }
 
 export async function getUserProfile() {
