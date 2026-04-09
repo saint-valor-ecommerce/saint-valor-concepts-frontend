@@ -8,7 +8,6 @@ import PriceRangeFilter from "./filters/PriceRangeFilter";
 import { ProductCollection, ProductCategory } from "@/types/product";
 
 const WEIGHT_OPTIONS = [
-  { label: "1-3g", value: "1-3g" },
   { label: "3-6g", value: "3-6g" },
   { label: "7-10g", value: "7-10g" },
   { label: "11-15g", value: "11-15g" },
@@ -30,7 +29,7 @@ const MATERIAL_OPTIONS = [
 const KARAT_OPTIONS = [
   { label: "14k", value: "14k" },
   { label: "18k", value: "18k" },
-  { label: "22k", value: "22k" },
+  { label: "24k", value: "24k" },
 ];
 
 const JEWELRY_TYPE_OPTIONS = [
