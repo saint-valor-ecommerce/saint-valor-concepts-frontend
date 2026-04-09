@@ -37,14 +37,14 @@ const DeleteCollectionModal = ({
         <button
           onClick={onConfirm}
           disabled={isDeleting}
-          className="w-full bg-red-500 hover:bg-red-600 disabled:opacity-60 text-white font-medium py-3 rounded-full transition-colors mb-3"
+          className="w-full bg-red-500 hover:bg-red-600 disabled:opacity-60 cursor-pointer text-white font-medium py-3 rounded-full transition-colors mb-3"
         >
           {isDeleting ? "Deleting..." : "Delete Collection"}
         </button>
         <button
           onClick={onClose}
           disabled={isDeleting}
-          className="w-full text-gold font-medium py-3 rounded-full border border-gold hover:bg-gold/5 transition-colors"
+          className="w-full text-gold font-medium py-3 rounded-full border border-gold cursor-pointer hover:bg-gold/5 transition-colors"
         >
           Cancel
         </button>

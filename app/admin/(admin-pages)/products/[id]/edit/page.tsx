@@ -210,7 +210,7 @@ const EditProductPage = () => {
         <button
           type="button"
           onClick={() => router.push("/admin/products")}
-          className="text-xs border border-border px-6 py-2.5 text-charcoal hover:bg-ivory transition-colors"
+          className="text-xs border border-border cursor-pointer px-6 py-2.5 text-charcoal hover:bg-ivory transition-colors"
         >
           Cancel
         </button>
@@ -218,7 +218,7 @@ const EditProductPage = () => {
           type="button"
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className="text-xs bg-gold text-white px-6 py-2.5 hover:bg-gold/90 transition-colors disabled:opacity-60"
+          className="text-xs bg-gold text-white cursor-pointer px-6 py-2.5 hover:bg-gold/90 transition-colors disabled:opacity-60"
         >
           {isSubmitting ? "Saving..." : "Save Changes"}
         </button>

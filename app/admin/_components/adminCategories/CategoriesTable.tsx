@@ -15,6 +15,7 @@ import { AlertCircle, MoreVertical, Eye, Pencil, Trash2 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { toast } from "react-toastify";
 import AddCategoryModal from "./AddCategoryModal";
+import { useRouter } from "next/navigation";
 
 const CategoriesTable = () => {
   const [search, setSearch] = useState("");
@@ -31,6 +32,8 @@ const CategoriesTable = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [deleteError, setDeleteError] = useState("");
+
+  const router = useRouter();
 
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -209,7 +212,15 @@ const CategoriesTable = () => {
 
                 {openMenuId === cat._id && (
                   <div className="absolute right-0 top-8 z-10 bg-white border border-border rounded-lg shadow-md w-36 py-1">
-                    <button className="flex items-center gap-2 w-full px-4 py-2 text-sm text-charcoal hover:bg-ivory transition-colors cursor-pointer">
+                    <button
+                      onClick={() => {
+                        router.push(
+                          `/admin/categories/${cat._id}?name=${encodeURIComponent(cat.name)}`,
+                        );
+                        setOpenMenuId(null);
+                      }}
+                      className="flex items-center gap-2 w-full px-4 py-2 text-sm text-charcoal hover:bg-ivory transition-colors cursor-pointer"
+                    >
                       <Eye size={14} />
                       View
                     </button>

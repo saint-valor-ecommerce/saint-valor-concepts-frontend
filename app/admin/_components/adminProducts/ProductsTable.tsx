@@ -77,8 +77,17 @@ const ProductsTable = () => {
 
   const handleEdit = (e: React.MouseEvent, product: Product) => {
     e.stopPropagation();
+
+    const editParams = {
+      productName: product.productName,
+      productDescription: product.productDescription,
+      productPrice: product.productPrice,
+      productJewelryType: product.productJewelryType,
+      productMaterial: product.productMaterial,
+      productKarat: product.productKarat,
+    };
     router.push(
-      `/admin/products/${product._id}/edit?data=${encodeURIComponent(JSON.stringify(product))}`,
+      `/admin/products/${product._id}/edit?data=${encodeURIComponent(JSON.stringify(editParams))}`,
     );
     setOpenMenuId(null);
   };

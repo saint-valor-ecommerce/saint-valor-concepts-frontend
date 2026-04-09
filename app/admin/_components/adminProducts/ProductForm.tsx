@@ -11,23 +11,12 @@ import ProductSizeManager from "./ProductSizeManager";
 import PhotoUpload from "./PhotoUpload";
 import ProductPreview from "./ProductPreview";
 import { ProductSize } from "@/types/product";
-
-const KARAT_OPTIONS = ["14k", "18k", "24k"];
-const WEIGHT_OPTIONS = ["3-6g", "7-10g", "11-15g"];
-const MATERIAL_OPTIONS = [
-  "Gold",
-  "Silver",
-  "Platinum",
-  "VVS Diamonds Natural",
-  "Lab Diamonds",
-];
-const JEWELRY_TYPE_OPTIONS = [
-  "Rings",
-  "Necklaces",
-  "Bracelets",
-  "Earrings",
-  "Pendants",
-];
+import {
+  KARAT_OPTIONS,
+  WEIGHT_OPTIONS,
+  MATERIAL_OPTIONS,
+  JEWELRY_TYPE_OPTIONS,
+} from "@/constants/productOptions";
 
 type FormState = {
   productName: string;
@@ -277,8 +266,8 @@ const ProductForm = () => {
           >
             <option value="">Select</option>
             {KARAT_OPTIONS.map((k) => (
-              <option key={k} value={k}>
-                {k}
+              <option key={k.value} value={k.value}>
+                {k.label}
               </option>
             ))}
           </select>
@@ -294,8 +283,8 @@ const ProductForm = () => {
           >
             <option value="">Select</option>
             {WEIGHT_OPTIONS.map((w) => (
-              <option key={w} value={w}>
-                {w}
+              <option key={w.value} value={w.value}>
+                {w.label}
               </option>
             ))}
           </select>
@@ -311,8 +300,8 @@ const ProductForm = () => {
           >
             <option value="">Select</option>
             {MATERIAL_OPTIONS.map((m) => (
-              <option key={m} value={m}>
-                {m}
+              <option key={m.value} value={m.value}>
+                {m.label}
               </option>
             ))}
           </select>
@@ -328,8 +317,8 @@ const ProductForm = () => {
           >
             <option value="">Select</option>
             {JEWELRY_TYPE_OPTIONS.map((j) => (
-              <option key={j} value={j}>
-                {j}
+              <option key={j.value} value={j.value}>
+                {j.label}
               </option>
             ))}
           </select>

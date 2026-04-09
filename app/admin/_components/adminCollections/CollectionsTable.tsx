@@ -203,7 +203,15 @@ const CollectionsTable = () => {
 
                   {openMenuId === collection._id && (
                     <div className="absolute right-0 top-8 z-10 bg-white border border-border rounded-lg shadow-md w-36 py-1">
-                      <button className="flex cursor-pointer items-center gap-2 w-full px-4 py-2 text-sm text-charcoal hover:bg-ivory transition-colors">
+                      <button
+                        onClick={() => {
+                          router.push(
+                            `/admin/collections/${collection._id}?name=${encodeURIComponent(collection.name)}`,
+                          );
+                          setOpenMenuId(null);
+                        }}
+                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-charcoal hover:bg-ivory transition-colors cursor-pointer"
+                      >
                         <Eye size={14} />
                         View
                       </button>
