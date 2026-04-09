@@ -43,6 +43,20 @@ const CartPage = () => {
       .catch(() => {});
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    const raw = localStorage.getItem("pendingOrder");
+    if (!raw) return;
+    try {
+      const { createdAt } = JSON.parse(raw);
+      const ONE_HOUR = 60 * 60 * 1000;
+      if (Date.now() - createdAt > ONE_HOUR) {
+        localStorage.removeItem("pendingOrder");
+      }
+    } catch {
+      localStorage.removeItem("pendingOrder");
+    }
+  }, []);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -55,6 +69,11 @@ const CartPage = () => {
   };
 
   const handleCheckout = async () => {
+    if (items.length === 0) {
+      toast.error("Your cart is empty.");
+      return;
+    }
+
     if (!isLoggedIn) {
       setShowAuthModal(true);
       return;
@@ -93,7 +112,10 @@ const CartPage = () => {
         shippingMethod: "standard",
       });
 
-      localStorage.setItem("pendingOrder", data.orderId);
+      localStorage.setItem(
+        "pendingOrder",
+        JSON.stringify({ orderId: data.orderId, createdAt: Date.now() }),
+      );
       window.location.href = data.authorization_url;
     } catch {
       toast.error("Could not initialize payment. Please try again.");

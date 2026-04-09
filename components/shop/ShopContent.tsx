@@ -44,6 +44,7 @@ export default function ShopContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(true);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("newest");
   const [filters, setFilters] = useState<SidebarFilters>({
@@ -73,6 +74,14 @@ export default function ShopContent() {
     };
     fetchMeta();
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearch(searchInput);
+      setCurrentPage(1);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   // fetch products when filters/page/sort/search change
   const fetchProducts = useCallback(async () => {
@@ -113,19 +122,14 @@ export default function ShopContent() {
     setCurrentPage(1);
   };
 
-  const handleSearchChange = (val: string) => {
-    setSearch(val);
-    setCurrentPage(1);
-  };
-
   return (
     <div className="min-h-screen bg-ivory">
       <div className="max-w-7xl mx-auto px-6 py-8">
         <ShopHeader title={pageTitle} totalItems={totalItems} />
 
         <ShopToolbar
-          search={search}
-          onSearchChange={handleSearchChange}
+          search={searchInput}
+          onSearchChange={setSearchInput}
           showFilters={showFilters}
           onToggleFilters={() => setShowFilters((prev) => !prev)}
           onToggleMobileFilters={() => setShowMobileFilters((prev) => !prev)}
