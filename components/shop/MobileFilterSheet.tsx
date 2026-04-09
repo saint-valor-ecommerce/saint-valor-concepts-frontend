@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { X } from "lucide-react";
 import FilterContent from "./filters/FilterContent";
-import { SidebarFilters } from "./DesktopSideBar";
+import { SidebarFilters } from "@/types/filter";
 import { ProductCollection, ProductCategory } from "@/types/product";
 
 interface MobileFilterSheetProps {

@@ -9,7 +9,7 @@ import {
   getCategories,
 } from "@/lib/api/products";
 import { Product, ProductCollection, ProductCategory } from "@/types/product";
-import { SidebarFilters } from "@/components/shop/ShopSidebar";
+import { SidebarFilters } from "@/types/filter";
 import ShopHeader from "@/components/shop/ShopHeader";
 import ShopToolbar from "@/components/shop/ShopToolbar";
 import ShopGrid from "@/components/shop/ShopGrid";

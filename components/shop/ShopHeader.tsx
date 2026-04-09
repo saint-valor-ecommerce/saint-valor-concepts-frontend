@@ -3,6 +3,7 @@ interface ShopHeaderProps {
   totalItems: number;
 }
 
+//shows 'All Products' and the total number of products in the shop
 const ShopHeader = ({ title, totalItems }: ShopHeaderProps) => {
   return (
     <div className="flex items-end gap-3 mb-6">

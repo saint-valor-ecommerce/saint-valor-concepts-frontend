@@ -2,41 +2,14 @@ import FilterSection from "./FilterSection";
 import CheckboxFilter from "./CheckboxFilter";
 import PriceRangeFilter from "./PriceRangeFilter";
 import { ProductCollection, ProductCategory } from "@/types/product";
-import { SidebarFilters } from "../DesktopSideBar";
-
-const WEIGHT_OPTIONS = [
-  { label: "1-3g", value: "1-3g" },
-  { label: "3-6g", value: "3-6g" },
-  { label: "7-10g", value: "7-10g" },
-  { label: "11-15g", value: "11-15g" },
-];
-
-const SIZE_OPTIONS = [
-  { label: "Small", value: "Small" },
-  { label: "Medium", value: "Medium" },
-  { label: "Large", value: "Large" },
-];
-
-const MATERIAL_OPTIONS = [
-  { label: "Gold", value: "Gold" },
-  { label: "Silver", value: "Silver" },
-  { label: "VVS Diamonds Natural", value: "VVS Diamonds Natural" },
-  { label: "VVS Diamonds Lab", value: "VVS Diamonds Lab" },
-];
-
-const KARAT_OPTIONS = [
-  { label: "14k", value: "14k" },
-  { label: "18k", value: "18k" },
-  { label: "22k", value: "22k" },
-];
-
-const JEWELRY_TYPE_OPTIONS = [
-  { label: "Rings", value: "Rings" },
-  { label: "Necklaces", value: "Necklaces" },
-  { label: "Earrings", value: "Earrings" },
-  { label: "Bracelets", value: "Bracelets" },
-  { label: "Anklets", value: "Anklets" },
-];
+import { SidebarFilters } from "@/types/filter";
+import {
+  WEIGHT_OPTIONS,
+  SIZE_OPTIONS,
+  MATERIAL_OPTIONS,
+  KARAT_OPTIONS,
+  JEWELRY_TYPE_OPTIONS,
+} from "@/constants/productOptions";
 
 interface FilterContentProps {
   filters: SidebarFilters;

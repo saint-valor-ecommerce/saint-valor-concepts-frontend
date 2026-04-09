@@ -1,3 +1,5 @@
+//shows all the filters and search bar for the shop page
+
 import { Search, SlidersHorizontal } from "lucide-react";
 
 interface ShopToolbarProps {

@@ -1,17 +1,6 @@
 import FilterContent from "./filters/FilterContent";
 import { ProductCollection, ProductCategory } from "@/types/product";
-
-export interface SidebarFilters {
-  collections: string[];
-  weights: string[];
-  sizes: string[];
-  minPrice: string;
-  maxPrice: string;
-  materials: string[];
-  karats: string[];
-  jewelryTypes: string[];
-  categories: string[];
-}
+import { SidebarFilters } from "@/types/filter";
 
 interface DesktopSidebarProps {
   isOpen: boolean;
