@@ -43,20 +43,6 @@ const CartPage = () => {
       .catch(() => {});
   }, [isLoggedIn]);
 
-  useEffect(() => {
-    const raw = localStorage.getItem("pendingOrder");
-    if (!raw) return;
-    try {
-      const { createdAt } = JSON.parse(raw);
-      const ONE_HOUR = 60 * 60 * 1000;
-      if (Date.now() - createdAt > ONE_HOUR) {
-        localStorage.removeItem("pendingOrder");
-      }
-    } catch {
-      localStorage.removeItem("pendingOrder");
-    }
-  }, []);
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -112,10 +98,6 @@ const CartPage = () => {
         shippingMethod: "standard",
       });
 
-      localStorage.setItem(
-        "pendingOrder",
-        JSON.stringify({ orderId: data.orderId, createdAt: Date.now() }),
-      );
       window.location.href = data.authorization_url;
     } catch {
       toast.error("Could not initialize payment. Please try again.");
@@ -182,10 +164,7 @@ const CartPage = () => {
                   key={`${item.productId}-${item.size}`}
                   className="flex gap-4 py-5"
                 >
-                  <Link
-                    href={`/shop/${item.productId}`}
-                    className="relative w-20 h-24 md:w-24 md:h-28 shrink-0 overflow-hidden bg-gray-100"
-                  >
+                  <div className="relative w-20 h-24 md:w-24 md:h-28 shrink-0 overflow-hidden bg-gray-100">
                     <Image
                       src={item.mainImage}
                       alt={item.productName}
@@ -193,15 +172,12 @@ const CartPage = () => {
                       sizes="96px"
                       className="object-cover"
                     />
-                  </Link>
+                  </div>
 
                   <div className="flex flex-1 flex-col gap-1.5 py-1">
-                    <Link
-                      href={`/shop/${item.productId}`}
-                      className="text-sm font-medium text-charcoal leading-snug hover:text-gold transition-colors"
-                    >
+                    <p className="text-sm font-medium text-charcoal">
                       {item.productName}
-                    </Link>
+                    </p>
 
                     {item.size && (
                       <p className="text-xs text-secondary">

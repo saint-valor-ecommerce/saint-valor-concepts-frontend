@@ -64,11 +64,6 @@ export async function getUserProfile() {
   return res.data.data.user;
 }
 
-export async function getUserOrders(status: "ongoing" | "completed") {
-  const res = await api.get(`/orders/me?status=${status}`);
-  return res.data.data.orders;
-}
-
 export async function updateProfile(data: {
   email?: string;
   password?: string;

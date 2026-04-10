@@ -1,6 +1,6 @@
 "use client";
 
-import { getUserOrders } from "@/lib/api/auth";
+import { getUserOrders } from "@/lib/api/order";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import OrdersToggle from "./OrdersToggle";

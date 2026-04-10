@@ -2,6 +2,10 @@ import { OrderStatus } from "@/types/adminOrder";
 
 const statusConfig: Record<OrderStatus, { label: string; className: string }> =
   {
+    pending: {
+      label: "Pending",
+      className: "bg-gray-50 text-gray-600 border border-gray-200",
+    },
     ongoing: {
       label: "Ongoing",
       className: "bg-ivory text-[#b8860b] border border-[#d4af37]",
@@ -13,6 +17,10 @@ const statusConfig: Record<OrderStatus, { label: string; className: string }> =
     cancelled: {
       label: "Cancelled",
       className: "bg-red-50 text-red-600 border border-red-200",
+    },
+    failed: {
+      label: "Failed",
+      className: "bg-red-50 text-red-700 border border-red-300",
     },
   };
 

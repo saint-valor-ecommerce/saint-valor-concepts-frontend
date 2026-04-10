@@ -18,16 +18,14 @@ function SkeletonCell({ width = "w-24" }: { width?: string }) {
 function SkeletonRow() {
   return (
     <tr className="border-b border-border">
-      <SkeletonCell width="w-32" /> {/* Name - wider */}
-      <SkeletonCell width="w-28" /> {/* Order ID */}
-      <SkeletonCell width="w-24" /> {/* Date */}
-      <SkeletonCell width="w-20" /> {/* Price */}
+      <SkeletonCell width="w-32" />
+      <SkeletonCell width="w-28" />
+      <SkeletonCell width="w-24" />
+      <SkeletonCell width="w-20" />
       <td className="py-4 px-4">
-        {/* Status badge shape */}
         <div className="h-6 w-20 bg-gray-200 rounded-full animate-pulse" />
       </td>
       <td className="py-4 px-4">
-        {/* Action button shape */}
         <div className="h-6 w-6 bg-gray-200 rounded animate-pulse" />
       </td>
     </tr>

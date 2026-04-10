@@ -1,4 +1,4 @@
-import { OrderDetail } from "@/types/adminOrder";
+import { OrderDetail, OrderStatus } from "@/types/adminOrder";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
@@ -10,17 +10,16 @@ interface OrderDetailMetaProps {
   isUpdating: boolean;
 }
 
-const statusStyles: Record<OrderDetail["orderStatus"], string> = {
+const statusStyles: Record<OrderStatus, string> = {
+  pending: "bg-gray-50 text-gray-600",
   ongoing: "bg-border text-charcoal",
   completed: "bg-green-50 text-green-600",
   cancelled: "bg-red-50 text-red-600",
+  failed: "bg-red-50 text-red-700",
 };
 
-const statusOptions: OrderDetail["orderStatus"][] = [
-  "ongoing",
-  "completed",
-  "cancelled",
-];
+// admin can only manually set these — pending/failed are system-managed
+const statusOptions: OrderStatus[] = ["ongoing", "completed", "cancelled"];
 
 const OrderDetailMeta = ({
   createdAt,
@@ -38,6 +37,9 @@ const OrderDetailMeta = ({
     minute: "2-digit",
     hour12: true,
   });
+
+  // system-managed statuses should not be editable
+  const isReadOnly = orderStatus === "pending" || orderStatus === "failed";
 
   return (
     <div className="grid grid-cols-3 gap-6 mb-8">
@@ -59,14 +61,18 @@ const OrderDetailMeta = ({
         </p>
         <div className="relative inline-block">
           <button
-            onClick={() => setShowStatusDropdown((prev) => !prev)}
-            disabled={isUpdating}
-            className={`inline-flex items-center cursor-pointer gap-1 px-3 py-1 rounded-md text-xs font-medium ${statusStyles[orderStatus]}`}
+            onClick={() =>
+              !isReadOnly && setShowStatusDropdown((prev) => !prev)
+            }
+            disabled={isUpdating || isReadOnly}
+            className={`inline-flex items-center gap-1 px-3 py-1 rounded-md text-xs font-medium ${statusStyles[orderStatus]} ${
+              isReadOnly ? "cursor-not-allowed opacity-80" : "cursor-pointer"
+            }`}
           >
             {orderStatus.charAt(0).toUpperCase() + orderStatus.slice(1)}
-            <ChevronDown size={12} />
+            {!isReadOnly && <ChevronDown size={12} />}
           </button>
-          {showStatusDropdown && (
+          {showStatusDropdown && !isReadOnly && (
             <div className="absolute top-8 left-0 z-10 bg-white border border-gold/20 rounded-xl shadow-md overflow-hidden w-36">
               {statusOptions.map((status) => (
                 <button
