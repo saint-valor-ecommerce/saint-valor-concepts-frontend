@@ -1,6 +1,3 @@
-"use client";
-
-import React, { useState } from "react";
 import Link from "next/link";
 import {
   Phone,
@@ -11,41 +8,9 @@ import {
   Music2,
   Ghost,
 } from "lucide-react";
-
-type FormState = {
-  email: string;
-  subject: string;
-  message: string;
-};
-
-const MAX_MESSAGE = 250;
+import ContactForm from "@/components/ui/ContactForm";
 
 export default function CustomInquiry() {
-  const [form, setForm] = useState<FormState>({
-    email: "",
-    subject: "",
-    message: "",
-  });
-
-  const onChange =
-    (key: keyof FormState) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const value = e.target.value;
-
-      if (key === "message") {
-        setForm((prev) => ({ ...prev, message: value.slice(0, MAX_MESSAGE) }));
-        return;
-      }
-
-      setForm((prev) => ({ ...prev, [key]: value }));
-    };
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    alert("Submitted (placeholder). Connect this to your backend when ready.");
-  };
-
   return (
     <section className="w-full bg-ivory">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
@@ -68,7 +33,7 @@ export default function CustomInquiry() {
                 </p>
                 <div className="mt-2 flex items-center gap-2 text-sm text-charcoal">
                   <Phone className="h-4 w-4" />
-                  <span>+234 80 9292 7288</span>
+                  <span>09034898972</span>
                 </div>
               </div>
 
@@ -78,7 +43,7 @@ export default function CustomInquiry() {
                 </p>
                 <div className="mt-2 flex items-center gap-2 text-sm text-charcoal">
                   <Mail className="h-4 w-4" />
-                  <span>saintvalor@gmail.com</span>
+                  <span>saintvalorconcepts@gmail.com</span>
                 </div>
               </div>
 
@@ -129,64 +94,7 @@ export default function CustomInquiry() {
           </div>
 
           {/* Right panel (Form) */}
-          <div className="rounded-xl bg-transparent">
-            <form onSubmit={onSubmit} className="space-y-5">
-              <div>
-                <label className="mb-2 block text-xs font-medium text-charcoal">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={onChange("email")}
-                  placeholder="Enter your email address"
-                  className="h-11 w-full rounded-md border border-[#E5DED3] bg-[#F8F5EE] px-3 text-sm text-charcoal placeholder:text-[#9A948A] outline-none focus:border-[#C9BBA6] focus:ring-2 focus:ring-[#D4AF37]/20"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-xs font-medium text-charcoal">
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  value={form.subject}
-                  onChange={onChange("subject")}
-                  placeholder="Enter title of message"
-                  className="h-11 w-full rounded-md border border-[#E5DED3] bg-[#F8F5EE] px-3 text-sm text-charcoal placeholder:text-[#9A948A] outline-none focus:border-[#C9BBA6] focus:ring-2 focus:ring-[#D4AF37]/20"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-xs font-medium text-charcoal">
-                  Message
-                </label>
-                <textarea
-                  value={form.message}
-                  onChange={onChange("message")}
-                  placeholder="Write message here..."
-                  rows={6}
-                  className="w-full resize-none rounded-md border border-[#E5DED3] bg-[#F8F5EE] px-3 py-3 text-sm text-charcoal placeholder:text-[#9A948A] outline-none focus:border-[#C9BBA6] focus:ring-2 focus:ring-[#D4AF37]/20"
-                />
-                <div className="mt-2 flex justify-end text-xs text-[#8B847A]">
-                  <span>
-                    {Math.min(form.message.length, MAX_MESSAGE)}/{MAX_MESSAGE}
-                  </span>
-                </div>
-              </div>
-
-              <div className="pt-1">
-                <button
-                  type="submit"
-                  className="inline-flex h-11 items-center justify-center rounded-full bg-gold px-8 text-sm font-medium text-charcoal shadow-sm transition hover:brightness-95 active:scale-[0.99]"
-                >
-                  Send Message
-                </button>
-              </div>
-            </form>
-          </div>
+          <ContactForm />
         </div>
       </div>
     </section>

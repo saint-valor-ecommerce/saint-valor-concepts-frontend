@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Phone, MapPin, Clock, ChevronDown } from "lucide-react";
-import { toast } from "react-toastify";
-
-const MAX_MESSAGE = 500;
+import { Mail, Phone, MapPin, ChevronDown } from "lucide-react";
+import ContactForm from "@/components/ui/ContactForm";
 
 const FAQ_ITEMS = [
   {
@@ -76,46 +74,6 @@ const FaqItem = ({
 };
 
 const ContactPage = () => {
-  const [form, setForm] = useState({
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const onChange =
-    (field: string) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const value = e.target.value;
-      if (field === "message" && value.length > MAX_MESSAGE) return;
-      setForm((prev) => ({ ...prev, [field]: value }));
-    };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const { email, subject, message } = form;
-    if (!email || !subject || !message) {
-      toast.error("Please fill in all fields.");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    const mailtoLink = `mailto:saintvalorconcepts@gmail.com?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\n${message}`,
-    )}`;
-
-    window.location.href = mailtoLink;
-    setIsSubmitting(false);
-    toast.success("Opening your email client...");
-  };
-
-  const inputClass =
-    "h-11 w-full rounded-md border border-[#E5DED3] bg-[#F8F5EE] px-3 text-sm text-charcoal placeholder:text-[#9A948A] outline-none focus:border-[#C9BBA6] focus:ring-2 focus:ring-[#D4AF37]/20";
-
   return (
     <div className="min-h-screen bg-ivory">
       {/* Hero */}
@@ -134,27 +92,22 @@ const ContactPage = () => {
       </div>
 
       {/* Contact Cards */}
-      <div className="max-w-5xl mx-auto px-4 md:px-16 -mt-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <a
-            href="mailto:saintvalorconcepts@gmail.com"
-            className="flex flex-col items-center gap-3 bg-white border border-border p-6 rounded-sm hover:border-gold/40 transition-colors group"
-          >
+      <div className="-mt-10 flex justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="flex flex-col items-center gap-3 bg-white border border-border p-6 rounded-sm">
             <div className="w-10 h-10 rounded-full bg-ivory flex items-center justify-center group-hover:bg-gold/10 transition-colors">
               <Mail size={18} className="text-gold" />
             </div>
+
             <div className="text-center">
               <p className="text-xs font-semibold text-charcoal mb-1">Email</p>
               <p className="text-[11px] text-secondary break-all">
                 saintvalorconcepts@gmail.com
               </p>
             </div>
-          </a>
+          </div>
 
-          <a
-            href="tel:09034898972"
-            className="flex flex-col items-center gap-3 bg-white border border-border p-6 rounded-sm hover:border-gold/40 transition-colors group"
-          >
+          <div className="flex flex-col items-center gap-3 bg-white border border-border p-6 rounded-sm">
             <div className="w-10 h-10 rounded-full bg-ivory flex items-center justify-center group-hover:bg-gold/10 transition-colors">
               <Phone size={18} className="text-gold" />
             </div>
@@ -162,7 +115,7 @@ const ContactPage = () => {
               <p className="text-xs font-semibold text-charcoal mb-1">Phone</p>
               <p className="text-[11px] text-secondary">09034898972</p>
             </div>
-          </a>
+          </div>
 
           <div className="flex flex-col items-center gap-3 bg-white border border-border p-6 rounded-sm">
             <div className="w-10 h-10 rounded-full bg-ivory flex items-center justify-center">
@@ -175,16 +128,6 @@ const ContactPage = () => {
               <p className="text-[11px] text-secondary">Lagos, Nigeria</p>
             </div>
           </div>
-
-          <div className="flex flex-col items-center gap-3 bg-white border border-border p-6 rounded-sm">
-            <div className="w-10 h-10 rounded-full bg-ivory flex items-center justify-center">
-              <Clock size={18} className="text-gold" />
-            </div>
-            <div className="text-center">
-              <p className="text-xs font-semibold text-charcoal mb-1">Hours</p>
-              <p className="text-[11px] text-secondary">Mon – Sat, 9AM – 6PM</p>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -192,75 +135,7 @@ const ContactPage = () => {
       <div className="max-w-5xl mx-auto px-4 md:px-16 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Contact Form */}
-          <div>
-            <h2 className="text-xl font-medium text-charcoal mb-1">
-              Send us a Message
-            </h2>
-            <p className="text-xs text-secondary mb-6">
-              Fill out the form below and we&apos;ll get back to you as soon as
-              possible.
-            </p>
-
-            <div className="rounded-xl bg-transparent">
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <label className="mb-2 block text-xs font-medium text-charcoal">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={form.email}
-                    onChange={onChange("email")}
-                    placeholder="Enter your email address"
-                    className={inputClass}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2 block text-xs font-medium text-charcoal">
-                    Subject
-                  </label>
-                  <input
-                    type="text"
-                    value={form.subject}
-                    onChange={onChange("subject")}
-                    placeholder="Enter title of message"
-                    className={inputClass}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2 block text-xs font-medium text-charcoal">
-                    Message
-                  </label>
-                  <textarea
-                    value={form.message}
-                    onChange={onChange("message")}
-                    placeholder="Write message here..."
-                    rows={6}
-                    className="w-full resize-none rounded-md border border-[#E5DED3] bg-[#F8F5EE] px-3 py-3 text-sm text-charcoal placeholder:text-[#9A948A] outline-none focus:border-[#C9BBA6] focus:ring-2 focus:ring-[#D4AF37]/20"
-                  />
-                  <div className="mt-2 flex justify-end text-xs text-[#8B847A]">
-                    <span>
-                      {Math.min(form.message.length, MAX_MESSAGE)}/{MAX_MESSAGE}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="pt-1">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="inline-flex h-11 items-center justify-center rounded-full bg-gold px-8 text-sm font-medium text-charcoal shadow-sm transition hover:brightness-95 active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-                  >
-                    {isSubmitting ? "Sending..." : "Send Message"}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
+          <ContactForm />
 
           {/* FAQ */}
           <div>
