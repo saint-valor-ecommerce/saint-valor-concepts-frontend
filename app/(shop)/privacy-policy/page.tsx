@@ -124,18 +124,11 @@ const PrivacyPolicy = () => {
             <div className="mt-3 flex flex-col gap-1">
               <p>
                 <span className="font-medium text-charcoal">Email:</span>{" "}
-                <a
-                  href="mailto:saintvalorconcepts@gmail.com"
-                  className="text-gold hover:underline"
-                >
-                  saintvalorconcepts@gmail.com
-                </a>
+                <span className="text-gold">saintvalorconcepts@gmail.com</span>
               </p>
               <p>
                 <span className="font-medium text-charcoal">Phone:</span>{" "}
-                <a href="tel:09034898972" className="text-gold hover:underline">
-                  09034898972
-                </a>
+                <span className="text-gold">09034898972</span>
               </p>
             </div>
           </section>

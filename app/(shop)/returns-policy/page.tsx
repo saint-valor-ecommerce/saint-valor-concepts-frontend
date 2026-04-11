@@ -67,12 +67,7 @@ const ReturnsPolicy = () => {
             <p>
               For exchange requests or any additional inquiries, don&apos;t
               hesitate to get in touch with us at{" "}
-              <a
-                href="mailto:saintvalorconcepts@gmail.com"
-                className="text-gold hover:underline"
-              >
-                saintvalorconcepts@gmail.com
-              </a>
+              <span className="text-gold">saintvalorconcepts@gmail.com</span>
             </p>
             <p className="mt-3 text-charcoal font-medium">
               We are happy to assist you!

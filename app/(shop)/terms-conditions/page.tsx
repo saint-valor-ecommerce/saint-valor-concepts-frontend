@@ -28,7 +28,6 @@ const TermsAndConditions = () => {
               <p>
                 <span className="font-medium text-charcoal">Eligibility:</span>{" "}
                 We accept returns only for items that arrive damaged or are not
-                as described in the original order.
               </p>
               <p>
                 <span className="font-medium text-charcoal">Timeline:</span>{" "}
@@ -82,12 +81,7 @@ const TermsAndConditions = () => {
               <p>
                 <span className="font-medium text-charcoal">Contact:</span> To
                 cancel an order, please contact our team immediately at{" "}
-                <a
-                  href="mailto:saintvalorconcepts@gmail.com"
-                  className="text-gold hover:underline"
-                >
-                  saintvalorconcepts@gmail.com
-                </a>
+                <span className="text-gold">saintvalorconcepts@gmail.com</span>
               </p>
               <p>
                 <span className="font-medium text-charcoal">Fees:</span>{" "}
@@ -115,13 +109,8 @@ const TermsAndConditions = () => {
               We only replace items if they are defective or damaged upon
               arrival. If you need to exchange a piece for the same item, please
               email us at{" "}
-              <a
-                href="mailto:saintvalorconcepts@gmail.com"
-                className="text-gold hover:underline"
-              >
-                saintvalorconcepts@gmail.com
-              </a>{" "}
-              to arrange the logistics for returning the defective piece to our
+              <span className="text-gold">saintvalorconcepts@gmail.com</span> to
+              arrange the logistics for returning the defective piece to our
               physical office.
             </p>
           </section>
@@ -181,18 +170,11 @@ const TermsAndConditions = () => {
             <div className="mt-3 flex flex-col gap-1">
               <p>
                 <span className="font-medium text-charcoal">Email:</span>{" "}
-                <a
-                  href="mailto:saintvalorconcepts@gmail.com"
-                  className="text-gold hover:underline"
-                >
-                  saintvalorconcepts@gmail.com
-                </a>
+                <span className="text-gold">saintvalorconcepts@gmail.com</span>
               </p>
               <p>
                 <span className="font-medium text-charcoal">Phone:</span>{" "}
-                <a href="tel:09034898972" className="text-gold hover:underline">
-                  09034898972
-                </a>
+                <span className="text-gold">09034898972</span>
               </p>
             </div>
           </section>
