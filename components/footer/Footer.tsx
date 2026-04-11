@@ -66,11 +66,17 @@ export default function Footer() {
           </p>
 
           <div className="flex flex-wrap gap-x-6 gap-y-2">
-            <Link href="#" className="transition hover:text-ivory">
+            <Link
+              href="/privacy-policy"
+              className="transition hover:text-ivory"
+            >
               Privacy policy
             </Link>
 
-            <Link href="#" className="transition hover:text-ivory">
+            <Link
+              href="/terms-conditions"
+              className="transition hover:text-ivory"
+            >
               Terms and conditions
             </Link>
           </div>
