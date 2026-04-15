@@ -16,12 +16,6 @@ interface DashboardStats {
   recentOrders: RecentOrder[];
 }
 
-const MOCK_SPARKLINES = {
-  earnings: [120, 180, 150, 200, 170, 220, 190, 250, 210, 280],
-  sales: [80, 120, 90, 150, 110, 130, 100, 160, 140, 170],
-  users: [5, 8, 6, 12, 9, 15, 11, 18, 14, 20],
-};
-
 const StatsSection = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -71,24 +65,9 @@ const StatsSection = () => {
             <StatCard
               label="Earnings"
               value={formatEarnings(stats.totalEarnings)}
-              percentage={10.23}
-              sparklineData={MOCK_SPARKLINES.earnings}
-              sparklineColor="#22c55e"
             />
-            <StatCard
-              label="Sales"
-              value={stats.totalSales.toLocaleString()}
-              percentage={-10.23}
-              sparklineData={MOCK_SPARKLINES.sales}
-              sparklineColor="#ef4444"
-            />
-            <StatCard
-              label="Users"
-              value={stats.totalUsers.toLocaleString()}
-              percentage={0}
-              sparklineData={MOCK_SPARKLINES.users}
-              sparklineColor="#94a3b8"
-            />
+            <StatCard label="Sales" value={stats.totalSales.toLocaleString()} />
+            <StatCard label="Users" value={stats.totalUsers.toLocaleString()} />
           </>
         ) : null}
       </div>
