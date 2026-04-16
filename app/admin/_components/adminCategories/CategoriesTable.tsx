@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import CategoriesSearch from "./CategoriesSearch";
 import CategoriesEmptyState from "./CategoriesEmptyState";
 import DeleteCategoryModal from "./DeleteCategoryModal";
@@ -34,8 +34,6 @@ const CategoriesTable = () => {
   const [deleteError, setDeleteError] = useState("");
 
   const router = useRouter();
-
-  const menuRef = useRef<HTMLDivElement>(null);
 
   const handleDelete = async () => {
     if (!categoryToDelete) return;
@@ -103,11 +101,7 @@ const CategoriesTable = () => {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setOpenMenuId(null);
-      }
-    };
+    const handleClickOutside = () => setOpenMenuId(null);
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -202,7 +196,7 @@ const CategoriesTable = () => {
               {/* Actions Menu */}
               <div
                 className="relative"
-                ref={openMenuId === cat._id ? menuRef : undefined}
+                onMouseDown={(e) => e.stopPropagation()}
               >
                 <button
                   onClick={() =>
