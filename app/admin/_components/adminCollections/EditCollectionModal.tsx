@@ -71,7 +71,7 @@ const EditCollectionModal = ({
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-border rounded-lg px-4 py-3 text-sm text-charcoal focus:outline-none focus:border-gold transition-colors"
+            className="w-full border border-border rounded-lg px-4 py-3 text-sm text-charcoal focus:outline-none"
           />
         </div>
 

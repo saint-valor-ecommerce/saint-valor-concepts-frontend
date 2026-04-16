@@ -90,6 +90,7 @@ const CollectionsTable = () => {
         prev.map((c) => (c._id === collectionToEdit._id ? updated : c)),
       );
       setCollectionToEdit(null);
+      toast.success("Collection updated successfully!");
     } catch {
       toast.error("Something went wrong. Please try again.");
       setError("Something went wrong. Please try again.");

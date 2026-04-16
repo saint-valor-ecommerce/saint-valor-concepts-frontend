@@ -24,6 +24,10 @@ const ProductSizeManager = ({ sizes, onChange }: Props) => {
     field: keyof ProductSize,
     value: string | number,
   ) => {
+    if (field === "size") {
+      const isDuplicate = sizes.some((s, i) => i !== index && s.size === value);
+      if (isDuplicate) return;
+    }
     onChange(sizes.map((s, i) => (i === index ? { ...s, [field]: value } : s)));
   };
 
@@ -42,7 +46,10 @@ const ProductSizeManager = ({ sizes, onChange }: Props) => {
                 className="w-full border border-border px-3 py-2 text-xs text-charcoal bg-white appearance-none focus:outline-none"
               >
                 <option value="">Select</option>
-                {SIZE_OPTIONS.map((opt) => (
+                {SIZE_OPTIONS.filter(
+                  (opt) =>
+                    opt === s.size || !sizes.some((s2) => s2.size === opt),
+                ).map((opt) => (
                   <option key={opt} value={opt}>
                     {opt}
                   </option>
