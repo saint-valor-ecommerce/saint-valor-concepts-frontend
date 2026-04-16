@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ArrowLeft, CloudUpload } from "lucide-react";
@@ -16,12 +16,23 @@ const AddNewCollectionPage = () => {
   const [error, setError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const previewUrlRef = useRef<string | null>(null);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    const url = URL.createObjectURL(file);
+    previewUrlRef.current = url;
     setImage(file);
-    setPreview(URL.createObjectURL(file));
+    setPreview(url);
   };
+
+  useEffect(() => {
+    return () => {
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    };
+  }, []);
 
   const handleSubmit = async () => {
     if (!name.trim()) return;
