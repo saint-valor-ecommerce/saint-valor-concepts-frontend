@@ -60,7 +60,7 @@ const ProductSizeManager = ({ sizes, onChange }: Props) => {
                   updateSize(
                     index,
                     "quantity",
-                    Math.max(0, Number(s.quantity) - 1),
+                    Math.max(1, Number(s.quantity) - 1),
                   )
                 }
                 className="w-7 h-7 border border-border text-charcoal flex items-center justify-center text-sm hover:bg-ivory transition-colors"
@@ -82,7 +82,7 @@ const ProductSizeManager = ({ sizes, onChange }: Props) => {
               <button
                 type="button"
                 onClick={() => removeSize(index)}
-                className="ml-auto text-burgundy hover:opacity-70 transition-opacity"
+                className="ml-auto text-burgundy cursor-pointer"
               >
                 <X size={16} />
               </button>
@@ -94,7 +94,7 @@ const ProductSizeManager = ({ sizes, onChange }: Props) => {
       <button
         type="button"
         onClick={addSize}
-        className="text-xs text-charcoal flex items-center gap-1 hover:text-gold transition-colors w-fit"
+        className="text-xs text-charcoal flex items-center gap-1 cursor-pointer transition-colors w-fit"
       >
         <span className="text-base leading-none">+</span> Add Size
       </button>

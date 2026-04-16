@@ -52,7 +52,7 @@ const ProductForm = () => {
     productWeight: "",
     productMaterial: "",
     productJewelryType: "",
-    productSizes: [{ size: "", quantity: 0 }],
+    productSizes: [{ size: "", quantity: 1 }],
     mainImage: null,
     subImages: [],
     isNewArrival: false,
@@ -114,6 +114,10 @@ const ProductForm = () => {
     }
     if (productSizes.some((s) => !s.size)) {
       toast.error("Please select a size for all size entries.");
+      return false;
+    }
+    if (productSizes.some((s) => s.quantity < 1)) {
+      toast.error("Quantity must be at least 1 for all size entries.");
       return false;
     }
     if (!mainImage) {
