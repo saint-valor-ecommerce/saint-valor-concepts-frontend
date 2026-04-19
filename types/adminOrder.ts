@@ -1,4 +1,5 @@
 import { OrderItem } from "./index";
+export type { OrderItem };
 
 export type OrderStatus =
   | "pending"
