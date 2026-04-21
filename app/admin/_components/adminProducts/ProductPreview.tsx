@@ -30,7 +30,6 @@ type Props = {
 const blobLoader = ({ src }: { src: string }) => src;
 
 const ProductPreview = ({ data, onBack, onSubmit, isSubmitting }: Props) => {
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [mainIndex, setMainIndex] = useState(0);
 
@@ -42,12 +41,7 @@ const ProductPreview = ({ data, onBack, onSubmit, isSubmitting }: Props) => {
     ];
   }, [data.mainImage, data.subImages]);
 
-  const selectedSizeData = data.productSizes.find(
-    (s) => s.size === selectedSize,
-  );
-  const totalStock = selectedSizeData
-    ? selectedSizeData.quantity
-    : data.productSizes.reduce((sum, s) => sum + s.quantity, 0);
+  const totalStock = data.productSizes.reduce((sum, s) => sum + s.quantity, 0);
 
   return (
     <div className="flex flex-col gap-6 px-6">
@@ -127,29 +121,12 @@ const ProductPreview = ({ data, onBack, onSubmit, isSubmitting }: Props) => {
 
           {/* Sizes */}
           <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <p className="text-xs text-charcoal">Select size</p>
-              <p className="text-xs text-secondary underline cursor-pointer">
-                Size guide
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
+            <p className="text-xs text-charcoal">Sizes</p>
+            <div className="flex flex-col gap-1">
               {data.productSizes.map((s) => (
-                <button
-                  key={s.size}
-                  type="button"
-                  onClick={() => {
-                    setSelectedSize(s.size);
-                    setQuantity(1);
-                  }}
-                  className={`px-3 py-1.5 text-xs border transition-colors ${
-                    selectedSize === s.size
-                      ? "border-charcoal bg-charcoal text-white"
-                      : "border-border text-charcoal hover:border-charcoal"
-                  }`}
-                >
-                  {s.size}
-                </button>
+                <p key={s.size} className="text-xs text-secondary">
+                  {s.size} · {s.quantity} available
+                </p>
               ))}
             </div>
           </div>
