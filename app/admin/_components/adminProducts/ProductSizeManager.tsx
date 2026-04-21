@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "react-toastify";
 import { ProductSize } from "@/types/product";
 import { X } from "lucide-react";
 
@@ -26,7 +27,10 @@ const ProductSizeManager = ({ sizes, onChange }: Props) => {
   ) => {
     if (field === "size") {
       const isDuplicate = sizes.some((s, i) => i !== index && s.size === value);
-      if (isDuplicate) return;
+      if (value && isDuplicate) {
+        toast.error("This size has already been added.");
+        return;
+      }
     }
     onChange(sizes.map((s, i) => (i === index ? { ...s, [field]: value } : s)));
   };
@@ -101,7 +105,12 @@ const ProductSizeManager = ({ sizes, onChange }: Props) => {
       <button
         type="button"
         onClick={addSize}
-        className="text-xs text-charcoal flex items-center gap-1 cursor-pointer transition-colors w-fit"
+        disabled={sizes.length >= SIZE_OPTIONS.length}
+        className={`text-xs text-charcoal flex items-center gap-1 transition-colors w-fit ${
+          sizes.length >= SIZE_OPTIONS.length
+            ? "opacity-40 cursor-not-allowed"
+            : "cursor-pointer"
+        }`}
       >
         <span className="text-base leading-none">+</span> Add Size
       </button>

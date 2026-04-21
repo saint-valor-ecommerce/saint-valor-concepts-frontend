@@ -42,7 +42,12 @@ const ProductPreview = ({ data, onBack, onSubmit, isSubmitting }: Props) => {
     ];
   }, [data.mainImage, data.subImages]);
 
-  const totalStock = data.productSizes.reduce((sum, s) => sum + s.quantity, 0);
+  const selectedSizeData = data.productSizes.find(
+    (s) => s.size === selectedSize,
+  );
+  const totalStock = selectedSizeData
+    ? selectedSizeData.quantity
+    : data.productSizes.reduce((sum, s) => sum + s.quantity, 0);
 
   return (
     <div className="flex flex-col gap-6 px-6">
@@ -133,7 +138,10 @@ const ProductPreview = ({ data, onBack, onSubmit, isSubmitting }: Props) => {
                 <button
                   key={s.size}
                   type="button"
-                  onClick={() => setSelectedSize(s.size)}
+                  onClick={() => {
+                    setSelectedSize(s.size);
+                    setQuantity(1);
+                  }}
                   className={`px-3 py-1.5 text-xs border transition-colors ${
                     selectedSize === s.size
                       ? "border-charcoal bg-charcoal text-white"
@@ -179,7 +187,9 @@ const ProductPreview = ({ data, onBack, onSubmit, isSubmitting }: Props) => {
                 <span className="px-4 text-xs text-charcoal">{quantity}</span>
                 <button
                   type="button"
-                  onClick={() => setQuantity(quantity + 1)}
+                  onClick={() =>
+                    setQuantity(Math.min(totalStock, quantity + 1))
+                  }
                   className="px-3 py-2 text-charcoal hover:bg-ivory transition-colors"
                 >
                   +
