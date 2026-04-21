@@ -1,31 +1,11 @@
 export type ChildLink = {
   label: string;
   href: string;
-  count?: number;
 };
 
 export type MenuItem =
   | { type: "link"; label: string; href: string; rightIcon?: "chevron" }
   | { type: "accordion"; label: string; children: ChildLink[] };
-
-const PLACEHOLDER_COUNTS = {
-  female: {
-    rings: 22,
-    necklaces: 44,
-    earrings: 30,
-    bracelets: 23,
-    pantChains: 12,
-    anklets: 12,
-  },
-  male: {
-    rings: 10,
-    necklaces: 8,
-  },
-  fashion: {
-    rings: 5,
-    necklaces: 9,
-  },
-} as const;
 
 export const MENU: MenuItem[] = [
   { type: "link", label: "NEW ARRIVALS", href: "/new-arrivals" },
@@ -34,36 +14,29 @@ export const MENU: MenuItem[] = [
     type: "accordion",
     label: "FEMALE",
     children: [
-      { label: "JEWELRY TYPE", href: "/female/jewelry-type" },
       {
         label: "RINGS",
-        href: "/female/rings",
-        count: PLACEHOLDER_COUNTS.female.rings,
+        href: "/shop?gender=Female&category=rings",
       },
       {
         label: "NECKLACES",
-        href: "/female/necklaces",
-        count: PLACEHOLDER_COUNTS.female.necklaces,
+        href: "/shop?gender=Female&category=necklaces",
       },
       {
         label: "EARRINGS",
-        href: "/female/earrings",
-        count: PLACEHOLDER_COUNTS.female.earrings,
+        href: "/shop?gender=Female&category=earrings",
       },
       {
         label: "BRACELETS",
-        href: "/female/bracelets",
-        count: PLACEHOLDER_COUNTS.female.bracelets,
+        href: "/shop?gender=Female&category=bracelets",
       },
       {
         label: "PANT CHAINS",
-        href: "/female/pant-chains",
-        count: PLACEHOLDER_COUNTS.female.pantChains,
+        href: "/shop?gender=Female&category=pant-chains",
       },
       {
         label: "ANKLETS",
-        href: "/female/anklets",
-        count: PLACEHOLDER_COUNTS.female.anklets,
+        href: "/shop?gender=Female&category=anklets",
       },
     ],
   },
@@ -72,17 +45,11 @@ export const MENU: MenuItem[] = [
     type: "accordion",
     label: "MALE",
     children: [
-      { label: "JEWELRY TYPE", href: "/male/jewelry-type" },
-      {
-        label: "RINGS",
-        href: "/male/rings",
-        count: PLACEHOLDER_COUNTS.male.rings,
-      },
-      {
-        label: "NECKLACES",
-        href: "/male/necklaces",
-        count: PLACEHOLDER_COUNTS.male.necklaces,
-      },
+      { label: "RINGS", href: "/shop?gender=Male&category=rings" },
+      { label: "NECKLACES", href: "/shop?gender=Male&category=necklaces" },
+      { label: "EARRINGS", href: "/shop?gender=Male&category=earrings" },
+      { label: "BRACELETS", href: "/shop?gender=Male&category=bracelets" },
+      { label: "PANT CHAINS", href: "/shop?gender=Male&category=pant-chains" },
     ],
   },
 
@@ -90,17 +57,15 @@ export const MENU: MenuItem[] = [
     type: "accordion",
     label: "FASHION",
     children: [
-      { label: "JEWELRY TYPE", href: "/fashion/jewelry-type" },
+      { label: "RINGS", href: "/shop?gender=Unisex&category=rings" },
+      { label: "NECKLACES", href: "/shop?gender=Unisex&category=necklaces" },
+      { label: "EARRINGS", href: "/shop?gender=Unisex&category=earrings" },
+      { label: "BRACELETS", href: "/shop?gender=Unisex&category=bracelets" },
       {
-        label: "RINGS",
-        href: "/fashion/rings",
-        count: PLACEHOLDER_COUNTS.fashion.rings,
+        label: "PANT CHAINS",
+        href: "/shop?gender=Unisex&category=pant-chains",
       },
-      {
-        label: "NECKLACES",
-        href: "/fashion/necklaces",
-        count: PLACEHOLDER_COUNTS.fashion.necklaces,
-      },
+      { label: "ANKLETS", href: "/shop?gender=Unisex&category=anklets" },
     ],
   },
 

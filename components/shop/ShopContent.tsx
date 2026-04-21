@@ -48,7 +48,6 @@ export default function ShopContent() {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("newest");
   const [filters, setFilters] = useState<SidebarFilters>({
     ...EMPTY_FILTERS,
     collections: collectionParam ? [collectionParam] : [],
@@ -94,7 +93,6 @@ export default function ShopContent() {
         page: currentPage,
         limit: ITEMS_PER_PAGE,
         search: search || undefined,
-        sort,
         collection: filters.collections[0] || undefined,
         category: filters.categories[0] || undefined,
         material: filters.materials[0] || undefined,
@@ -114,7 +112,7 @@ export default function ShopContent() {
     } finally {
       setIsLoading(false);
     }
-  }, [filters, currentPage, sort, search]);
+  }, [filters, currentPage, search]);
 
   useEffect(() => {
     fetchProducts();
@@ -137,11 +135,6 @@ export default function ShopContent() {
           showFilters={showFilters}
           onToggleFilters={() => setShowFilters((prev) => !prev)}
           onToggleMobileFilters={() => setShowMobileFilters((prev) => !prev)}
-          sort={sort}
-          onSortChange={(val) => {
-            setSort(val);
-            setCurrentPage(1);
-          }}
         />
 
         <div className="flex gap-8">

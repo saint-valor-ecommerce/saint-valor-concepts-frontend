@@ -3,15 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import {
-  ChevronDown,
-  ChevronRight,
-  Heart,
-  X,
-  Search,
-  User,
-} from "lucide-react";
-import { CurrencyDropdown } from "../CurrencyDropdown";
+import { ChevronDown, ChevronRight, Heart, X, User } from "lucide-react";
 import { MENU } from "../../../data/mobileDrawer";
 import LinkButton from "../../ui/LinkButton";
 import { useAuthStore } from "@/store/authStore";
@@ -28,7 +20,6 @@ type DrawerProps = {
 
 export default function MobileDrawer({ isOpen, onClose }: DrawerProps) {
   const [openSection, setOpenSection] = useState<string | null>(null);
-  const [query, setQuery] = useState("");
   const { isLoggedIn, clearAuth, setIsLoggingOut } = useAuthStore();
 
   const router = useRouter();
@@ -70,23 +61,8 @@ export default function MobileDrawer({ isOpen, onClose }: DrawerProps) {
         aria-label="Mobile navigation"
       >
         <div className="flex h-full flex-col">
-          {/* Top: Search */}
-          <div className="px-4 pt-4">
-            <div className="flex items-center gap-3">
-              {/* Search Field */}
-              <div className="relative flex-1 max-w-md border-b border-burgundy/30 focus-within:border-burgundy transition-colors">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-burgundy/70" />
-
-                <input
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search..."
-                  aria-label="Search"
-                  className="w-full bg-transparent py-2 pl-9 pr-2 text-sm outline-none"
-                />
-              </div>
-
-              {/* Close Button */}
+          <div className="px-4 pt-2">
+            <div className="flex justify-end">
               <button
                 type="button"
                 aria-label="Close menu"
@@ -97,22 +73,20 @@ export default function MobileDrawer({ isOpen, onClose }: DrawerProps) {
               </button>
             </div>
 
-            {/* Logo + currency */}
-            <div className="mt-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 overflow-hidden rounded-full bg-burgundy/10">
+            {/* Logo */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="h-10 w-10 overflow-hidden rounded-full bg-burgundy/10">
                   <Image
                     src="/images/Logo.svg"
-                    width={32}
-                    height={32}
+                    width={42}
+                    height={42}
                     style={{ height: "auto" }}
                     alt="Logo"
-                    className="h-8 w-8 object-contain"
+                    className="h-10 w-10 object-contain"
                   />
                 </div>
               </div>
-
-              <CurrencyDropdown />
             </div>
           </div>
 
@@ -169,12 +143,6 @@ export default function MobileDrawer({ isOpen, onClose }: DrawerProps) {
                                 className="flex items-center gap-2 py-1 text-xs font-medium uppercase tracking-wide text-charcoal"
                               >
                                 <span>{child.label}</span>
-
-                                {typeof child.count === "number" && (
-                                  <span className="text-charcoal">
-                                    ({child.count})
-                                  </span>
-                                )}
                               </Link>
                             </li>
                           ))}
