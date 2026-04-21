@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CategoriesSearch from "./CategoriesSearch";
 import CategoriesEmptyState from "./CategoriesEmptyState";
 import DeleteCategoryModal from "./DeleteCategoryModal";
@@ -23,6 +23,7 @@ const CategoriesTable = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null);
   const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(
     null,
@@ -101,7 +102,11 @@ const CategoriesTable = () => {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = () => setOpenMenuId(null);
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setOpenMenuId(null);
+      }
+    };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -196,7 +201,7 @@ const CategoriesTable = () => {
               {/* Actions Menu */}
               <div
                 className="relative"
-                onMouseDown={(e) => e.stopPropagation()}
+                ref={openMenuId === cat._id ? menuRef : null}
               >
                 <button
                   onClick={() =>
