@@ -8,11 +8,13 @@ import { Product } from "@/types/product";
 
 const NewArrivals = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getNewArrivals()
       .then(setProducts)
-      .catch(() => toast.error("Something went wrong. Please try again."));
+      .catch(() => toast.error("Something went wrong. Please try again."))
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -20,6 +22,7 @@ const NewArrivals = () => {
       title="New Arrivals"
       subtitle="The latest additions, thoughtfully crafted to complement evolving style and contemporary luxury."
       products={products}
+      isLoading={isLoading}
     />
   );
 };

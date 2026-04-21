@@ -23,9 +23,6 @@ export default function JewelryCarousel() {
       {/* CTA */}
       <div className="flex flex-col items-center gap-3">
         <LinkButton href="/shop" label="View all" variant="primary" size="sm" />
-        <p className="text-sm text-secondary">
-          Custom designs start from $5000+
-        </p>
       </div>
     </section>
   );

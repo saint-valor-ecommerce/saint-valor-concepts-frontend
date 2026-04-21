@@ -9,33 +9,23 @@ export const CustomJewelrySection: React.FC = () => {
       id: "1",
       imageSrc: "/images/our-story-1.png",
       imageAlt: "Diamond engagement rings",
-      price: 2900,
     },
     {
       id: "2",
       imageSrc: "/images/our-story-1.png",
       imageAlt: "Colorful gemstone ring",
-      price: 2900,
     },
     {
       id: "3",
       imageSrc: "/images/our-story-2.png",
       imageAlt: "Diamond engagement rings",
-      price: 2900,
     },
     {
       id: "4",
       imageSrc: "/images/our-story-2.png",
       imageAlt: "Colorful gemstone ring",
-      price: 2900,
     },
   ];
-
-  const handleAddToCart = (product: Product) => {
-    // Temporary cart logic (until backend/cart is built)
-    console.log("Added to cart:", product);
-    alert(`${product.imageAlt} added to cart`);
-  };
 
   return (
     <section className="bg-ivory py-10 sm:py-14">
@@ -53,7 +43,7 @@ export const CustomJewelrySection: React.FC = () => {
         </header>
 
         <div className="mt-8 sm:mt-10">
-          <ProductGrid products={products} onAddToCart={handleAddToCart} />
+          <ProductGrid products={products} />
         </div>
       </div>
     </section>
