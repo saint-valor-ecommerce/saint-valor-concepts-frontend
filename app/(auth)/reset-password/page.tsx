@@ -55,7 +55,7 @@ function ResetPasswordForm() {
 
     setLoading(true);
     try {
-      await resetPassword(token, formData.password);
+      await resetPassword(token, formData.password, formData.confirmPassword);
       router.push("/reset-password/success");
     } catch {
       setErrors({ form: "Failed to reset password. Please try again." });
