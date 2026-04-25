@@ -79,9 +79,10 @@ export async function sendResetLink(email: string) {
   await api.post("/auth/send-reset-link", { email });
 }
 
-export async function resetPassword(token: string, newPassword: string) {
+export async function resetPassword(token: string, newPassword: string, confirmPassword: string) {
   await api.post("/auth/reset-password", {
     token,
     newPassword,
+    confirmPassword,
   });
 }
