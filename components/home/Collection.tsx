@@ -65,7 +65,7 @@ export default function ShopCollectionSection() {
                 href={`/shop?collection=${item.slug}`}
                 className="group flex flex-col items-center"
               >
-                <div className="relative aspect-4/3 w-full overflow-hidden">
+                <div className="relative aspect-square w-full overflow-hidden">
                   <Image
                     src={item.image!}
                     alt={item.name}

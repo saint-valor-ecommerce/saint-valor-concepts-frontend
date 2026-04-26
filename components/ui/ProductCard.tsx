@@ -29,7 +29,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="relative overflow-hidden aspect-3/4 w-full">
+      <div className="relative overflow-hidden aspect-square w-full">
         <Link href={`/shop/${product._id}`} className="absolute inset-0 z-10" />
 
         <Image
@@ -38,7 +38,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           loading="lazy"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-center transition-transform"
         />
 
         <button
