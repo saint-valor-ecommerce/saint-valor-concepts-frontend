@@ -26,6 +26,7 @@ type FormState = {
   productCollection: string;
   productDescription: string;
   productKarat: string;
+  productDiamondCarat: string;
   productWeight: string;
   productMaterial: string;
   productJewelryType: string;
@@ -51,6 +52,7 @@ const ProductForm = () => {
     productCollection: "",
     productDescription: "",
     productKarat: "",
+    productDiamondCarat: "",
     productWeight: "",
     productMaterial: "",
     productJewelryType: "",
@@ -147,6 +149,7 @@ const ProductForm = () => {
       formData.append("productCollection", form.productCollection);
       formData.append("productDescription", form.productDescription);
       formData.append("productKarat", form.productKarat);
+      formData.append("productDiamondCarat", form.productDiamondCarat);
       formData.append("productWeight", form.productWeight);
       formData.append("productMaterial", form.productMaterial);
       formData.append("productJewelryType", form.productJewelryType);
@@ -269,7 +272,7 @@ const ProductForm = () => {
 
         {/* Karat */}
         <div className="flex flex-col gap-1">
-          <label className={labelClass}>Carat</label>
+          <label className={labelClass}>Gold Carat</label>
           <select
             className={selectClass}
             value={form.productKarat}
@@ -282,6 +285,25 @@ const ProductForm = () => {
               </option>
             ))}
           </select>
+        </div>
+
+        {/* Diamond Carat */}
+        <div className="flex flex-col gap-1">
+          <label className={labelClass}>Diamond Carat</label>
+          <div className="relative">
+            <input
+              className={`${inputClass} pr-8`}
+              placeholder="e.g. 0.75"
+              type="number"
+              step="0.01"
+              min="0"
+              value={form.productDiamondCarat}
+              onChange={(e) => update("productDiamondCarat", e.target.value)}
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-secondary pointer-events-none">
+              CT
+            </span>
+          </div>
         </div>
 
         {/* Weight */}

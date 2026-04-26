@@ -29,6 +29,8 @@ export const JEWELRY_TYPE_OPTIONS = [
   { label: "Earrings", value: "Earrings" },
   { label: "Bracelets", value: "Bracelets" },
   { label: "Anklets", value: "Anklets" },
+  { label: "Pendants", value: "Pendants" },
+  { label: "NeckChain", value: "NeckChain" },
 ];
 
 export const GENDER_OPTIONS = [
