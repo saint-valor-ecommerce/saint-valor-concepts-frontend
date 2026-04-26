@@ -2,22 +2,10 @@ import { TeamGrid } from "./TeamGrid";
 
 const TEAM_MEMBERS = [
   {
-    id: "amara",
-    name: "Amara Voss",
+    id: "jamiu",
+    name: "Jamiu Gbadamosi",
     role: "Founder & Creative Director",
-    imageSrc: "/images/team-1.png",
-  },
-  {
-    id: "julian",
-    name: "Julian Moreau",
-    role: "Head of Design",
-    imageSrc: "/images/team-2.png",
-  },
-  {
-    id: "elena",
-    name: "Elena Rossi",
-    role: "Client Experience & Bespoke Lead",
-    imageSrc: "/images/team-3.png",
+    imageSrc: "/images/IMG_5490.JPG.jpeg",
   },
 ];
 
@@ -28,7 +16,7 @@ const Team = () => {
         {/* Heading */}
         <div className="text-center max-w-2xl mx-auto">
           <h3 className="text-charcoal text-3xl md:text-4xl font-medium leading-tight">
-            The Visionaries Behind <br className="hidden sm:block" />
+            The Visionary Behind <br className="hidden sm:block" />
             Saint Valor
           </h3>
 
