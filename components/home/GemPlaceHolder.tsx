@@ -2,9 +2,7 @@ import Image from "next/image";
 import { Gem } from "@/types/carousel";
 
 const sizeMap: Record<Gem["size"], string> = {
-  sm: "w-[50px] h-[50px]",
   md: "w-[80px] h-[80px]",
-  lg: "w-[112px] h-[112px]",
 };
 
 export default function GemPlaceholder({ gem }: { gem: Gem }) {

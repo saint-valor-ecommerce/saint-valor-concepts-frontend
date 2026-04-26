@@ -58,10 +58,6 @@ textarea {
   .slider-icons {
     @apply p-2 rounded-full bg-gold text-white hover:bg-gold disabled:opacity-30 disabled:cursor-not-allowed transition cursor-pointer;
   }
-
-  .google-sso {
-    @apply w-full cursor-pointer bg-white border border-gray-300 text-gray-700 font-medium py-3 px-4 rounded-full transition-colors flex items-center justify-center gap-2;
-  }
 }
 
 /* Keyframes */
@@ -84,6 +80,10 @@ textarea {
   .animate-fadeIn {
     animation: var(--animate-fade-in);
   }
+
+  .animate-marquee {
+    animation: marquee 12s linear infinite;
+  }
 }
 
 @keyframes fadeIn {
@@ -102,4 +102,17 @@ textarea {
   100% {
     transform: translateX(-50%);
   }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 12s linear infinite;
 }

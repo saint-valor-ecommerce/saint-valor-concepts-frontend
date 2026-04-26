@@ -5,14 +5,14 @@ export const gems: Gem[] = [
     id: 1,
     alt: "Sapphire Ring",
     src: "/images/home/custom-jewelry-4.png",
-    size: "sm",
+    size: "md",
   },
 
   {
     id: 3,
     alt: "Aquamarine",
     src: "/images/home/custom-jewelry-3.png",
-    size: "sm",
+    size: "md",
   },
   {
     id: 2,
@@ -24,7 +24,7 @@ export const gems: Gem[] = [
     id: 4,
     alt: "Diamond Piece",
     src: "/images/home/custom-jewelry-1.png",
-    size: "lg",
+    size: "md",
   },
   {
     id: 6,
@@ -36,13 +36,13 @@ export const gems: Gem[] = [
     id: 5,
     alt: "Emerald",
     src: "/images/home/custom-jewelry-5.png",
-    size: "sm",
+    size: "md",
   },
 
   {
     id: 7,
     alt: "Citrine",
     src: "/images/home/custom-jewelry-7.png",
-    size: "sm",
+    size: "md",
   },
 ];
