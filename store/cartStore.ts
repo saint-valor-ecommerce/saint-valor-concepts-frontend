@@ -27,16 +27,20 @@ export const useCartStore = create<CartStore>()(
         );
 
         if (existing) {
+          const newQuantity = Math.min(existing.quantity + 1, existing.stock);
           set((state) => ({
             items: state.items.map((i) =>
               i.productId === item.productId && i.size === item.size
-                ? { ...i, quantity: i.quantity + 1 }
+                ? { ...i, quantity: newQuantity }
                 : i,
             ),
           }));
         } else {
           set((state) => ({
-            items: [...state.items, { ...item, quantity: 1 }],
+            items: [
+              ...state.items,
+              { ...item, quantity: Math.min(item.quantity || 1, item.stock) },
+            ],
           }));
         }
       },
@@ -53,7 +57,7 @@ export const useCartStore = create<CartStore>()(
         set((state) => ({
           items: state.items.map((i) =>
             i.productId === productId && i.size === size
-              ? { ...i, quantity }
+              ? { ...i, quantity: Math.max(1, Math.min(quantity, i.stock)) }
               : i,
           ),
         }));

@@ -5,4 +5,5 @@ export type CartItem = {
   mainImage: string;
   size: string | null;
   quantity: number;
+  stock: number;
 };

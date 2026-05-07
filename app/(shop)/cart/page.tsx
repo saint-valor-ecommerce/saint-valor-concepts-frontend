@@ -8,7 +8,11 @@ import { toast } from "react-toastify";
 import { useCartStore } from "@/store/cartStore";
 import { useAuthStore } from "@/store/authStore";
 import { getUserProfile } from "@/lib/api/auth";
-import { initializeOrder, buildOrderItems, getDeliveryFees } from "@/lib/api/order";
+import {
+  initializeOrder,
+  buildOrderItems,
+  getDeliveryFees,
+} from "@/lib/api/order";
 import { NIGERIAN_STATES } from "@/lib/utils";
 import AuthPromptModal from "@/components/ui/AuthPromptModal";
 import { ShippingForm } from "@/types/shippingForm";
@@ -44,13 +48,53 @@ const CartPage = () => {
           lastName: user.lastName ?? "",
         }));
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [isLoggedIn]);
 
   // Fetch delivery fees
   useEffect(() => {
     getDeliveryFees().then(setDeliveryData).catch(console.error);
   }, []);
+
+  // Calculate delivery fee
+  const deliveryFee = useMemo(() => {
+    if (!form.state) return null;
+    if (!deliveryData) return 15000; // Safety fallback
+
+    // Try exact match first
+    if (deliveryData.fees[form.state] !== undefined) {
+      return deliveryData.fees[form.state];
+    }
+
+    // Fallback to the backend's default fee
+    return deliveryData.defaultFee;
+  }, [form.state, deliveryData]);
+
+  const inputClass =
+    "w-full bg-white px-3 py-2.5 text-xs text-charcoal placeholder:text-secondary focus:outline-none focus:border-charcoal transition-colors";
+
+  // 2. Early return AFTER hooks
+  if (items.length === 0) {
+    return (
+      <div className="min-h-screen bg-ivory flex flex-col items-center justify-center px-4 gap-5">
+        <ShoppingBag size={40} className="text-border" />
+        <div className="flex flex-col items-center gap-1">
+          <p className="text-sm font-medium text-charcoal">
+            Your cart is empty
+          </p>
+          <p className="text-xs text-secondary text-center">
+            Looks like you haven&apos;t added anything yet.
+          </p>
+        </div>
+        <Link
+          href="/shop"
+          className="text-xs font-semibold text-white bg-gold px-6 py-2.5 hover:bg-gold/90 transition-colors duration-200"
+        >
+          Continue Shopping
+        </Link>
+      </div>
+    );
+  }
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -115,44 +159,6 @@ const CartPage = () => {
     }
   };
 
-  if (items.length === 0) {
-    return (
-      <div className="min-h-screen bg-ivory flex flex-col items-center justify-center px-4 gap-5">
-        <ShoppingBag size={40} className="text-border" />
-        <div className="flex flex-col items-center gap-1">
-          <p className="text-sm font-medium text-charcoal">
-            Your cart is empty
-          </p>
-          <p className="text-xs text-secondary text-center">
-            Looks like you haven&apos;t added anything yet.
-          </p>
-        </div>
-        <Link
-          href="/shop"
-          className="text-xs font-semibold text-white bg-gold px-6 py-2.5 hover:bg-gold/90 transition-colors duration-200"
-        >
-          Continue Shopping
-        </Link>
-      </div>
-    );
-  }
-
-  const deliveryFee = useMemo(() => {
-    if (!form.state) return null;
-    if (!deliveryData) return 15000; // Safety fallback if API is unreachable
-
-    // Try exact match first
-    if (deliveryData.fees[form.state] !== undefined) {
-      return deliveryData.fees[form.state];
-    }
-
-    // Fallback to the backend's default fee
-    return deliveryData.defaultFee;
-  }, [form.state, deliveryData]);
-
-  const inputClass =
-    "w-full bg-white px-3 py-2.5 text-xs text-charcoal placeholder:text-secondary focus:outline-none focus:border-charcoal transition-colors";
-
   return (
     <div className="min-h-screen bg-ivory px-4 md:px-16 py-10">
       <div className="max-w-5xl mx-auto">
@@ -212,38 +218,46 @@ const CartPage = () => {
                     </p>
 
                     <div className="flex items-center justify-between mt-auto pt-2">
-                      <div className="flex items-center border border-border">
-                        <button
-                          onClick={() =>
-                            item.quantity === 1
-                              ? removeFromCart(item.productId, item.size)
-                              : updateQuantity(
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center border border-border">
+                          <button
+                            onClick={() =>
+                              item.quantity === 1
+                                ? removeFromCart(item.productId, item.size)
+                                : updateQuantity(
                                   item.productId,
                                   item.size,
                                   item.quantity - 1,
                                 )
-                          }
-                          className="w-8 h-8 flex items-center justify-center text-charcoal hover:bg-gray-100 transition-colors cursor-pointer"
-                          aria-label="Decrease quantity"
-                        >
-                          <Minus size={12} />
-                        </button>
-                        <span className="w-8 h-8 flex items-center justify-center text-xs font-medium text-charcoal border-x border-border">
-                          {item.quantity}
-                        </span>
-                        <button
-                          onClick={() =>
-                            updateQuantity(
-                              item.productId,
-                              item.size,
-                              item.quantity + 1,
-                            )
-                          }
-                          className="w-8 h-8 flex items-center justify-center text-charcoal hover:bg-gray-100 transition-colors cursor-pointer"
-                          aria-label="Increase quantity"
-                        >
-                          <Plus size={12} />
-                        </button>
+                            }
+                            className="w-8 h-8 flex items-center justify-center text-charcoal hover:bg-gray-100 transition-colors cursor-pointer"
+                            aria-label="Decrease quantity"
+                          >
+                            <Minus size={12} />
+                          </button>
+                          <span className="w-8 h-8 flex items-center justify-center text-xs font-medium text-charcoal border-x border-border">
+                            {item.quantity}
+                          </span>
+                          <button
+                            onClick={() =>
+                              updateQuantity(
+                                item.productId,
+                                item.size,
+                                item.quantity + 1,
+                              )
+                            }
+                            disabled={item.quantity >= item.stock}
+                            className="w-8 h-8 flex items-center justify-center text-charcoal hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                            aria-label="Increase quantity"
+                          >
+                            <Plus size={12} />
+                          </button>
+                        </div>
+                        {item.quantity >= item.stock && (
+                          <p className="text-[10px] text-burgundy mt-1 font-medium">
+                            Max stock reached
+                          </p>
+                        )}
                       </div>
 
                       <button

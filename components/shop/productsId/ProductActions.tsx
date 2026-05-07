@@ -39,6 +39,7 @@ const ProductActions = ({
     mainImage,
     size: selectedSize,
     quantity: 1,
+    stock: selectedSizeObj?.quantity ?? 0,
   };
 
   const isDisabled = sizeRequired || outOfStock;
