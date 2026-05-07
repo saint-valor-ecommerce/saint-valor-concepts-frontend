@@ -16,6 +16,7 @@ const navLinks = [
   { label: "Collections", href: "/admin/collections" },
   { label: "Categories", href: "/admin/categories" },
   { label: "Products", href: "/admin/products" },
+  { label: "Inventory", href: "/admin/inventory" },
 ];
 
 export default function AdminNavbar() {

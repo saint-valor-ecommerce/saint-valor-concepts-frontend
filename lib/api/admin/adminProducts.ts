@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { Product } from "@/types/product";
+import { Product, InventoryItem } from "@/types/product";
 import { Pagination } from "@/types/pagination";
 
 export async function getAllProducts(
@@ -14,6 +14,25 @@ export async function getAllProducts(
   } catch (error) {
     throw new Error(
       error instanceof Error ? error.message : "Failed to fetch products.",
+    );
+  }
+}
+
+export async function getInventory(
+  page = 1,
+  search = "",
+): Promise<{ inventory: InventoryItem[]; pagination: Pagination }> {
+  try {
+    const res = await api.get("/admin/inventory", {
+      params: { page, search },
+    });
+    return {
+      inventory: res.data.data.inventory,
+      pagination: res.data.pagination,
+    };
+  } catch (error) {
+    throw new Error(
+      error instanceof Error ? error.message : "Failed to fetch inventory.",
     );
   }
 }

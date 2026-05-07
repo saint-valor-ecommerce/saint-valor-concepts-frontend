@@ -11,7 +11,7 @@ const PaginationControls = ({ pagination, onPageChange }: Props) => {
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex items-center justify-between pt-4">
+    <div className="flex items-center justify-between pt-4 pb-10">
       <p className="text-xs text-secondary">
         Page {currentPage} of {totalPages}
       </p>
@@ -19,14 +19,14 @@ const PaginationControls = ({ pagination, onPageChange }: Props) => {
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={!hasPrevPage}
-          className="px-4 py-2 text-xs border border-border rounded-full text-charcoal hover:bg-ivory disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 text-xs border border-border rounded-full text-charcoal hover:bg-ivory disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
           Previous
         </button>
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={!hasNextPage}
-          className="px-4 py-2 text-xs border border-border rounded-full text-charcoal hover:bg-ivory disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 text-xs border border-border rounded-full text-charcoal hover:bg-ivory disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
           Next
         </button>

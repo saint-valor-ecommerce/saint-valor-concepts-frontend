@@ -1,3 +1,5 @@
+import { Pagination } from "./pagination";
+
 export interface ProductSize {
   size: string;
   quantity: number;
@@ -61,6 +63,23 @@ export interface Product {
   updatedAt: string;
   productGender: string;
   productLength?: string;
+}
+
+export interface InventoryItem {
+  _id: string;
+  productName: string;
+  productJewelryType: string;
+  productSizes: ProductSize[];
+  mainImage: string;
+  totalStock: number;
+  stockStatus: "out" | "low" | "ok";
+  productPrice?: number;
+  productCategory?: ProductCategory;
+}
+
+export interface InventoryResponse {
+  inventory: InventoryItem[];
+  pagination: Pagination;
 }
 
 export type Category = {
