@@ -4,6 +4,7 @@ import {
   Order,
   InitializeOrderPayload,
   InitializeOrderResponse,
+  DeliveryFeesData,
 } from "@/types/shopOrder";
 
 export function buildOrderItems(items: CartItem[]) {
@@ -29,4 +30,9 @@ export async function getUserOrders(status: "ongoing" | "completed") {
 export async function getOrderById(orderId: string): Promise<Order> {
   const res = await api.get(`/orders/${orderId}`);
   return res.data.data.order;
+}
+
+export async function getDeliveryFees(): Promise<DeliveryFeesData> {
+  const res = await api.get("/orders/delivery-fees");
+  return res.data.data;
 }

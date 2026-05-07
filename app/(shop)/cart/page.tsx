@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Minus, Plus, Trash2, ChevronLeft, ShoppingBag } from "lucide-react";
@@ -8,10 +8,11 @@ import { toast } from "react-toastify";
 import { useCartStore } from "@/store/cartStore";
 import { useAuthStore } from "@/store/authStore";
 import { getUserProfile } from "@/lib/api/auth";
-import { initializeOrder, buildOrderItems } from "@/lib/api/order";
+import { initializeOrder, buildOrderItems, getDeliveryFees } from "@/lib/api/order";
 import { NIGERIAN_STATES } from "@/lib/utils";
 import AuthPromptModal from "@/components/ui/AuthPromptModal";
 import { ShippingForm } from "@/types/shippingForm";
+import { DeliveryFeesData } from "@/types/shopOrder";
 
 const CartPage = () => {
   const { items, removeFromCart, updateQuantity, clearCart, totalPrice } =
@@ -28,6 +29,9 @@ const CartPage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [deliveryData, setDeliveryData] = useState<DeliveryFeesData | null>(
+    null,
+  );
 
   // Pre-fill first and last name from profile
   useEffect(() => {
@@ -42,6 +46,11 @@ const CartPage = () => {
       })
       .catch(() => {});
   }, [isLoggedIn]);
+
+  // Fetch delivery fees
+  useEffect(() => {
+    getDeliveryFees().then(setDeliveryData).catch(console.error);
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -127,6 +136,19 @@ const CartPage = () => {
       </div>
     );
   }
+
+  const deliveryFee = useMemo(() => {
+    if (!form.state) return null;
+    if (!deliveryData) return 15000; // Safety fallback if API is unreachable
+
+    // Try exact match first
+    if (deliveryData.fees[form.state] !== undefined) {
+      return deliveryData.fees[form.state];
+    }
+
+    // Fallback to the backend's default fee
+    return deliveryData.defaultFee;
+  }, [form.state, deliveryData]);
 
   const inputClass =
     "w-full bg-white px-3 py-2.5 text-xs text-charcoal placeholder:text-secondary focus:outline-none focus:border-charcoal transition-colors";
@@ -345,18 +367,39 @@ const CartPage = () => {
                   ₦{totalPrice().toLocaleString()}
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span>Shipping</span>
-                <span className="text-charcoal font-medium">
-                  Calculated at checkout
-                </span>
+              <div className="flex flex-col gap-1.5">
+                <div className="flex justify-between">
+                  <span>Shipping</span>
+                  <span className="text-charcoal font-medium">
+                    {form.state && deliveryFee !== null
+                      ? `₦${deliveryFee.toLocaleString()}`
+                      : "Select state to see fee"}
+                  </span>
+                </div>
+                {/* Standard rate disclaimer */}
+                {form.state &&
+                  deliveryData &&
+                  deliveryData.fees[form.state] === undefined && (
+                    <p className="text-[10px] text-secondary/70 italic text-right">
+                      * Standard delivery rate applied
+                    </p>
+                  )}
+
+                {/* Initial disclaimer */}
+                {!form.state && deliveryData && (
+                  <p className="text-[10px] text-secondary/70 italic text-right">
+                    * Standard fee of ₦
+                    {deliveryData.defaultFee.toLocaleString()} applies to
+                    unlisted states
+                  </p>
+                )}
               </div>
             </div>
 
             <div className="border-t border-border pt-4 flex justify-between items-center">
               <span className="text-sm font-semibold text-charcoal">Total</span>
               <span className="text-sm font-semibold text-charcoal">
-                ₦{totalPrice().toLocaleString()}
+                ₦{(totalPrice() + (deliveryFee ?? 0)).toLocaleString()}
               </span>
             </div>
 

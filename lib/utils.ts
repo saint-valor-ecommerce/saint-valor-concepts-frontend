@@ -62,5 +62,5 @@ export const NIGERIAN_STATES = [
   "Taraba",
   "Yobe",
   "Zamfara",
-  "FCT",
+  "FCT (Abuja)",
 ];

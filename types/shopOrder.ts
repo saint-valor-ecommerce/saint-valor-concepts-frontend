@@ -25,6 +25,17 @@ export type InitializeOrderPayload = {
   shippingMethod: string;
 };
 
+export type DeliveryFeesData = {
+  currency: string;
+  defaultFee: number;
+  fees: Record<string, number>;
+};
+
+export type DeliveryFeesResponse = {
+  status: string;
+  data: DeliveryFeesData;
+};
+
 export type InitializeOrderResponse = {
   authorization_url: string;
   reference: string;
