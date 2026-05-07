@@ -36,6 +36,7 @@ const CartPage = () => {
   const [deliveryData, setDeliveryData] = useState<DeliveryFeesData | null>(
     null,
   );
+  const [hasMounted, setHasMounted] = useState(false);
 
   // Pre-fill first and last name from profile
   useEffect(() => {
@@ -53,6 +54,7 @@ const CartPage = () => {
 
   // Fetch delivery fees
   useEffect(() => {
+    setHasMounted(true);
     getDeliveryFees().then(setDeliveryData).catch(console.error);
   }, []);
 
@@ -72,6 +74,9 @@ const CartPage = () => {
 
   const inputClass =
     "w-full bg-white px-3 py-2.5 text-xs text-charcoal placeholder:text-secondary focus:outline-none focus:border-charcoal transition-colors";
+
+  // Prevent Hydration Mismatch
+  if (!hasMounted) return null;
 
   // 2. Early return AFTER hooks
   if (items.length === 0) {
