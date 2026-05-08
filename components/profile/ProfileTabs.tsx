@@ -4,17 +4,15 @@ import { usePathname } from "next/navigation";
 const TABS: { href: string; label: string }[] = [
   { label: "Profile", href: "/profile" },
   { label: "Orders", href: "/profile/orders" },
-  { label: "Notifications", href: "/profile/notifications" },
 ];
 
 const ProfileTabs = () => {
   const pathname = usePathname();
 
   const tabClass = (tab: (typeof TABS)[0]) =>
-    `pb-3 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
-      pathname === tab.href
-        ? "border-charcoal text-charcoal"
-        : "border-transparent text-secondary hover:text-charcoal"
+    `pb-3 text-sm font-medium border-b-2 transition-colors cursor-pointer ${pathname === tab.href
+      ? "border-charcoal text-charcoal"
+      : "border-transparent text-secondary hover:text-charcoal"
     }`;
 
   return (

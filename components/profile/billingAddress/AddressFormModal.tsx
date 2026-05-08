@@ -1,4 +1,5 @@
 import { Address } from "@/types/address";
+import { NIGERIAN_STATES } from "@/lib/utils";
 
 const COUNTRIES = [
   "Nigeria",
@@ -9,7 +10,7 @@ const COUNTRIES = [
   "South Africa",
 ];
 const STATES: Record<string, string[]> = {
-  Nigeria: ["Lagos", "Abuja", "Rivers", "Kano", "Oyo", "Delta", "Enugu"],
+  Nigeria: NIGERIAN_STATES,
   "United States": ["California", "New York", "Texas", "Florida", "Illinois"],
   "United Kingdom": ["England", "Scotland", "Wales", "Northern Ireland"],
   Canada: ["Ontario", "Quebec", "British Columbia", "Alberta"],
@@ -63,7 +64,7 @@ const AddressFormModal = ({
               placeholder="Enter Street Address"
               value={formData.street}
               onChange={(e) => onChange("street", e.target.value)}
-              className="w-full border border-border rounded-md px-3 py-2 text-sm text-charcoal outline-none focus:border-gold transition"
+              className="w-full border border-border rounded-md px-3 py-2 text-sm text-charcoal outline-none transition"
             />
           </div>
 
@@ -79,7 +80,7 @@ const AddressFormModal = ({
                   onChange("country", e.target.value);
                   onChange("state", "");
                 }}
-                className="w-full border border-border rounded-md px-3 py-2 text-sm text-charcoal outline-none focus:border-gold transition bg-white"
+                className="w-full border border-border rounded-md px-3 py-2 text-sm text-charcoal outline-none transition bg-white"
               >
                 <option value="">Select Country</option>
                 {COUNTRIES.map((c) => (
@@ -97,7 +98,7 @@ const AddressFormModal = ({
                 value={formData.state}
                 onChange={(e) => onChange("state", e.target.value)}
                 disabled={!formData.country}
-                className="w-full border border-border rounded-md px-3 py-2 text-sm text-charcoal outline-none focus:border-gold transition bg-white disabled:text-secondary disabled:cursor-not-allowed"
+                className="w-full border border-border rounded-md px-3 py-2 text-sm text-charcoal outline-none transition bg-white disabled:text-secondary disabled:cursor-not-allowed"
               >
                 <option value="">Select State</option>
                 {availableStates.map((s) => (
@@ -120,7 +121,7 @@ const AddressFormModal = ({
                 placeholder="Enter City"
                 value={formData.city}
                 onChange={(e) => onChange("city", e.target.value)}
-                className="w-full border border-border rounded-md px-3 py-2 text-sm text-charcoal outline-none focus:border-gold transition"
+                className="w-full border border-border rounded-md px-3 py-2 text-sm text-charcoal outline-none transition"
               />
             </div>
             <div>
@@ -132,7 +133,7 @@ const AddressFormModal = ({
                 placeholder="Enter ZIP Code"
                 value={formData.zipCode}
                 onChange={(e) => onChange("zipCode", e.target.value)}
-                className="w-full border border-border rounded-md px-3 py-2 text-sm text-charcoal outline-none focus:border-gold transition"
+                className="w-full border border-border rounded-md px-3 py-2 text-sm text-charcoal outline-none transition"
               />
             </div>
           </div>
