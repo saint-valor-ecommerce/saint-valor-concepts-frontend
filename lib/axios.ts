@@ -30,7 +30,8 @@ api.interceptors.response.use(
         "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
       if (!window.location.pathname.includes("/sign-in")) {
-        window.location.href = "/sign-in";
+        const isAdminPath = window.location.pathname.startsWith("/admin");
+        window.location.href = isAdminPath ? "/admin/sign-in" : "/";
       }
     }
     return Promise.reject(error);
