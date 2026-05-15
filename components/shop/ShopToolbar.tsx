@@ -43,6 +43,7 @@ const ShopToolbar = ({
           type="text"
           placeholder="Search..."
           value={search}
+          maxLength={100}
           onChange={(e) => onSearchChange(e.target.value)}
           className="text-xs text-charcoal outline-none bg-transparent w-full placeholder:text-secondary"
         />

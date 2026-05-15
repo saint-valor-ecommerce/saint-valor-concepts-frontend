@@ -30,7 +30,7 @@ const EmailVerification: React.FC = () => {
         <p className="text-charcoal text-sm mb-6">
           Click on the link we sent to{" "}
           <span className="font-bold text-charcoal">{email}</span> to finish
-          your account set-up.
+          your password reset.
         </p>
 
         <p className="text-center text-sm text-gray-500 mt-4">

@@ -22,6 +22,7 @@ const ProductsTable = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -32,19 +33,37 @@ const ProductsTable = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      const trimmed = search.trim();
+      if (trimmed.length === 1) return;
+      setDebouncedSearch(trimmed);
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  useEffect(() => {
+    const controller = new AbortController();
     const fetchProducts = async () => {
       try {
-        const { products, pagination } = await getAllProducts(page);
+        setIsLoading(true);
+        const { products, pagination } = await getAllProducts(
+          page,
+          debouncedSearch,
+          controller.signal,
+        );
         setProducts(products);
         setPagination(pagination);
-      } catch {
+      } catch (error: any) {
+        if (error.name === "CanceledError" || error.code === "ERR_CANCELED") return;
         toast.error("Failed to load products.");
       } finally {
         setIsLoading(false);
       }
     };
     fetchProducts();
-  }, [page]);
+    return () => controller.abort();
+  }, [page, debouncedSearch]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -98,9 +117,8 @@ const ProductsTable = () => {
     setOpenMenuId(null);
   };
 
-  const filtered = products.filter((p) =>
-    p.productName.toLowerCase().includes(search.toLowerCase()),
-  );
+  // No client-side filtering needed anymore as we use backend search
+  const filtered = products;
 
   if (isLoading) {
     return (
@@ -129,6 +147,7 @@ const ProductsTable = () => {
             className="w-full border-b border-border pl-8 pr-3 py-2 text-xs text-charcoal placeholder:text-secondary/60 focus:outline-none focus:border-charcoal transition-colors bg-transparent"
             placeholder="Search..."
             value={search}
+            maxLength={100}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>

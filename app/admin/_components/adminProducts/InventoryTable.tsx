@@ -20,22 +20,28 @@ const InventoryTable = () => {
   // Debounce search input for background fetching
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedSearch(search);
-    }, 500);
+      const trimmed = search.trim();
+      if (trimmed.length === 1) return;
+      setDebouncedSearch(trimmed);
+      setPage(1);
+    }, 300);
     return () => clearTimeout(timer);
   }, [search]);
 
   useEffect(() => {
+    const controller = new AbortController();
     const fetchProducts = async (showLoading = true) => {
       try {
         if (showLoading) setIsLoading(true);
         const { inventory, pagination } = await getInventory(
           page,
           debouncedSearch,
+          controller.signal,
         );
         setProducts(inventory);
         setPagination(pagination);
-      } catch {
+      } catch (error: any) {
+        if (error.name === "CanceledError" || error.code === "ERR_CANCELED") return;
         toast.error("Failed to load inventory.");
       } finally {
         if (showLoading) setIsLoading(false);
@@ -45,12 +51,11 @@ const InventoryTable = () => {
     // Only show the skeleton for page changes or initial load
     // For search, fetch silently in the background
     fetchProducts(page !== 1 || !products.length);
+    return () => controller.abort();
   }, [page, debouncedSearch]);
 
-  // Instant client-side filter for current page
-  const filtered = products.filter((p) =>
-    p.productName.toLowerCase().includes(search.toLowerCase()),
-  );
+  // No client-side filtering needed as we use backend search
+  const filtered = products;
 
   if (isLoading) {
     return (
@@ -79,6 +84,7 @@ const InventoryTable = () => {
             className="w-full border-b border-border pl-8 pr-3 py-2 text-xs text-charcoal placeholder:text-secondary/60 focus:outline-none focus:border-charcoal transition-colors bg-transparent"
             placeholder="Search inventory by product name..."
             value={search}
+            maxLength={100}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>

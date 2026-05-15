@@ -4,9 +4,14 @@ import { Pagination } from "@/types/pagination";
 
 export async function getAllProducts(
   page = 1,
+  search = "",
+  signal?: AbortSignal,
 ): Promise<{ products: Product[]; pagination: Pagination }> {
   try {
-    const res = await api.get("/admin/products", { params: { page } });
+    const res = await api.get("/admin/products", {
+      params: { page, search },
+      signal,
+    });
     return {
       products: res.data.data.products,
       pagination: res.data.pagination,
@@ -21,10 +26,12 @@ export async function getAllProducts(
 export async function getInventory(
   page = 1,
   search = "",
+  signal?: AbortSignal,
 ): Promise<{ inventory: InventoryItem[]; pagination: Pagination }> {
   try {
     const res = await api.get("/admin/inventory", {
       params: { page, search },
+      signal,
     });
     return {
       inventory: res.data.data.inventory,

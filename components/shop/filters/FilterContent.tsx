@@ -57,10 +57,10 @@ const FilterContent = ({
       </FilterSection>
       <FilterSection title="Price">
         <PriceRangeFilter
-          min={filters.minPrice}
-          max={filters.maxPrice}
-          onMinChange={(val) => onChange({ ...filters, minPrice: val })}
-          onMaxChange={(val) => onChange({ ...filters, maxPrice: val })}
+          min={filters.priceMin}
+          max={filters.priceMax}
+          onMinChange={(val) => onChange({ ...filters, priceMin: val })}
+          onMaxChange={(val) => onChange({ ...filters, priceMax: val })}
         />
       </FilterSection>
       <FilterSection title="Material">

@@ -23,8 +23,8 @@ export interface ProductFilters {
   limit?: number;
   category?: string;
   collection?: string;
-  minPrice?: number;
-  maxPrice?: number;
+  priceMin?: number;
+  priceMax?: number;
   inStock?: boolean;
   search?: string;
   material?: string;

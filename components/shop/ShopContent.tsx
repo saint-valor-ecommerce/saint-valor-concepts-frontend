@@ -23,8 +23,8 @@ const EMPTY_FILTERS: SidebarFilters = {
   collections: [],
   weights: [],
   sizes: [],
-  minPrice: "",
-  maxPrice: "",
+  priceMin: "",
+  priceMax: "",
   materials: [],
   karats: [],
   jewelryTypes: [],
@@ -79,14 +79,18 @@ export default function ShopContent() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setSearch(searchInput);
+      const trimmedSearch = searchInput.trim();
+      // Skip queries shorter than 2 characters - but allow empty to reset search
+      if (trimmedSearch.length === 1) return;
+      
+      setSearch(trimmedSearch);
       setCurrentPage(1);
-    }, 400);
+    }, 300);
     return () => clearTimeout(timer);
   }, [searchInput]);
 
   // fetch products when filters/page/sort/search change
-  const fetchProducts = useCallback(async () => {
+  const fetchProducts = useCallback(async (signal?: AbortSignal) => {
     try {
       setIsLoading(true);
       const result = await getAllProducts({
@@ -100,14 +104,15 @@ export default function ShopContent() {
         jewelryType: filters.jewelryTypes[0] || undefined,
         size: filters.sizes[0] || undefined,
         weight: filters.weights[0] || undefined,
-        minPrice: filters.minPrice ? Number(filters.minPrice) : undefined,
-        maxPrice: filters.maxPrice ? Number(filters.maxPrice) : undefined,
+        priceMin: filters.priceMin ? Number(filters.priceMin) : undefined,
+        priceMax: filters.priceMax ? Number(filters.priceMax) : undefined,
         gender: filters.gender || undefined,
-      });
+      }, signal);
       setProducts(result.products);
       setTotalItems(result.totalItems);
       setTotalPages(result.totalPages);
-    } catch {
+    } catch (error: any) {
+      if (error.name === "CanceledError" || error.code === "ERR_CANCELED") return;
       toast.error("Unable to load products. Please try again.");
     } finally {
       setIsLoading(false);
@@ -115,7 +120,9 @@ export default function ShopContent() {
   }, [filters, currentPage, search]);
 
   useEffect(() => {
-    fetchProducts();
+    const controller = new AbortController();
+    fetchProducts(controller.signal);
+    return () => controller.abort();
   }, [fetchProducts]);
 
   // reset to page 1 when filters change

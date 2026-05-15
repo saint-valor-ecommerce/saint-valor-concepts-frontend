@@ -4,9 +4,14 @@ import { Pagination } from "@/types/pagination";
 
 export async function getAllUsers(
   page = 1,
+  search = "",
+  signal?: AbortSignal,
 ): Promise<{ users: User[]; pagination: Pagination }> {
   try {
-    const res = await api.get("/admin/users", { params: { page } });
+    const res = await api.get("/admin/users", {
+      params: { page, search },
+      signal,
+    });
     return {
       users: res.data.data.users,
       pagination: res.data.pagination,

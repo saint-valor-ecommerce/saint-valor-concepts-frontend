@@ -9,8 +9,12 @@ import {
 
 export const getAllProducts = async (
   filters?: ProductFilters,
+  signal?: AbortSignal,
 ): Promise<PaginatedProducts> => {
-  const { data } = await publicApi.get("/products", { params: filters });
+  const { data } = await publicApi.get("/products", {
+    params: filters,
+    signal,
+  });
   return {
     products: data.data.products,
     totalItems: data.pagination.totalItems,

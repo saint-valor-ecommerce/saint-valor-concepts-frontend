@@ -2,8 +2,8 @@ export interface SidebarFilters {
   collections: string[];
   weights: string[];
   sizes: string[];
-  minPrice: string;
-  maxPrice: string;
+  priceMin: string;
+  priceMax: string;
   materials: string[];
   karats: string[];
   jewelryTypes: string[];
