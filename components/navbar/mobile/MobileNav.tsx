@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import MobileDrawer from "./MobileDrawer";
+import { CurrencyDropdown } from "../CurrencyDropdown";
 
 const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,13 +19,14 @@ const MobileNav = () => {
               src="/images/Logo.svg"
               width={50}
               height={50}
-              style={{ height: "auto" }}
+              style={{ width: "50px", height: "auto" }}
               alt="Saint Valor Logo"
             />
           </Link>
         </div>
 
-        <div>
+        <div className="flex items-center gap-2">
+          <CurrencyDropdown />
           <button
             type="button"
             aria-label="Open Hamburger Menu"

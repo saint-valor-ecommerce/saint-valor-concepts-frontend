@@ -2,11 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { useCurrencyStore, Currency } from "@/store/currencyStore";
+import dynamic from "next/dynamic";
 
-type Currency = "USD" | "NGN";
-
-export function CurrencyDropdown() {
-  const [currency, setCurrency] = useState<Currency>("USD");
+function CurrencyDropdownClient() {
+  const { currency, setCurrency } = useCurrencyStore();
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
@@ -23,7 +23,7 @@ export function CurrencyDropdown() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const options: Currency[] = ["USD", "NGN"];
+  const options: Currency[] = ["NGN", "USD", "GBP", "CAD"];
 
   return (
     <div ref={wrapperRef} className="relative inline-block">
@@ -74,3 +74,13 @@ export function CurrencyDropdown() {
     </div>
   );
 }
+
+export const CurrencyDropdown = dynamic(() => Promise.resolve(CurrencyDropdownClient), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center h-10 px-3 text-charcoal">
+      <span className="text-sm font-medium">NGN</span>
+      <ChevronDown className="w-4 h-4 ml-1" />
+    </div>
+  ),
+});

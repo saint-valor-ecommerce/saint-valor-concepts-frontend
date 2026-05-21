@@ -12,7 +12,7 @@ const AuthHeader = ({ title, description }: AuthHeaderProps) => {
         src="/images/Logo.svg"
         width={44}
         height={44}
-        style={{ height: "auto" }}
+        style={{ width: "44px", height: "auto" }}
         alt="Saint Valor Logo"
       />
 

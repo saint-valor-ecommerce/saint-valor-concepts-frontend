@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Heart } from "lucide-react";
 import UserMenu from "../UserMenu";
 import CartIcon from "@/components/ui/CartIcon";
+import { CurrencyDropdown } from "../CurrencyDropdown";
 
 const navStyles =
   "flex items-center justify-center text-burgundy cursor-pointer";
@@ -23,6 +24,7 @@ const DesktopTopNav = () => {
       </div>
 
       <div className="flex items-center gap-2.5">
+        <CurrencyDropdown />
         <UserMenu />
 
         {/* Cart */}

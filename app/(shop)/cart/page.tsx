@@ -15,13 +15,17 @@ import {
 } from "@/lib/api/order";
 import { NIGERIAN_STATES } from "@/lib/utils";
 import AuthPromptModal from "@/components/ui/AuthPromptModal";
+import USDPaymentModal from "@/components/ui/USDPaymentModal";
+import { useCurrencyStore } from "@/store/currencyStore";
 import { ShippingForm } from "@/types/shippingForm";
 import { DeliveryFeesData } from "@/types/shopOrder";
+import dynamic from "next/dynamic";
 
-const CartPage = () => {
+const CartPageClient = () => {
   const { items, removeFromCart, updateQuantity, clearCart, totalPrice } =
     useCartStore();
   const { isLoggedIn } = useAuthStore();
+  const { currency, formatPrice } = useCurrencyStore();
 
   const [form, setForm] = useState<ShippingForm>({
     firstName: "",
@@ -30,13 +34,14 @@ const CartPage = () => {
     address: "",
     state: "",
     city: "",
+    country: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showUSDPaymentModal, setShowUSDPaymentModal] = useState(false);
   const [deliveryData, setDeliveryData] = useState<DeliveryFeesData | null>(
     null,
   );
-  const [hasMounted, setHasMounted] = useState(false);
 
   // Pre-fill first and last name from profile
   useEffect(() => {
@@ -54,7 +59,6 @@ const CartPage = () => {
 
   // Fetch delivery fees
   useEffect(() => {
-    setHasMounted(true);
     getDeliveryFees().then(setDeliveryData).catch(console.error);
   }, []);
 
@@ -74,9 +78,6 @@ const CartPage = () => {
 
   const inputClass =
     "w-full bg-white px-3 py-2.5 text-xs text-charcoal placeholder:text-secondary focus:outline-none focus:border-charcoal transition-colors";
-
-  // Prevent Hydration Mismatch
-  if (!hasMounted) return null;
 
   // 2. Early return AFTER hooks
   if (items.length === 0) {
@@ -108,8 +109,17 @@ const CartPage = () => {
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const cleaned = e.target.value.replace(/\D/g, "").slice(0, 11);
-    setForm((prev) => ({ ...prev, phoneNumber: cleaned }));
+    if (currency === "NGN") {
+      const cleaned = e.target.value.replace(/\D/g, "").slice(0, 11);
+      setForm((prev) => ({ ...prev, phoneNumber: cleaned }));
+    } else {
+      // International phone format: allow digits and a single leading +, max 15 digits
+      const val = e.target.value;
+      const hasPlus = val.startsWith("+");
+      const digits = val.replace(/\D/g, "");
+      const cleaned = (hasPlus ? "+" : "") + digits.slice(0, 15);
+      setForm((prev) => ({ ...prev, phoneNumber: cleaned }));
+    }
   };
 
   const handleCheckout = async () => {
@@ -123,21 +133,36 @@ const CartPage = () => {
       return;
     }
 
-    const { firstName, lastName, phoneNumber, address, state, city } = form;
+    const { firstName, lastName, phoneNumber, address, state, city, country } = form;
     if (
       !firstName ||
       !lastName ||
       !phoneNumber ||
       !address ||
       !state ||
-      !city
+      !city ||
+      (currency !== "NGN" && !country)
     ) {
       toast.error("Please fill in all shipping details.");
       return;
     }
 
-    if (phoneNumber.length !== 11 || !phoneNumber.startsWith("0")) {
-      toast.error("Enter a valid phone number (e.g. 08012345678).");
+    if (currency === "NGN") {
+      if (phoneNumber.length !== 11 || !phoneNumber.startsWith("0")) {
+        toast.error("Enter a valid phone number (e.g. 08012345678).");
+        return;
+      }
+    } else {
+      const digitCount = phoneNumber.replace(/\D/g, "").length;
+      if (digitCount < 7 || digitCount > 15) {
+        toast.error("Enter a valid phone number (between 7 and 15 digits).");
+        return;
+      }
+    }
+
+    // International orders using USD/GBP/CAD bypass Paystack and go to Citibank Bank Transfer Modal
+    if (currency !== "NGN") {
+      setShowUSDPaymentModal(true);
       return;
     }
 
@@ -162,6 +187,12 @@ const CartPage = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleConfirmUSDPayment = () => {
+    clearCart();
+    toast.success("Order request sent! Please contact us on Instagram/Email with your payment receipt.");
+    window.location.href = "/profile/orders";
   };
 
   return (
@@ -202,7 +233,7 @@ const CartPage = () => {
                       src={item.mainImage}
                       alt={item.productName}
                       fill
-                      sizes="96px"
+                      sizes="(max-width: 768px) 160px, 192px"
                       className="object-cover"
                     />
                   </div>
@@ -219,7 +250,7 @@ const CartPage = () => {
                     )}
 
                     <p className="text-sm font-semibold text-charcoal">
-                      ₦{(item.productPrice ?? 0).toLocaleString()}
+                      {formatPrice(item.productPrice ?? 0)}
                     </p>
 
                     <div className="flex items-center justify-between mt-auto pt-2">
@@ -345,28 +376,54 @@ const CartPage = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <select
-                  name="state"
-                  value={form.state}
-                  onChange={handleChange}
-                  className={inputClass}
-                >
-                  <option value="">Select state</option>
-                  {NIGERIAN_STATES.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  name="city"
-                  value={form.city}
-                  onChange={handleChange}
-                  placeholder="City"
-                  className={inputClass}
-                />
-              </div>
+              {currency !== "NGN" ? (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <input
+                    name="country"
+                    value={form.country || ""}
+                    onChange={handleChange}
+                    placeholder="Country"
+                    className={inputClass}
+                  />
+                  <input
+                    name="state"
+                    value={form.state}
+                    onChange={handleChange}
+                    placeholder="State / Province"
+                    className={inputClass}
+                  />
+                  <input
+                    name="city"
+                    value={form.city}
+                    onChange={handleChange}
+                    placeholder="City"
+                    className={inputClass}
+                  />
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <select
+                    name="state"
+                    value={form.state}
+                    onChange={handleChange}
+                    className={inputClass}
+                  >
+                    <option value="">Select state</option>
+                    {NIGERIAN_STATES.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    name="city"
+                    value={form.city}
+                    onChange={handleChange}
+                    placeholder="City"
+                    className={inputClass}
+                  />
+                </div>
+              )}
             </div>
           </div>
 
@@ -383,7 +440,7 @@ const CartPage = () => {
                   items)
                 </span>
                 <span className="text-charcoal font-medium">
-                  ₦{totalPrice().toLocaleString()}
+                  {formatPrice(totalPrice())}
                 </span>
               </div>
               <div className="flex flex-col gap-1.5">
@@ -391,7 +448,7 @@ const CartPage = () => {
                   <span>Shipping</span>
                   <span className="text-charcoal font-medium">
                     {form.state && deliveryFee !== null
-                      ? `₦${deliveryFee.toLocaleString()}`
+                      ? formatPrice(deliveryFee)
                       : "Select state to see fee"}
                   </span>
                 </div>
@@ -407,9 +464,7 @@ const CartPage = () => {
                 {/* Initial disclaimer */}
                 {!form.state && deliveryData && (
                   <p className="text-[10px] text-secondary/70 italic text-right">
-                    * Standard fee of ₦
-                    {deliveryData.defaultFee.toLocaleString()} applies to
-                    unlisted states
+                    * Standard fee of {formatPrice(deliveryData.defaultFee)} applies to unlisted states
                   </p>
                 )}
               </div>
@@ -418,20 +473,22 @@ const CartPage = () => {
             <div className="border-t border-border pt-4 flex justify-between items-center">
               <span className="text-sm font-semibold text-charcoal">Total</span>
               <span className="text-sm font-semibold text-charcoal">
-                ₦{(totalPrice() + (deliveryFee ?? 0)).toLocaleString()}
+                {formatPrice(totalPrice() + (deliveryFee ?? 0))}
               </span>
             </div>
 
             <button
               onClick={handleCheckout}
               disabled={isSubmitting}
-              className="w-full bg-gold text-white py-3.5 text-sm font-medium hover:bg-gold/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 cursor-pointer"
+              className="w-full bg-gold text-white py-3.5 text-sm font-medium hover:bg-gold/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 cursor-pointer text-center"
             >
-              {isSubmitting ? "Processing..." : "Proceed to Checkout"}
+              {isSubmitting ? "Processing..." : currency === "NGN" ? "Proceed to Checkout" : "Proceed to Payment"}
             </button>
 
             <p className="text-[11px] text-secondary text-center">
-              Secure checkout powered by Paystack
+              {currency === "NGN"
+                ? "Secure checkout powered by Paystack"
+                : "Secure checkout via Citibank USD Bank Transfer"}
             </p>
           </div>
         </div>
@@ -444,8 +501,27 @@ const CartPage = () => {
         title="Sign in to proceed to checkout"
         description="Create an account or sign in to complete your purchase."
       />
+
+      <USDPaymentModal
+        isOpen={showUSDPaymentModal}
+        onClose={() => setShowUSDPaymentModal(false)}
+        cartItems={items}
+        totalPriceNaira={totalPrice()}
+        deliveryFeeNaira={deliveryFee}
+        shippingDetails={form}
+        onConfirm={handleConfirmUSDPayment}
+      />
     </div>
   );
 };
+
+const CartPage = dynamic(() => Promise.resolve(CartPageClient), {
+  ssr: false,
+  loading: () => (
+    <div className="min-h-screen bg-ivory flex items-center justify-center">
+      <div className="text-sm font-medium text-charcoal">Loading Cart...</div>
+    </div>
+  ),
+});
 
 export default CartPage;

@@ -9,6 +9,8 @@ import AuthPromptModal from "./AuthPromptModal";
 import { useState } from "react";
 import { useAuthStore } from "@/store/authStore";
 
+import { useCurrencyStore } from "@/store/currencyStore";
+
 interface ProductCardProps {
   product: Product;
 }
@@ -18,6 +20,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const isFavourite = favouriteIds.has(product._id);
   const { isLoggedIn } = useAuthStore();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const { formatPrice } = useCurrencyStore();
 
   const handleFavourites = () => {
     if (!isLoggedIn) {
@@ -78,7 +81,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.productName}
         </p>
         <p className="text-sm font-semibold text-charcoal">
-          ₦{(product.productPrice ?? 0).toLocaleString()}
+          {formatPrice(product.productPrice ?? 0)}
         </p>
       </Link>
 

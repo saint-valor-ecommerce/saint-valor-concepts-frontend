@@ -5,4 +5,5 @@ export type ShippingForm = {
   address: string;
   state: string;
   city: string;
+  country?: string;
 };

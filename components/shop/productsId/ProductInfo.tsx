@@ -1,3 +1,5 @@
+import { useCurrencyStore } from "@/store/currencyStore";
+
 interface ProductInfoProps {
   categoryName?: string;
   productName: string;
@@ -9,6 +11,8 @@ const ProductInfo = ({
   productName,
   productPrice,
 }: ProductInfoProps) => {
+  const { formatPrice } = useCurrencyStore();
+
   return (
     <div className="flex flex-col gap-2">
       <p className="text-[11px] text-secondary tracking-widest uppercase">
@@ -18,7 +22,7 @@ const ProductInfo = ({
         {productName}
       </h1>
       <p className="text-lg md:text-xl font-semibold text-charcoal">
-        ₦{productPrice.toLocaleString()}
+        {formatPrice(productPrice)}
       </p>
     </div>
   );
