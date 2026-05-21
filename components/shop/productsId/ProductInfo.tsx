@@ -1,3 +1,4 @@
+'use client'
 import { useCurrencyStore } from "@/store/currencyStore";
 
 interface ProductInfoProps {

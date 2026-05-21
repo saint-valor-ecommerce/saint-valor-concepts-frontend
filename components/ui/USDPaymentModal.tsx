@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X, Copy, Check, Instagram, Mail, ExternalLink, ClipboardCheck } from "lucide-react";
 import { useCurrencyStore } from "@/store/currencyStore";
 import { CartItem } from "@/types/cart";
@@ -24,16 +24,16 @@ interface USDPaymentModalProps {
   onConfirm: () => void;
 }
 
-const BANK_DETAILS = {
-  bankName: "Citibank",
-  transferType: "Local transfer",
-  bankAddress: "111 Wall Street New York, NY 10043 USA",
-  routingABA: "031100209",
-  swiftCode: "CITIUS33",
-  accountNumber: "70580450002373046",
-  accountType: "CHECKING",
-  beneficiaryName: "Saint Valor Concepts",
-};
+interface BankDetails {
+  bankName: string;
+  transferType: string;
+  bankAddress: string;
+  routingABA: string;
+  swiftCode: string;
+  accountNumber: string;
+  accountType: string;
+  beneficiaryName: string;
+}
 
 export default function USDPaymentModal({
   isOpen,
@@ -45,9 +45,36 @@ export default function USDPaymentModal({
   onConfirm,
 }: USDPaymentModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const { formatPrice } = useCurrencyStore();
+  const { currency: activeCurrency, formatPrice } = useCurrencyStore();
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [copiedSummary, setCopiedSummary] = useState(false);
+  const [bankDetails, setBankDetails] = useState<BankDetails | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      // Defer state updates to prevent synchronous cascading render warning
+      const timer = setTimeout(() => {
+        setIsLoading(true);
+      }, 0);
+
+      fetch("/api/bank-details")
+        .then((res) => res.json())
+        .then((resData) => {
+          if (resData.success && resData.data) {
+            setBankDetails(resData.data);
+          }
+        })
+        .catch((err) => {
+          console.error("Failed to load bank details dynamically:", err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -66,17 +93,24 @@ export default function USDPaymentModal({
     };
   }, [isOpen]);
 
-  const handleCopyField = (label: string, value: string) => {
-    navigator.clipboard.writeText(value);
-    setCopiedField(label);
-    toast.success(`${label} copied to clipboard!`, { autoClose: 1500 });
-    setTimeout(() => {
-      setCopiedField(null);
-    }, 2000);
+  const handleCopyField = async (label: string, value: string) => {
+    try {
+      if (!navigator.clipboard) {
+        throw new Error("Clipboard API not supported");
+      }
+      await navigator.clipboard.writeText(value);
+      setCopiedField(label);
+      toast.success(`${label} copied to clipboard!`, { autoClose: 1500 });
+      setTimeout(() => {
+        setCopiedField(null);
+      }, 2000);
+    } catch (err) {
+      console.error(`Failed to copy ${label}:`, err);
+      toast.error(`Failed to copy ${label} to clipboard. Please copy it manually.`);
+    }
   };
 
   const getOrderSummaryText = () => {
-    const activeCurrency = useCurrencyStore.getState().currency;
     const formattedSubtotal = formatPrice(totalPriceNaira);
     const formattedShipping = deliveryFeeNaira !== null ? formatPrice(deliveryFeeNaira) : "TBD";
     const formattedTotal = formatPrice(totalPriceNaira + (deliveryFeeNaira ?? 0));
@@ -106,17 +140,24 @@ Payment Method: Citibank USD Bank Transfer (${activeCurrency})
 ---------------------------------`;
   };
 
-  const handleCopySummary = () => {
+  const handleCopySummary = async () => {
     const summary = getOrderSummaryText();
-    navigator.clipboard.writeText(summary);
-    setCopiedSummary(true);
-    toast.success("Order summary copied to clipboard!", { autoClose: 2000 });
-    setTimeout(() => {
-      setCopiedSummary(false);
-    }, 2000);
+    try {
+      if (!navigator.clipboard) {
+        throw new Error("Clipboard API not supported");
+      }
+      await navigator.clipboard.writeText(summary);
+      setCopiedSummary(true);
+      toast.success("Order summary copied to clipboard!", { autoClose: 2000 });
+      setTimeout(() => {
+        setCopiedSummary(false);
+      }, 2000);
+    } catch (err) {
+      console.error("Failed to copy summary:", err);
+      toast.error("Failed to copy order summary. Please copy it manually.");
+    }
   };
 
-  const activeCurrency = useCurrencyStore.getState().currency;
   const grandTotalFormatted = formatPrice(totalPriceNaira + (deliveryFeeNaira ?? 0));
 
   // Pre-filled Email mailto link
@@ -137,7 +178,7 @@ Payment Method: Citibank USD Bank Transfer (${activeCurrency})
       className="backdrop:bg-black/60 bg-transparent p-4 m-auto max-w-lg w-full outline-none"
       aria-labelledby="payment-modal-title"
     >
-      <div className="relative bg-ivory rounded-xl p-6 md:p-8 max-h-[90vh] overflow-y-auto shadow-2xl border border-gold/20 flex flex-col gap-6 text-charcoal">
+      <div className="relative bg-ivory rounded-xl p-6 md:p-8 max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col gap-6 text-charcoal outline-none">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -161,48 +202,59 @@ Payment Method: Citibank USD Bank Transfer (${activeCurrency})
         </div>
 
         {/* Bank Details Card */}
-        <div className="bg-white/80 backdrop-blur-sm border border-gold/10 rounded-lg p-4 md:p-5 flex flex-col gap-3.5 shadow-inner">
-          <p className="text-[10px] uppercase tracking-wider font-semibold text-secondary border-b border-black/5 pb-1">
+        <div className="bg-white/80 backdrop-blur-sm border border-gold/10 rounded-lg p-4 md:p-5 flex flex-col gap-3.5 min-h-[350px] justify-center">
+          <p className="text-sm uppercase tracking-wider font-semibold text-secondary border-b border-black/5 pb-1">
             Citibank Account Details
           </p>
 
-          {[
-            { label: "Beneficiary Name", value: BANK_DETAILS.beneficiaryName },
-            { label: "Bank Name", value: BANK_DETAILS.bankName },
-            { label: "Account Number", value: BANK_DETAILS.accountNumber },
-            { label: "Account Type", value: BANK_DETAILS.accountType },
-            { label: "Routing (ABA)", value: BANK_DETAILS.routingABA },
-            { label: "SWIFT Code", value: BANK_DETAILS.swiftCode },
-            { label: "Transfer Type", value: BANK_DETAILS.transferType },
-            { label: "Bank Address", value: BANK_DETAILS.bankAddress },
-          ].map((field) => (
-            <div key={field.label} className="flex justify-between items-start gap-4 text-xs">
-              <span className="text-secondary font-medium shrink-0 pt-0.5">{field.label}:</span>
-              <div className="flex items-center gap-1.5 min-w-0">
-                <span className="font-semibold text-charcoal text-right break-all select-all">
-                  {field.value}
-                </span>
-                <button
-                  onClick={() => handleCopyField(field.label, field.value)}
-                  className="text-secondary hover:text-gold cursor-pointer transition p-1 hover:bg-black/5 rounded shrink-0"
-                  title={`Copy ${field.label}`}
-                >
-                  {copiedField === field.label ? (
-                    <Check className="w-3.5 h-3.5 text-green-600" />
-                  ) : (
-                    <Copy className="w-3.5 h-3.5" />
-                  )}
-                </button>
-              </div>
+          {isLoading || !bankDetails ? (
+            <div className="flex flex-col gap-4 py-4 animate-pulse">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="flex justify-between items-center gap-4">
+                  <div className="h-3 w-1/3 bg-charcoal/10 rounded"></div>
+                  <div className="h-3 w-1/2 bg-charcoal/10 rounded"></div>
+                </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            [
+              { label: "Beneficiary Name", value: bankDetails.beneficiaryName },
+              { label: "Bank Name", value: bankDetails.bankName },
+              { label: "Account Number", value: bankDetails.accountNumber },
+              { label: "Account Type", value: bankDetails.accountType },
+              { label: "Routing (ABA)", value: bankDetails.routingABA },
+              { label: "SWIFT Code", value: bankDetails.swiftCode },
+              { label: "Transfer Type", value: bankDetails.transferType },
+              { label: "Bank Address", value: bankDetails.bankAddress },
+            ].map((field) => (
+              <div key={field.label} className="flex justify-between items-start gap-4 text-xs">
+                <span className="text-secondary font-medium shrink-0 pt-0.5">{field.label}:</span>
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <span className="font-semibold text-charcoal text-right break-all select-all">
+                    {field.value}
+                  </span>
+                  <button
+                    onClick={() => handleCopyField(field.label, field.value)}
+                    className="text-secondary cursor-pointer transition p-1 hover:bg-black/5 rounded shrink-0"
+                    title={`Copy ${field.label}`}
+                  >
+                    {copiedField === field.label ? (
+                      <Check className="w-3.5 h-3.5 text-green-600" />
+                    ) : (
+                      <Copy className="w-3.5 h-3.5" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
 
         {/* Copy Order Details Button */}
         <div className="flex flex-col gap-2">
           <button
             onClick={handleCopySummary}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-white hover:bg-gold/5 border border-gold/30 rounded-md text-xs font-semibold text-charcoal shadow-sm transition duration-200 cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 py-3 bg-white border border-gold/30 rounded-md text-xs font-semibold text-charcoal shadow-sm transition duration-200 cursor-pointer"
           >
             {copiedSummary ? (
               <>
@@ -265,15 +317,6 @@ Payment Method: Citibank USD Bank Transfer (${activeCurrency})
               className="hover:text-gold flex items-center gap-1 font-medium transition"
             >
               Twitter/X
-            </a>
-            <span>•</span>
-            <a
-              href="https://www.tiktok.com/@saint.valor_?_r=1&_t=ZS-93UzpRUktaZ"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-gold flex items-center gap-1 font-medium transition"
-            >
-              TikTok
             </a>
           </div>
         </div>

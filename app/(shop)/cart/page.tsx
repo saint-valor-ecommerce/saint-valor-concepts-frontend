@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Minus, Plus, Trash2, ChevronLeft, ShoppingBag } from "lucide-react";
 import { toast } from "react-toastify";
@@ -21,7 +22,10 @@ import { ShippingForm } from "@/types/shippingForm";
 import { DeliveryFeesData } from "@/types/shopOrder";
 import dynamic from "next/dynamic";
 
+const INTERNATIONAL_SHIPPING_FEE = 15000; // Flat-rate international shipping fee in NGN (approx $10)
+
 const CartPageClient = () => {
+  const router = useRouter();
   const { items, removeFromCart, updateQuantity, clearCart, totalPrice } =
     useCartStore();
   const { isLoggedIn } = useAuthStore();
@@ -38,7 +42,7 @@ const CartPageClient = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showUSDPaymentModal, setShowUSDPaymentModal] = useState(false);
+  const [showUSDPaymentModal, setShowUSDPaymentModal] = useState(true);
   const [deliveryData, setDeliveryData] = useState<DeliveryFeesData | null>(
     null,
   );
@@ -64,6 +68,9 @@ const CartPageClient = () => {
 
   // Calculate delivery fee
   const deliveryFee = useMemo(() => {
+    if (currency !== "NGN") {
+      return INTERNATIONAL_SHIPPING_FEE;
+    }
     if (!form.state) return null;
     if (!deliveryData) return 15000; // Safety fallback
 
@@ -74,7 +81,7 @@ const CartPageClient = () => {
 
     // Fallback to the backend's default fee
     return deliveryData.defaultFee;
-  }, [form.state, deliveryData]);
+  }, [currency, form.state, deliveryData]);
 
   const inputClass =
     "w-full bg-white px-3 py-2.5 text-xs text-charcoal placeholder:text-secondary focus:outline-none focus:border-charcoal transition-colors";
@@ -192,7 +199,7 @@ const CartPageClient = () => {
   const handleConfirmUSDPayment = () => {
     clearCart();
     toast.success("Order request sent! Please contact us on Instagram/Email with your payment receipt.");
-    window.location.href = "/profile/orders";
+    router.push("/profile/orders");
   };
 
   return (
@@ -447,13 +454,16 @@ const CartPageClient = () => {
                 <div className="flex justify-between">
                   <span>Shipping</span>
                   <span className="text-charcoal font-medium">
-                    {form.state && deliveryFee !== null
+                    {currency !== "NGN"
+                      ? formatPrice(INTERNATIONAL_SHIPPING_FEE)
+                      : form.state && deliveryFee !== null
                       ? formatPrice(deliveryFee)
                       : "Select state to see fee"}
                   </span>
                 </div>
                 {/* Standard rate disclaimer */}
-                {form.state &&
+                {currency === "NGN" &&
+                  form.state &&
                   deliveryData &&
                   deliveryData.fees[form.state] === undefined && (
                     <p className="text-[10px] text-secondary/70 italic text-right">
@@ -462,9 +472,16 @@ const CartPageClient = () => {
                   )}
 
                 {/* Initial disclaimer */}
-                {!form.state && deliveryData && (
+                {currency === "NGN" && !form.state && deliveryData && (
                   <p className="text-[10px] text-secondary/70 italic text-right">
                     * Standard fee of {formatPrice(deliveryData.defaultFee)} applies to unlisted states
+                  </p>
+                )}
+
+                {/* International disclaimer */}
+                {currency !== "NGN" && (
+                  <p className="text-[10px] text-secondary/70 italic text-right">
+                    * Flat-rate international express shipping
                   </p>
                 )}
               </div>
