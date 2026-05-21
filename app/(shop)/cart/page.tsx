@@ -42,7 +42,7 @@ const CartPageClient = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showUSDPaymentModal, setShowUSDPaymentModal] = useState(true);
+  const [showUSDPaymentModal, setShowUSDPaymentModal] = useState(false);
   const [deliveryData, setDeliveryData] = useState<DeliveryFeesData | null>(
     null,
   );
