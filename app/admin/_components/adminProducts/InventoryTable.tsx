@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "react-toastify";
 import { Search, ShoppingCart, ImageOff } from "lucide-react";
 import { getInventory } from "@/lib/api/admin/adminProducts";
@@ -16,6 +16,7 @@ const InventoryTable = () => {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [page, setPage] = useState(1);
+  const isFirstLoad = useRef(true);
 
   // Debounce search input for background fetching
   useEffect(() => {
@@ -32,6 +33,7 @@ const InventoryTable = () => {
     const controller = new AbortController();
     const fetchProducts = async (showLoading = true) => {
       try {
+        await Promise.resolve();
         if (showLoading) setIsLoading(true);
         const { inventory, pagination } = await getInventory(
           page,
@@ -40,17 +42,19 @@ const InventoryTable = () => {
         );
         setProducts(inventory);
         setPagination(pagination);
-      } catch (error: any) {
-        if (error.name === "CanceledError" || error.code === "ERR_CANCELED") return;
+        setIsLoading(false);
+      } catch (error) {
+        const err = error as { name?: string; code?: string };
+        if (err.name === "CanceledError" || err.code === "ERR_CANCELED") return;
         toast.error("Failed to load inventory.");
-      } finally {
-        if (showLoading) setIsLoading(false);
+        setIsLoading(false);
       }
     };
     
     // Only show the skeleton for page changes or initial load
     // For search, fetch silently in the background
-    fetchProducts(page !== 1 || !products.length);
+    fetchProducts(page !== 1 || isFirstLoad.current);
+    isFirstLoad.current = false;
     return () => controller.abort();
   }, [page, debouncedSearch]);
 

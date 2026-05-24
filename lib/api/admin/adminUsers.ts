@@ -7,18 +7,12 @@ export async function getAllUsers(
   search = "",
   signal?: AbortSignal,
 ): Promise<{ users: User[]; pagination: Pagination }> {
-  try {
-    const res = await api.get("/admin/users", {
-      params: { page, search },
-      signal,
-    });
-    return {
-      users: res.data.data.users,
-      pagination: res.data.pagination,
-    };
-  } catch (error) {
-    throw new Error(
-      error instanceof Error ? error.message : "Failed to fetch users.",
-    );
-  }
+  const res = await api.get("/admin/users", {
+    params: { page, search },
+    signal,
+  });
+  return {
+    users: res.data.data.users,
+    pagination: res.data.pagination,
+  };
 }

@@ -7,18 +7,12 @@ export async function getAllOrders(
   search = "",
   signal?: AbortSignal,
 ): Promise<{ orders: RecentOrder[]; pagination: Pagination }> {
-  try {
-    const res = await api.get("/admin/orders", {
-      params: { page, search },
-      signal,
-    });
-    return {
-      orders: res.data.data.orders,
-      pagination: res.data.pagination,
-    };
-  } catch (error) {
-    throw new Error(
-      error instanceof Error ? error.message : "Failed to fetch orders.",
-    );
-  }
+  const res = await api.get("/admin/orders", {
+    params: { page, search },
+    signal,
+  });
+  return {
+    orders: res.data.data.orders,
+    pagination: res.data.pagination,
+  };
 }

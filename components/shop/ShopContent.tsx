@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import {
@@ -90,40 +90,41 @@ export default function ShopContent() {
   }, [searchInput]);
 
   // fetch products when filters/page/sort/search change
-  const fetchProducts = useCallback(async (signal?: AbortSignal) => {
-    try {
-      setIsLoading(true);
-      const result = await getAllProducts({
-        page: currentPage,
-        limit: ITEMS_PER_PAGE,
-        search: search || undefined,
-        collection: filters.collections[0] || undefined,
-        category: filters.categories[0] || undefined,
-        material: filters.materials[0] || undefined,
-        karat: filters.karats[0] || undefined,
-        jewelryType: filters.jewelryTypes[0] || undefined,
-        size: filters.sizes[0] || undefined,
-        weight: filters.weights[0] || undefined,
-        priceMin: filters.priceMin ? Number(filters.priceMin) : undefined,
-        priceMax: filters.priceMax ? Number(filters.priceMax) : undefined,
-        gender: filters.gender || undefined,
-      }, signal);
-      setProducts(result.products);
-      setTotalItems(result.totalItems);
-      setTotalPages(result.totalPages);
-    } catch (error: any) {
-      if (error.name === "CanceledError" || error.code === "ERR_CANCELED") return;
-      toast.error("Unable to load products. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [filters, currentPage, search]);
-
   useEffect(() => {
     const controller = new AbortController();
-    fetchProducts(controller.signal);
+    const fetchProducts = async () => {
+      try {
+        await Promise.resolve();
+        setIsLoading(true);
+        const result = await getAllProducts({
+          page: currentPage,
+          limit: ITEMS_PER_PAGE,
+          search: search || undefined,
+          collection: filters.collections[0] || undefined,
+          category: filters.categories[0] || undefined,
+          material: filters.materials[0] || undefined,
+          karat: filters.karats[0] || undefined,
+          jewelryType: filters.jewelryTypes[0] || undefined,
+          size: filters.sizes[0] || undefined,
+          weight: filters.weights[0] || undefined,
+          priceMin: filters.priceMin ? Number(filters.priceMin) : undefined,
+          priceMax: filters.priceMax ? Number(filters.priceMax) : undefined,
+          gender: filters.gender || undefined,
+        }, controller.signal);
+        setProducts(result.products);
+        setTotalItems(result.totalItems);
+        setTotalPages(result.totalPages);
+        setIsLoading(false);
+      } catch (error) {
+        const err = error as { name?: string; code?: string };
+        if (err.name === "CanceledError" || err.code === "ERR_CANCELED") return;
+        toast.error("Unable to load products. Please try again.");
+        setIsLoading(false);
+      }
+    };
+    fetchProducts();
     return () => controller.abort();
-  }, [fetchProducts]);
+  }, [filters, currentPage, search]);
 
   // reset to page 1 when filters change
   const handleFiltersChange = (updated: SidebarFilters) => {

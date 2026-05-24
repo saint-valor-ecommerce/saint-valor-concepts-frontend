@@ -46,6 +46,7 @@ const ProductsTable = () => {
     const controller = new AbortController();
     const fetchProducts = async () => {
       try {
+        await Promise.resolve();
         setIsLoading(true);
         const { products, pagination } = await getAllProducts(
           page,
@@ -54,10 +55,11 @@ const ProductsTable = () => {
         );
         setProducts(products);
         setPagination(pagination);
-      } catch (error: any) {
-        if (error.name === "CanceledError" || error.code === "ERR_CANCELED") return;
+        setIsLoading(false);
+      } catch (error) {
+        const err = error as { name?: string; code?: string };
+        if (err.name === "CanceledError" || err.code === "ERR_CANCELED") return;
         toast.error("Failed to load products.");
-      } finally {
         setIsLoading(false);
       }
     };

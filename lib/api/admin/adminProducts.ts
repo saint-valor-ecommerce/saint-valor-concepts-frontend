@@ -7,20 +7,14 @@ export async function getAllProducts(
   search = "",
   signal?: AbortSignal,
 ): Promise<{ products: Product[]; pagination: Pagination }> {
-  try {
-    const res = await api.get("/admin/products", {
-      params: { page, search },
-      signal,
-    });
-    return {
-      products: res.data.data.products,
-      pagination: res.data.pagination,
-    };
-  } catch (error) {
-    throw new Error(
-      error instanceof Error ? error.message : "Failed to fetch products.",
-    );
-  }
+  const res = await api.get("/admin/products", {
+    params: { page, search },
+    signal,
+  });
+  return {
+    products: res.data.data.products,
+    pagination: res.data.pagination,
+  };
 }
 
 export async function getInventory(
@@ -28,20 +22,14 @@ export async function getInventory(
   search = "",
   signal?: AbortSignal,
 ): Promise<{ inventory: InventoryItem[]; pagination: Pagination }> {
-  try {
-    const res = await api.get("/admin/inventory", {
-      params: { page, search },
-      signal,
-    });
-    return {
-      inventory: res.data.data.inventory,
-      pagination: res.data.pagination,
-    };
-  } catch (error) {
-    throw new Error(
-      error instanceof Error ? error.message : "Failed to fetch inventory.",
-    );
-  }
+  const res = await api.get("/admin/inventory", {
+    params: { page, search },
+    signal,
+  });
+  return {
+    inventory: res.data.data.inventory,
+    pagination: res.data.pagination,
+  };
 }
 
 export async function createProduct(formData: FormData): Promise<Product> {

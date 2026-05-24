@@ -21,12 +21,14 @@ export const JEWELRY_TYPE_OPTIONS = [
   { label: "Rings", value: "Rings" },
   { label: "Necklaces", value: "Necklaces" },
   { label: "Earring", value: "Earring" },
+  { label: "Earrings", value: "Earrings" },
   { label: "Bracelets", value: "Bracelets" },
   { label: "Anklets", value: "Anklets" },
   { label: "Pendants", value: "Pendants" },
   { label: "NeckChain", value: "NeckChain" },
   { label: "Necklace Set", value: "Necklace Set" },
-  { label: "Bracelet and Earring set", value: "Bracelet and Earring set" },
+  { label: "bracelet and earring set", value: "bracelet and earring set" },
+  { label: "Pant Chains", value: "Pant Chains" }
 ];
 
 export const GENDER_OPTIONS = [
