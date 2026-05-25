@@ -28,6 +28,8 @@ api.interceptors.response.use(
       localStorage.removeItem("firstName");
       document.cookie =
         "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie =
+        "userRole=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
       if (!window.location.pathname.includes("/sign-in")) {
         const isAdminPath = window.location.pathname.startsWith("/admin");

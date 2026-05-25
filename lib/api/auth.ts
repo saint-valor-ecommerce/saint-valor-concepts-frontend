@@ -22,15 +22,25 @@ export function clearToken() {
   localStorage.removeItem("token");
   localStorage.removeItem("firstName");
   document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  document.cookie = "userRole=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }
 
-export async function login({ email, password }: LoginProps) {
+export async function login({ email, password }: LoginProps, isAdminLogin = false) {
   const { data } = await api.post("/auth/login", { email, password });
-  saveToken(data.token);
 
-  const profileRes = await api.get("/auth/me");
-  const firstName = profileRes.data.data.user.firstName;
+  const profileRes = await api.get("/auth/me", {
+    headers: { Authorization: `Bearer ${data.token}` },
+  });
+  const user = profileRes.data.data.user;
+
+  if (isAdminLogin && user.role?.toLowerCase() !== "admin") {
+    throw new Error("Access denied. You do not have administrator permissions.");
+  }
+
+  saveToken(data.token);
+  const firstName = user.firstName;
   localStorage.setItem("firstName", firstName);
+  document.cookie = `userRole=${user.role}; path=/;`;
 
   return { firstName };
 }

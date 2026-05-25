@@ -56,13 +56,16 @@ export default function AdminSignInPage() {
 
     try {
       setLoading(true);
-      await login(formData);
+      await login(formData, true);
       toast.success("Signed in successfully!");
       router.push("/admin/dashboard");
     } catch (error: unknown) {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.message || "Invalid credentials."
-        : "Something went wrong. Please try again.";
+      let message = "Something went wrong. Please try again.";
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data?.message || "Invalid credentials.";
+      } else if (error instanceof Error) {
+        message = error.message;
+      }
       setErrors({ form: message });
     } finally {
       setLoading(false);
