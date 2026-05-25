@@ -47,7 +47,7 @@ export default function ShopCollectionSection() {
           {isLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="flex flex-col items-center gap-3">
-                <div className="w-full aspect-4/3 bg-gray-100 animate-pulse rounded" />
+                <div className="w-full aspect-square bg-gray-100 animate-pulse rounded" />
                 <div className="h-3 w-24 bg-gray-100 animate-pulse rounded" />
               </div>
             ))
@@ -70,8 +70,9 @@ export default function ShopCollectionSection() {
                     src={item.image!}
                     alt={item.name}
                     fill
+                    loading="lazy"
                     className="object-cover transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, 25vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 </div>
                 <h3 className="mt-4 text-sm font-medium text-charcoal">

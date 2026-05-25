@@ -8,7 +8,6 @@ import { useFavouritesStore } from "@/store/favouritesStore";
 import AuthPromptModal from "./AuthPromptModal";
 import { useState } from "react";
 import { useAuthStore } from "@/store/authStore";
-
 import { useCurrencyStore } from "@/store/currencyStore";
 
 interface ProductCardProps {
@@ -30,7 +29,10 @@ export default function ProductCard({ product }: ProductCardProps) {
     toggleFavourite(product._id);
   };
 
-  const alternateImage = product.subImages && product.subImages.length > 0 ? product.subImages[0] : null;
+  const alternateImage =
+    product.subImages && product.subImages.length > 0
+      ? product.subImages[0]
+      : null;
 
   return (
     <div className="flex flex-col gap-2 group">
@@ -43,7 +45,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           loading="lazy"
-          className={`object-center transition-all duration-700 ease-in-out group-hover:scale-105 ${
+          className={`object-cover transition-all duration-700 ease-in-out group-hover:scale-105 ${
             alternateImage ? "group-hover:opacity-0" : ""
           }`}
         />
@@ -55,7 +57,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             loading="lazy"
-            className="object-center absolute inset-0 opacity-0 transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:scale-105"
+            className="object-cover absolute inset-0 opacity-0 transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:scale-105"
           />
         )}
 

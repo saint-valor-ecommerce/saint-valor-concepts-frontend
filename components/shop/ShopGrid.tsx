@@ -12,7 +12,7 @@ const ShopGrid = ({ products, isLoading }: ShopGridProps) => {
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
         {Array.from({ length: 8 }).map((_, i) => (
           <div key={i} className="flex flex-col gap-2">
-            <div className="aspect-3/4 max-h-56 w-full bg-gray-100 animate-pulse rounded" />
+            <div className="aspect-square w-full bg-gray-100 animate-pulse" />
             <div className="h-3 w-20 bg-gray-100 animate-pulse rounded" />
             <div className="h-3 w-32 bg-gray-100 animate-pulse rounded" />
             <div className="h-3 w-16 bg-gray-100 animate-pulse rounded" />
@@ -32,7 +32,7 @@ const ShopGrid = ({ products, isLoading }: ShopGridProps) => {
   }
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
       {products.map((product) => (
         <ProductCard key={product._id} product={product} />
       ))}

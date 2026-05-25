@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import { Product } from "@/types/product";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -19,7 +19,19 @@ export default function ProductSlider({
   isLoading,
 }: ProductSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const itemsToShow = 4;
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Handle client-side detection of mobile view
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const itemsToShow = isMobile ? 2 : 3;
 
   if (isLoading) {
     return (
@@ -30,10 +42,10 @@ export default function ProductSlider({
             <p className="text-xs max-w-xs leading-relaxed">{subtitle}</p>
           )}
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[...Array(4)].map((_, i) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {[...Array(itemsToShow)].map((_, i) => (
             <div key={i} className="flex flex-col gap-2">
-              <div className="aspect-3/4 w-full bg-charcoal/5 animate-pulse" />
+              <div className="aspect-square w-full bg-charcoal/5 animate-pulse" />
               <div className="h-2.5 w-1/3 bg-charcoal/5 animate-pulse" />
               <div className="h-3 w-2/3 bg-charcoal/5 animate-pulse" />
               <div className="h-3 w-1/2 bg-charcoal/5 animate-pulse" />
@@ -114,7 +126,7 @@ export default function ProductSlider({
       {/* Product grid */}
       <div
         key={currentIndex}
-        className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in"
+        className="grid grid-cols-2 md:grid-cols-3 gap-4 animate-fade-in"
       >
         {visibleProducts.map((product) => (
           <ProductCard key={product._id} product={product} />
