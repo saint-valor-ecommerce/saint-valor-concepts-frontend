@@ -13,7 +13,6 @@ import ProductPreview from "./ProductPreview";
 import { ProductSize } from "@/types/product";
 import {
   KARAT_OPTIONS,
-  WEIGHT_OPTIONS,
   MATERIAL_OPTIONS,
   JEWELRY_TYPE_OPTIONS,
   GENDER_OPTIONS,
@@ -321,18 +320,12 @@ const ProductForm = () => {
         {/* Weight */}
         <div className="flex flex-col gap-1">
           <label className={labelClass}>Weight</label>
-          <select
-            className={selectClass}
+          <input
+            className={inputClass}
+            placeholder="e.g. 5g or 3-6g"
             value={form.productWeight}
             onChange={(e) => update("productWeight", e.target.value)}
-          >
-            <option value="">Select</option>
-            {WEIGHT_OPTIONS.map((w) => (
-              <option key={w.value} value={w.value}>
-                {w.label}
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
         {/* Length */}

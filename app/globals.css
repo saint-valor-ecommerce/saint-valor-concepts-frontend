@@ -48,7 +48,7 @@ textarea {
 
 @layer components {
   .bottom-nav-link-style {
-    @apply uppercase text-sm hover:text-burgundy cursor-pointer text-charcoal font-medium;
+    @apply uppercase text-sm hover:text-burgundy cursor-pointer text-charcoal font-semibold;
   }
 
   .about-social-media {

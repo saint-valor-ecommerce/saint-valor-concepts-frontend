@@ -56,7 +56,9 @@ const Profile = () => {
         onClick={() => setIsOpen((prev) => !prev)}
       >
         {isLoggedIn && userName && (
-          <span className="text-sm mr-2">Welcome, {userName}</span>
+          <span className="text-sm mr-2 font-semibold">
+            Welcome, {userName}
+          </span>
         )}
         <UserRound className="w-6 h-6" />
         <ChevronDown

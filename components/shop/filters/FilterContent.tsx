@@ -4,7 +4,6 @@ import PriceRangeFilter from "./PriceRangeFilter";
 import { ProductCollection, ProductCategory } from "@/types/product";
 import { SidebarFilters } from "@/types/filter";
 import {
-  WEIGHT_OPTIONS,
   MATERIAL_OPTIONS,
   KARAT_OPTIONS,
   JEWELRY_TYPE_OPTIONS,
@@ -47,14 +46,7 @@ const FilterContent = ({
           onChange={(val) => toggle("categories", val)}
         />
       </FilterSection>
-      <FilterSection title="Weight (grams)">
-        <RadioFilter
-          name="weight"
-          options={WEIGHT_OPTIONS}
-          selected={filters.weights}
-          onChange={(val) => toggle("weights", val)}
-        />
-      </FilterSection>
+
       <FilterSection title="Price">
         <PriceRangeFilter
           min={filters.priceMin}

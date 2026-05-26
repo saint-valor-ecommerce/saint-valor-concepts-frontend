@@ -1,6 +1,5 @@
 export interface SidebarFilters {
   collections: string[];
-  weights: string[];
   sizes: string[];
   priceMin: string;
   priceMax: string;

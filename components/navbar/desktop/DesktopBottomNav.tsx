@@ -17,6 +17,13 @@ const DesktopBottomNav = () => {
         New Arrivals
       </Link>
 
+      <Link
+        href="/shop"
+        className={`bottom-nav-link-style ${isActive("/shop") ? "text-burgundy" : ""}`}
+      >
+        Shop
+      </Link>
+
       <DesktopDropdown
         label="Female"
         href="/shop?gender=Female"
@@ -83,12 +90,7 @@ const DesktopBottomNav = () => {
       >
         Bespoke Collection
       </Link>
-      <Link
-        href="/custom-inquiry"
-        className={`bottom-nav-link-style ${isActive("/custom-inquiry") ? "text-burgundy" : ""}`}
-      >
-        Custom Inquiry
-      </Link>
+
       <Link
         href="/about-us"
         className={`bottom-nav-link-style ${isActive("/about-us") ? "text-burgundy" : ""}`}

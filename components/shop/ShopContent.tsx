@@ -21,7 +21,6 @@ const ITEMS_PER_PAGE = 9;
 
 const EMPTY_FILTERS: SidebarFilters = {
   collections: [],
-  weights: [],
   sizes: [],
   priceMin: "",
   priceMax: "",
@@ -106,7 +105,6 @@ export default function ShopContent() {
           karat: filters.karats[0] || undefined,
           jewelryType: filters.jewelryTypes[0] || undefined,
           size: filters.sizes[0] || undefined,
-          weight: filters.weights[0] || undefined,
           priceMin: filters.priceMin ? Number(filters.priceMin) : undefined,
           priceMax: filters.priceMax ? Number(filters.priceMax) : undefined,
           gender: filters.gender || undefined,

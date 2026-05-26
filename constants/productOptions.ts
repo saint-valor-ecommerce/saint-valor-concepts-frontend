@@ -1,9 +1,3 @@
-export const WEIGHT_OPTIONS = [
-  { label: "3-6g", value: "3-6g" },
-  { label: "7-10g", value: "7-10g" },
-  { label: "11-15g", value: "11-15g" },
-];
-
 export const MATERIAL_OPTIONS = [
   { label: "Gold", value: "Gold" },
   { label: "Silver", value: "Silver" },
@@ -25,10 +19,9 @@ export const JEWELRY_TYPE_OPTIONS = [
   { label: "Bracelets", value: "Bracelets" },
   { label: "Anklets", value: "Anklets" },
   { label: "Pendants", value: "Pendants" },
-  { label: "NeckChain", value: "NeckChain" },
   { label: "Necklace Set", value: "Necklace Set" },
   { label: "bracelet and earring set", value: "bracelet and earring set" },
-  { label: "Pant Chains", value: "Pant Chains" }
+  { label: "Pant Chains", value: "Pant Chains" },
 ];
 
 export const GENDER_OPTIONS = [
