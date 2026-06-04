@@ -68,25 +68,11 @@ export default function CustomInquiry() {
                     <Twitter className="h-4 w-4" /> Twitter
                   </Link>
                   <Link
-                    href="#"
-                    className="about-social-media"
-                    aria-label="Facebook"
-                  >
-                    <Facebook className="h-4 w-4" /> Facebook
-                  </Link>
-                  <Link
                     href="https://www.tiktok.com/@saint.valor_?_r=1&_t=ZS-93UzpRUktaZ"
                     className="about-social-media"
                     aria-label="TikTok"
                   >
                     <Music2 className="h-4 w-4" /> TikTok
-                  </Link>
-                  <Link
-                    href="#"
-                    className="about-social-media"
-                    aria-label="Snapchat"
-                  >
-                    <Ghost className="h-4 w-4" /> Snapchat
                   </Link>
                 </div>
               </div>
