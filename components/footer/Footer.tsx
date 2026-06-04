@@ -27,7 +27,7 @@ export default function Footer() {
                   Saint Valor
                 </p>
                 <p className="mt-2 max-w-sm text-sm leading-relaxed text-ivory/75">
-                  Where elegance meets distinction — explore our collections and
+                  Where elegance meets distinction. Explore our collections and
                   bespoke experiences with care.
                 </p>
               </div>

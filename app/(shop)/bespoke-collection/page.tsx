@@ -1,4 +1,3 @@
-import MultiStepForm from "@/components/bespoke/custom-order/MultiStepForm";
 import { CustomJewelrySection } from "@/components/bespoke/CustomJewelry";
 import LinkButton from "@/components/ui/LinkButton";
 
@@ -36,9 +35,6 @@ const page = () => {
       </section>
 
       <CustomJewelrySection />
-      <div className="bg-ivory">
-        <MultiStepForm />
-      </div>
     </>
   );
 };

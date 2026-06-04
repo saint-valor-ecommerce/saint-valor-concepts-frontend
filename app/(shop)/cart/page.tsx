@@ -22,14 +22,14 @@ import { ShippingForm } from "@/types/shippingForm";
 import { DeliveryFeesData } from "@/types/shopOrder";
 import dynamic from "next/dynamic";
 
-const INTERNATIONAL_SHIPPING_FEE = 15000; // Flat-rate international shipping fee in NGN (approx $10)
+const USD_SHIPPING_FEE = 80;
 
 const CartPageClient = () => {
   const router = useRouter();
   const { items, removeFromCart, updateQuantity, clearCart, totalPrice } =
     useCartStore();
   const { isLoggedIn } = useAuthStore();
-  const { currency, formatPrice } = useCurrencyStore();
+  const { currency, formatPrice, rates } = useCurrencyStore();
 
   const [form, setForm] = useState<ShippingForm>({
     firstName: "",
@@ -69,7 +69,8 @@ const CartPageClient = () => {
   // Calculate delivery fee
   const deliveryFee = useMemo(() => {
     if (currency !== "NGN") {
-      return INTERNATIONAL_SHIPPING_FEE;
+      const usdRate = rates.USD || 0.00067;
+      return USD_SHIPPING_FEE / usdRate;
     }
     if (!form.state) return null;
     if (!deliveryData) return 15000; // Safety fallback
@@ -81,7 +82,7 @@ const CartPageClient = () => {
 
     // Fallback to the backend's default fee
     return deliveryData.defaultFee;
-  }, [currency, form.state, deliveryData]);
+  }, [currency, form.state, deliveryData, rates]);
 
   const inputClass =
     "w-full bg-white px-3 py-2.5 text-xs text-charcoal placeholder:text-secondary focus:outline-none focus:border-charcoal transition-colors";
@@ -455,7 +456,7 @@ const CartPageClient = () => {
                   <span>Shipping</span>
                   <span className="text-charcoal font-medium">
                     {currency !== "NGN"
-                      ? formatPrice(INTERNATIONAL_SHIPPING_FEE)
+                      ? formatPrice(deliveryFee ?? 0)
                       : form.state && deliveryFee !== null
                       ? formatPrice(deliveryFee)
                       : "Select state to see fee"}
